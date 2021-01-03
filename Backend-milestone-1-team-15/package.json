@@ -1,0 +1,31 @@
+{
+  "name": "milestone-1-team-15",
+  "version": "1.0.0",
+  "description": "milestone-1-DoniaAli77 created by GitHub Classroom",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/guc-met/milestone-1-Team-15.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/guc-met/milestone-1-Team-15/issues"
+  },
+  "homepage": "https://github.com/guc-met/milestone-1-Team-15#readme",
+  "dependencies": {
+    "bcrypt": "^5.0.0",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "jest": "^26.6.3",
+    "joi": "^17.3.0",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.11.8",
+    "mongoose-auto-increment": "^5.0.1",
+    "nodemon": "^2.0.6"
+  }
+}
