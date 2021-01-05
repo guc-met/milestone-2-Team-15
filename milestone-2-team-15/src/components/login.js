@@ -28,7 +28,7 @@ export default function Login(props) {
           <Form.Control type="password" placeholder="Password" />
         </Col>
       </Form.Group>
-      <Col className="LoginButtonCol">
+      <Col className="LoginButtonCol ">
         <Button variant="dark" type="submit">
           Login
         </Button>
