@@ -1,7 +1,7 @@
  /* The sidebar menu */
  .sidenav {
-    height: 32%; /* Full-height: remove this if you want "auto" height */
-    width: 70px; /* Set the width of the sidebar */
+    height: 15.625vw; /* Full-height: remove this if you want "auto" height */
+    width: 7.8125vw; /* Set the width of the sidebar */
     position: fixed; /* Fixed Sidebar (stay in place on scroll) */
     z-index: 1; /* Stay on top */
     top: 55px; /* Stay at the top */
@@ -12,8 +12,8 @@
   }
 
   .red {
-    height: 32%;
-    width: 70px; 
+    height: 15.625vw;
+    width: 7.8125vw; 
     position: fixed; 
     z-index: 1; 
     top: 275px; 
@@ -23,8 +23,8 @@
     padding-top: 20px;
   }
   .yellow {
-    height: 100%; 
-    width: 70px; 
+    height: 15.625vw; 
+    width: 7.8125vw; 
     position: fixed; 
     z-index: 1;
     top: 515px; 
@@ -38,7 +38,7 @@
   .sidenav a {
     padding: 6px 8px 6px 16px;
     text-decoration: none;
-    font-size: 16px;
+    font-size: 18px;
     color: #c7c4c4;
     display: block;
   }

@@ -6,8 +6,7 @@ import "../stylesheets/sideBar.css"
 export default function sideBar(props) {
     return(
     <div>
-                <div class="red">
-
+        <div class="red">
         </div>
         <div class="yellow">
 
