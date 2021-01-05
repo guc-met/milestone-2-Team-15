@@ -6,12 +6,12 @@ export default function sideBar(props) {
     return(
     <div>
         <div class="red">
-        <a href="#">View Requests</a>
-        <a href="#">Manage Requests</a>
-        <a href="#">View Coverage</a>
+        <a href="#">View Requests</a> <br/>
+        <a href="#">Manage Requests</a> <br/>
+        <a href="#">View Coverage</a> <br/>
         </div>
-        <div class="yellow">
-        <a href="#">View Teaching Assignments </a>
+        <div class="yellow"> 
+        <a href="#">View Teaching Assignments </a> <br/>
         
         </div>
     <div class="sidenav">
