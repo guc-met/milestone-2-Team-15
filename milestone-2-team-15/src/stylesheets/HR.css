@@ -1,0 +1,55 @@
+/* .btn-Loginbutton {
+  /* width: 10%;
+  height: 50px;
+  font-size: large;
+  font-weight: bolder;
+  border-radius: 3px; 
+  width: 30%;
+}
+.Hr-Button {
+  width: 100px;
+  border-radius: 3px;
+  background-color: rgb(5, 255, 255);
+  border: rgb(5, 255, 255);
+} */
+.Hr-Buttons {
+  margin-left: 20%;
+  height: 1000vh;
+  padding: 1%;
+  width: 80%;
+  background-color: whitesmoke;
+}
+.col {
+  margin: 10px;
+}
+.Location_Col {
+  padding: 10px;
+}
+.Location__Button__delete {
+  width: 30%;
+  margin: 10%;
+  border-radius: 3px;
+  background-color: rgb(196, 7, 7);
+}
+.Location__Button__Edit {
+  width: 30%;
+  margin: 10%;
+  border-radius: 3px;
+  color: black;
+  background-color: green;
+}
+.Location__plus__card {
+  text-align: center;
+  font-size: large;
+  color: brown;
+  height: 100px;
+}
+.HR_input {
+  width: 280px;
+}
+
+.HR_Submit {
+  width: 30%;
+  margin-top: auto;
+  padding: 100px;
+}

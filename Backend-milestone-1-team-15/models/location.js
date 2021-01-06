@@ -36,3 +36,4 @@ locationSchema.plugin(autoIncrement.plugin, {
   field: "locationId",
   startAt: 1,
 });
+module.exports = mongoose.model("locations", locationSchema);
