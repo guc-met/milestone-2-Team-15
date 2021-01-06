@@ -10,6 +10,7 @@ import {
   Card,
   Row,
   Col,
+  Dropdown,
 } from "react-bootstrap";
 import * as Icon from "react-bootstrap-icons";
 
@@ -21,6 +22,24 @@ function RegisterStaff(props) {
   const [email, setEmail] = useState(0);
   const [salary, setSalary] = useState(0);
   const [location, setLocation] = useState(0);
+  const [staff, setStaff] = useState(0);
+  const [staffArray, setStaffArray] = useState(0);
+  const [flag, setFlag] = useState(false);
+
+  useEffect(() => {
+    async function fetchData() {
+      const response = await axios.get(`http://localhost:3000/HR/ViewStaffs`);
+      console.log(response.data);
+
+      const staff = response.data.map((staff) => {
+        return <Dropdown.Item href="">{staff.email}</Dropdown.Item>;
+      });
+
+      setStaff(staff);
+      setStaffArray(response.data);
+    }
+    fetchData();
+  }, [flag]);
 
   const handleSubmit = async (event) => {
     console.log(type);
@@ -43,6 +62,17 @@ function RegisterStaff(props) {
 
   return (
     <div class="Hr-Buttons">
+      <Dropdown>
+        <Dropdown.Toggle
+          variant="primary"
+          id="dropdown-basic"
+          class="Hr-Button"
+        >
+          All Staff
+        </Dropdown.Toggle>
+
+        <Dropdown.Menu>{staff}</Dropdown.Menu>
+      </Dropdown>
       <Form validated onFinish={handleSubmit}>
         <Form.Group as={Row}>
           <Form.Label as="legend" column sm={2}>
@@ -145,11 +175,11 @@ function RegisterStaff(props) {
           />
         </Form.Group>
 
-        <Form.Group class="HR_input" role="form">
+        <Form.Group style={{ marginTop: "1%" }} role="form">
           <Button
             // type="submit"
-            onClick={handleSubmit}
             style={{ float: "right" }}
+            onClick={handleSubmit}
             variant="primary"
           >
             Submit

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import "bootstrap/dist/css/bootstrap.css";
 import { useHistory } from "react-router-dom";
 
 import { ListGroup, Button, Card, Row, Col } from "react-bootstrap";

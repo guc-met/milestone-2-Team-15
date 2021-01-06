@@ -1,5 +1,4 @@
 import React from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
 import {
   Dropdown,
   Navbar,
@@ -10,12 +9,11 @@ import {
 import arrowWhite from "../images/arrowwhite.png";
 import arrowBlack from "../images/download.png";
 
-import "./dropDown.css";
 export default function dropDown(props) {
   return (
     <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
       <Navbar bg="dark">
-        <Navbar.Brand href="#home">
+        <Navbar.Brand href="/">
           <img
             src={arrowWhite}
             width="30"

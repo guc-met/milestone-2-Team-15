@@ -1,16 +1,23 @@
-.Hr-Button {
-  width: 10%;
+/* .btn-Loginbutton {
+  /* width: 10%;
   height: 50px;
   font-size: large;
   font-weight: bolder;
+  border-radius: 3px; 
+  width: 30%;
 }
+.Hr-Button {
+  width: 100px;
+  border-radius: 3px;
+  background-color: rgb(5, 255, 255);
+  border: rgb(5, 255, 255);
+} */
 .Hr-Buttons {
   margin-left: 20%;
   height: 1000vh;
   padding: 1%;
   width: 80%;
-  background-color: aqua;
-  border: aqua;
+  background-color: whitesmoke;
 }
 .col {
   margin: 10px;
