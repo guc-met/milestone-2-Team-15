@@ -1,45 +1,44 @@
-/* The sidebar menu */
-.sidenav {
-  height: 15.625vw; /* Full-height: remove this if you want "auto" height */
-  width: 20%; /* Set the width of the sidebar */
+ /* The sidebar menu */
+ .sidenav {
+  height: 32%; /* Full-height: remove this if you want "auto" height */
+  width: 4.86vw; /* Set the width of the sidebar */
   position: fixed; /* Fixed Sidebar (stay in place on scroll) */
   z-index: 1; /* Stay on top */
-  top: 55px; /* Stay at the top */
+  top: 3.919vw; /* Stay at the top */
   left: 0;
   background-color: rgba(53, 58, 64); /* Black */
   overflow-x: hidden; /* Disable horizontal scroll */
-  padding-top: 20px;
-  margin-top: 0.8%;
+  padding-top: 1.389vw;
 }
 
 .red {
-  height: 15.625vw;
-  width: 20%; /* Set the width of the sidebar */
-  position: fixed;
-  z-index: 1;
-  top: 275px;
+  height: 32%;
+  width: 4.86vw; 
+  position: fixed; 
+  z-index: 1; 
+  top: 19.097vw; 
   left: 0;
-  background-color: rgba(253, 4, 4, 0.911);
-  overflow-x: hidden;
-  padding-top: 20px;
+  background-color: rgba(253, 4, 4, 0.911); 
+  overflow-x: hidden; 
+  padding-top: 1.389vw;
 }
 .yellow {
-  height: 15.625vw;
-  width: 20%; /* Set the width of the sidebar */
-  position: fixed;
+  height: 100%; 
+  width: 4.86vw; 
+  position: fixed; 
   z-index: 1;
-  top: 515px;
+  top: 35.76389vw; 
   left: 0;
-  background-color: rgb(255, 238, 0, 0.911);
-  overflow-x: hidden;
-  padding-top: 20px;
+  background-color: rgb(255, 238, 0,0.911); 
+  overflow-x: hidden; 
+  padding-top: 1.389vw;
 }
 
 /*navigation menu links*/
 .sidenav a {
-  padding: 6px 8px 6px 16px;
+  padding: 0.4167vw 0.56vw 0.4167vw 1.1112vw;
   text-decoration: none;
-  font-size: 18px;
+  font-size: 1.1112vw;
   color: #c7c4c4;
   display: block;
 }
@@ -49,16 +48,13 @@
   color: #f1f1f1;
 }
 
+
 .main {
-  margin-left: 100px;
-  padding: 0px 10px;
+  margin-left: 6.9445vw; 
+  padding: 0vw 0.6944vw;
 }
 
-@media screen and (max-height: 450px) {
-  .sidenav {
-    padding-top: 15px;
-  }
-  .sidenav a {
-    font-size: 18px;
-  }
-}
+@media screen and (max-height: 31.25vw) {
+  .sidenav {padding-top: 1.04167vw;}
+  .sidenav a {font-size: 1.25vw;}
+} 

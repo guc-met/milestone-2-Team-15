@@ -5,23 +5,41 @@ import "../stylesheets/login.css"
 import "bootstrap/dist/css/bootstrap.min.css"
 import axios from "axios"
 import backendlink from "../backendlink"
-
+import { useHistory } from "react-router-dom";
+import Token_Secret from "../dev"
+const jwt = require("jsonwebtoken")
+require("dotenv").config()
 export default function Login(props) {
+  const history = useHistory();
   const [Email, setEmail] = useState("")
   const [Password, setPassword] = useState("")
-  const handleLogin = () => {
-  
+  const handleLogin = async () => {
+    console.log({ Email })
     try {
-      axios({
+      await axios({
         method: "post",
-        url: "http://localhost:3000" + "/login",
+        url: "http://localhost:3000/login",
+
         data: {
-          Email: { Email },
-          Password: { Password },
+          email: Email,
+          password: Password,
         },
       }).then((res) => {
-        console.log("here")
-        console.log(res.data)
+        console.log(Token_Secret.Token_Secret)
+        const result = jwt.verify(res.data, Token_Secret.Token_Secret)
+        if (result) {
+          // console.log(result)
+///////////////////////////////////////////////////hereeeeeeeeeeeeeeeeee lseesasas
+          let type = result.type
+          switch (type) {
+            case "instructor":
+              history.push("/instructor_routes")
+              break
+
+            default:
+              break
+          }
+        }
       })
     } catch (error) {
       console.log(error)
