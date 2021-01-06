@@ -7,57 +7,43 @@
     max-width: 31.319444444444443vw;
     min-width: 31.319444444444443vw;
 }
-.LoginLogo{
-    /* width: 451px;
-    height: 500px */
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    width: 40%;
-}
-.l{
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    width: 50%;
-
-}
-.lone{
-    background-color: black;
-    column-fill: auto;
-}
-#square {
-    width: 100px;
-    height: 100px;
-    background: red;
-  }
-.LoginEmailLabel{
-   
- text-align: center;
- /* margin: auto !important; */
- width:100%;
- font-size:1.1111111111111112vw;
- font-family: Arial, Helvetica, sans-serif  , Georgia, serif;
- font-weight: bold
-}
-  
 .LoginImageRow{
-    margin: auto !important;
-    width: fit-content;
-    margin-bottom: 3% !important ;
-
+      margin: auto !important;
+      width: fit-content;
+      margin-bottom: 3% !important ;
+      
+}
+.LoginLabel{ 
+     text-align: center;
+     /* margin: auto !important; */
+     width:100%;
+     font-size:1.25vw;
+     font-family: Arial, Helvetica, sans-serif  , Georgia, serif;
+     font-weight: bold
 }
 .LogintextBoxCol{
     margin:auto !important;
     width: 38.645833333333336vw;
     text-align: center;
 }
-.LogintextBox{
-    width: 38.645833333333336vw;
-    height: 2.638888888888889vw;
 
+.LoginTextBox ,.LoginTextBox:enabled{
+    min-height:  2.7777777777777777vw !important;
+    max-height: 2.7777777777777777vw !important;
+    font-size: 0.9722222222222222vw !important;
+    font-family: Arial, Helvetica, sans-serif  , Georgia, serif !important;
+    width: 38.645833333333336vw;
+
+    
 }
 .LoginButtonCol{
     text-align: center;
     padding: 0vw 0vw 0vw 0vw;
+}
+.btn-LoginButton,.btn-LoginButton:hover{
+   width:6.944444444444445vw !important;
+   font-size:1.3888888888888888vw !important;
+   line-height: 1.0416666666666665vw !important;
+   font-family: Arial, Helvetica, sans-serif  , Georgia, serif !important;
+
 }

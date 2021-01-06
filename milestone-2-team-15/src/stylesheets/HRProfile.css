@@ -1,0 +1,17 @@
+.HRCard{
+    width:900px;
+    height: auto;
+    margin-left: 200px;
+    margin-top: 100px;
+    height:400px;
+    background-color: #343a40;
+}
+.LoginLabel{ 
+    text-align: center;
+    /* margin: auto !important; */
+    width:100%;
+    font-size:1.25vw;
+    font-family: Arial, Helvetica, sans-serif  , Georgia, serif;
+    font-weight: bold;
+    color:wheat
+}

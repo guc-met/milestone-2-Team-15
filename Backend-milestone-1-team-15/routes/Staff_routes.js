@@ -33,8 +33,8 @@ router
       console.log("ana hna");
       res.status(404).send("user not found");
     } else {
-      if (result.firstPassEntered == false)
-        return res.status(403).send("please reset ur password");
+      // if (result.firstPassEntered == false)
+      //   return res.status(403).send("please reset ur password");
       const correctpass = await bcrypt.compare(
         req.body.password,
         result.password
