@@ -7,7 +7,6 @@ import { ListGroup, Button, Card, Row, Col } from "react-bootstrap";
 import * as Icon from "react-bootstrap-icons";
 import LocationChanges from "./LocationChanges";
 import { Plus } from "react-bootstrap-icons";
-import "./HR.css";
 require("dotenv").config();
 function Location() {
   const history = useHistory();
@@ -15,7 +14,9 @@ function Location() {
   const [flag, setFlag] = useState(false);
   const [locationsCards, setLocationsCards] = useState();
   const [locations, setLocations] = useState();
-
+  const [visibility, setVisibility] = useState(false);
+  const [id, setId] = useState(0);
+  const [edit, setEdit] = useState(false);
   useEffect(() => {
     async function fetchData() {
       const response = await axios.get(
@@ -49,7 +50,14 @@ function Location() {
                   <Icon.Trash />
                 </Button>
 
-                <Button onclick={editButton()} class="Location__Button__Edit">
+                <Button
+                  onClick={() => {
+                    setId(location.locationId);
+                    setEdit(true);
+                    setVisibility(true);
+                  }}
+                  class="Location__Button__Edit"
+                >
                   <Icon.PencilSquare />
                 </Button>
               </Card.Body>
@@ -62,7 +70,7 @@ function Location() {
           <Card>
             <Button
               onClick={() => {
-                history.push("/AddLocation");
+                setVisibility(true);
               }}
               style={{ textAlign: "center" }}
             >
@@ -77,20 +85,12 @@ function Location() {
     fetchData();
   }, [flag]);
 
-  async function editButton() {
-    const response = await axios.post(`http://localhost:3000`);
-  }
-  function onclick() {
-    console.log("hi");
-    return;
-  }
-
   return (
     <div class="Hr-Buttons">
       <Row xs={1} sm={2} md={3} lg={4} xl={5} noGutter>
         {locationsCards}
       </Row>
-      <LocationChanges visibility="false" />
+      <LocationChanges id={id} edit={edit} visibility={visibility} />
     </div>
   );
 }

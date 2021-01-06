@@ -6,7 +6,7 @@
 }
 .Hr-Buttons {
   margin-left: 20%;
-  margin-top: 5%;
+  height: 1000vh;
   padding: 1%;
   width: 80%;
   background-color: aqua;
@@ -36,4 +36,13 @@
   font-size: large;
   color: brown;
   height: 100px;
+}
+.HR_input {
+  width: 280px;
+}
+
+.HR_Submit {
+  width: 30%;
+  margin-top: auto;
+  padding: 100px;
 }
