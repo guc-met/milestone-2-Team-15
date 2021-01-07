@@ -12,6 +12,7 @@ const InstructorModel = require('../models/instructor.js');
 const StaffModel = require('../models/Staff.js');
 const TaModel = require('../models/ta.js');
 const CoorModel = require('../models/courseCoordinator.js');
+const blacklist = require("../models/blacklist")
 
 router.use(async (req, res, next) => {
     //middlewares wihtout next itwont terminate if not res.send
@@ -61,7 +62,7 @@ router.route("/deleteCourseInst").delete(async (req, res) => {//delete of number
             let updatedcourses = [];
             let updateddepartments = [];
             for(let i =0; i<departments.length; i++){
-                if(departments[i].name==departmentname){
+                if(departments[i]._id==departmentname){
                     let courses = departments[i].courses;
                     for(let j=0; j<courses.length ;j++){
                         if(courses[j]._id==courseid){
@@ -117,11 +118,11 @@ router.route("/deleteCourseInst").delete(async (req, res) => {//delete of number
                 let updatedcourses = [];
                 let updateddepartments = [];
                 for(let i =0; i<departments.length; i++){
-                    if(departments[i].name==departmentname){
+                    if(departments[i]._id==departmentname){
                         console.log(departments[i].name+"  in same dep");
                         let courses = departments[i].courses;
                         for(let j=0; j<courses.length ;j++){
-                            console.log(coursename+"   "+courses[j].courseName)
+                            //console.log(coursename+"   "+courses[j].courseName)
                             if(courses[j]._id==courseid){
                                 console.log("same course")
                                 let instructors = courses[j].Instructors;
@@ -169,7 +170,7 @@ router.route("/updateCourseInst").put(async (req, res) => { //update of number 1
             let updatedcourses = [];
             let updateddepartments = [];
             for(let i =0; i<departments.length; i++){
-                if(departments[i].name==departmentname){
+                if(departments[i]._id==departmentname){
                     let courses = departments[i].courses;
                     for(let j=0; j<courses.length ;j++){
                         if(courses[j]._id==courseid){
@@ -205,7 +206,7 @@ router.route("/viewstaff").post(async (req, res) => {//number 2 in 4.1 first hal
     let departments= faculty.departments;
     let staff = [];
     for(let i=0; i<departments.length; i++){
-        if(departments[i].name==departmentname){
+        if(departments[i]._id==departmentname){
             console.log(departmentname+"  "+departments[i].name)
             let courses = departments[i].courses;
             for(let j=0; j<courses.length; j++){
@@ -248,7 +249,7 @@ router.route("/viewstaffdayoff").post(async (req, res) => {//number 3 in 4.1 fir
     let departments= faculty.departments;
     let staffdayoff = [];
     for(let i=0; i<departments.length; i++){
-        if(departments[i].name==departmentname){
+        if(departments[i]._id==departmentname){
             let courses = departments[i].courses;
             for(let j=0; j<courses.length; j++){
                 let tas = courses[j].TAs;
@@ -278,7 +279,7 @@ router.route("/viewonestaffdayoff").post(async (req, res) => {//number 3 in 4.1 
     let dayoff="";
     for(let i=0; i<departments.length; i++){
         console.log("in loop ")
-        if(departments[i].name==departmentname){
+        if(departments[i]._id==departmentname){
             console.log(departmentname+"   same department   "+departments[i].name)
             let courses = departments[i].courses;
             for(let j=0; j<courses.length; j++){
@@ -721,7 +722,7 @@ router.route("/viewCoursesCover").post(async (req, res) => {//number 7 in 4.1
     let departments = faculty.departments;
     let result =[];
     for(let i=0; i< departments.length ;i++){
-        if(departments[i].name == departmentname){
+        if(departments[i]._id == departmentname){
             for(let j=0; j<(departments[i].courses).length ; j++){
                 result.push("course: ",(departments[i].courses).name, ", coverage: ", (departments[i].courses).coverage);
             }
@@ -745,7 +746,7 @@ router.route("/viewTeachAssign").post(async (req, res) => {//number 8 in 4.1
     const departments = faculty.departments;
     let result =[];
     for(let i=0; i< departments.length ;i++){
-        if(departments[i].name == departmentname){
+        if(departments[i]._id == departmentname){
             courses = (departments[i].courses);
             for(let j=0; j<courses.length ; j++){
                 slots = courses[j].slots;

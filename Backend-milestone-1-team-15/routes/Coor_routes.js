@@ -12,6 +12,7 @@ const TaModel = require('../models/ta.js');
 const CoorModel = require('../models/courseCoordinator.js');
 const slotModel = require("../models/slot.js");
 const slotlinkModel = require("../models/slotLinkingRequest.js");
+const blacklist = require("../models/blacklist")
 require("dotenv").config()
 
 router.use(async (req, res, next) => {
