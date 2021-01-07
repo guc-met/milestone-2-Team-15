@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react"
 import { Row, Col, Card, Form } from "react-bootstrap"
-import "../../stylesheets/TAProfile.css"
+import "../../stylesheets/HODProfile.css"
 import "bootstrap/dist/css/bootstrap.min.css"
-export default function TAProfile(props) {
+export default function HODProfile(props) {
   const [ID, setId] = useState("")
   const [Name, setName] = useState("")
   const [Email, setEmail] = useState("")
@@ -18,53 +18,53 @@ export default function TAProfile(props) {
 
   return (
    
-    <Card body className="TAProfileCardd">
+    <Card body className="HODProfileCardd">
       <Row >
         <Col>
-          <Form.Label className="TAProfileLabel">ID : {ID}</Form.Label>
+          <Form.Label className="HODProfileLabel">ID : {ID}</Form.Label>
         </Col>
         <Col>
-          <Form.Label className="TAProfileLabel">Name : {Name}</Form.Label>
+          <Form.Label className="HODProfileLabel">Name : {Name}</Form.Label>
         </Col>
         <Col>
           {" "}
-          <Form.Label className="TAProfileLabel">Salary : {Salary} </Form.Label>
+          <Form.Label className="HODProfileLabel">Salary : {Salary} </Form.Label>
         </Col>
       </Row>
       
       <Row >
         <Col>
-          <Form.Label className="TAProfileLabel">ID : {ID}</Form.Label>
+          <Form.Label className="HODProfileLabel">ID : {ID}</Form.Label>
         </Col>
         <Col>
-          <Form.Label className="TAProfileLabel">Name : {Name}</Form.Label>
+          <Form.Label className="HODProfileLabel">Name : {Name}</Form.Label>
         </Col>
         <Col>
           {" "}
-          <Form.Label className="TAProfileLabel">Salary : {Salary} </Form.Label>
+          <Form.Label className="HODProfileLabel">Salary : {Salary} </Form.Label>
         </Col>
       </Row>
       <Row >
         <Col>
-          <Form.Label className="TAProfileLabel">ID : {ID}</Form.Label>
+          <Form.Label className="HODProfileLabel">ID : {ID}</Form.Label>
         </Col>
         <Col>
-          <Form.Label className="TAProfileLabel">Name : {Name}</Form.Label>
+          <Form.Label className="HODProfileLabel">Name : {Name}</Form.Label>
         </Col>
         <Col>
           {" "}
-          <Form.Label className="TAProfileLabel">Salary : {Salary} </Form.Label>
+          <Form.Label className="HODProfileLabel">Salary : {Salary} </Form.Label>
         </Col>
       </Row>
       
       <Row>
         <Col xs={8}>
           {" "}
-          <Form.Label className="TAProfileLabel">Email : {Email}</Form.Label>
+          <Form.Label className="HODProfileLabel">Email : {Email}</Form.Label>
         </Col>
         <Col xs={4}>
           {" "}
-          <Form.Label className="TAProfileLabel">DayOff : {DayOff}</Form.Label>
+          <Form.Label className="HODProfileLabel">DayOff : {DayOff}</Form.Label>
         </Col>
       </Row>
       

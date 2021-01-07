@@ -1,16 +1,16 @@
 import React, { useState } from "react"
-import { Form, Row, Col, Card, Button } from "react-bootstrap"
+import { Form, Row, Col, Button } from "react-bootstrap"
 import Logo from "../images/Guc.png"
 import "../stylesheets/login.css"
 import "bootstrap/dist/css/bootstrap.min.css"
 import axios from "axios"
 import backendlink from "../backendlink"
-import { useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom"
 import Token_Secret from "../dev"
 const jwt = require("jsonwebtoken")
 require("dotenv").config()
 export default function Login(props) {
-  const history = useHistory();
+  const history = useHistory()
   const [Email, setEmail] = useState("")
   const [Password, setPassword] = useState("")
   const handleLogin = async () => {
@@ -29,7 +29,7 @@ export default function Login(props) {
         const result = jwt.verify(res.data, Token_Secret.Token_Secret)
         if (result) {
           // console.log(result)
-///////////////////////////////////////////////////hereeeeeeeeeeeeeeeeee lseesasas
+          ///////////////////////////////////////////////////hereeeeeeeeeeeeeeeeee lseesasas
           let type = result.type
           switch (type) {
             case "instructor":

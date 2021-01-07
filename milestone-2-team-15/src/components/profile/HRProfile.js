@@ -17,29 +17,32 @@ export default function HRProfile(props) {
   })
 
   return (
-    <Card body className="HRCard">
-      <Row>
+   
+    <Card body className="HRProfileCardd">
+      <Row >
         <Col>
-          <Form.Label className="LoginLabell">ID : {ID}</Form.Label>
+          <Form.Label className="HRProfileLabel">ID : {ID}</Form.Label>
         </Col>
         <Col>
-          <Form.Label className="LoginLabell">Name : {Name}</Form.Label>
+          <Form.Label className="HRProfileLabel">Name : {Name}</Form.Label>
         </Col>
         <Col>
           {" "}
-          <Form.Label className="LoginLabell">Salary : {Salary} </Form.Label>
+          <Form.Label className="HRProfileLabel">Salary : {Salary} </Form.Label>
         </Col>
       </Row>
       <Row>
         <Col xs={8}>
           {" "}
-          <Form.Label className="LoginLabell">Email : {Email}</Form.Label>
+          <Form.Label className="HRProfileLabel">Email : {Email}</Form.Label>
         </Col>
         <Col xs={4}>
           {" "}
-          <Form.Label className="LoginLabell">DayOff : {DayOff}</Form.Label>
+          <Form.Label className="HRProfileLabel">DayOff : {DayOff}</Form.Label>
         </Col>
       </Row>
+      
     </Card>
+    
   )
 }

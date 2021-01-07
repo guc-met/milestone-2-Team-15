@@ -5,7 +5,7 @@
     height:fit-content;
     background-color: #343a40;
 }
-.HRProfileCardd{
+.InstructorProfileCardd{
     width: 70%;
     margin-left: 25%;
     margin-top:9.027777777777777vw;
@@ -17,7 +17,7 @@
     border-radius: 1.7361111111111112vw
     ;
 }
-.HRProfileLabel{ 
+.InstructorProfileLabel{ 
     text-align: left;
     /* margin: auto !important; */
     width:100%;
