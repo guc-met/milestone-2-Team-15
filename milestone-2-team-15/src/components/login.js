@@ -24,6 +24,9 @@ export default function Login(props) {
           email: Email,
           password: Password,
         },
+        // headers:{
+        //   token:token
+        // }
       }).then((res) => {
         console.log(Token_Secret.Token_Secret)
         const result = jwt.verify(res.data, Token_Secret.Token_Secret)

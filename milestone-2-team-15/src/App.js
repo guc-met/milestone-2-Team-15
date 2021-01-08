@@ -21,9 +21,14 @@ import ResetPasswordPage from "./pages/ResetPasswordPage"
 
 import Sidebarhodhome from "./components/sidebarhodhome"
 import ResetPassword from "./components/ResetPassword"
+import StaffViewAttendancePage from "./pages/StaffViewAttendancePage"
+
 function App() {
-  return (
-    <ResetPasswordPage/>
+  return (<div>
+    <Header/>
+    <StaffViewAttendancePage/>
+    <Sidebarhodhome/>
+    </div>
   )
 }
 

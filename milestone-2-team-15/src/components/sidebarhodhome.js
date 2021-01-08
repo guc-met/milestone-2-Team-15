@@ -10,11 +10,11 @@ export default function sideBar(props) {
         <a href="#">Manage Requests</a> <br/>
         <a href="#">View Coverage</a> <br/>
         </div>
-        <div class="yellow"> 
+        <div className="yellow"> 
         <a href="#">View Teaching Assignments </a> <br/>
         
         </div>
-    <div class="sidenav">
+    <div className="sidenav">
         <a href="#">Manage Courses</a>
         <a href="#">View Staff</a>
         <a href="#">View DayOff </a>

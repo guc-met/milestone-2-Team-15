@@ -57,15 +57,19 @@ router.use(async (req, res, next) => {
   const token = req.headers.token
   // console.log(token)
   const found = await blacklist.findOne({ token: token })
-  console.log(found)
-  if (!found) {
-    const result = jwt.verify(token, process.env.Token_Secret)
-    if (result) {
-      // console.log(result)
-      req.id = result.id // zwdna 7aga 3la result
-      req.type = result.type
-      next()
-    } else return res.status(404).send("error")
+  // console.log(!found)
+  if (token) {
+    if (!found) {
+      const result = jwt.verify(token, process.env.Token_Secret)
+      console.log("here" + result)
+
+      if (result) {
+        console.log("gowa")
+        req.id = result.id // zwdna 7aga 3la result
+        req.type = result.type
+        next()
+      } else return res.status(404).send("error")
+    } else return res.status(403).send("u arent authorized")
   } else return res.status(403).send("u arent authorized")
 })
 
@@ -291,6 +295,10 @@ router.route("/signout").post(async (req, res) => {
         minutes: min,
         secounds: sec,
       }
+      result.months[today.getMonth() + 1].attendance[
+        indexinattendance
+      ].attnded = true
+
       if (hour >= 19 && min > 0 && sec > 0) {
         //lw 3ada 7 pm
         hour = hour - (hour - 19)
@@ -466,6 +474,7 @@ router.route("/attendance").post(async (req, res) => {
   const result = await staff_model.findOne({ ID: ID })
   if (result) {
     res.status(200)
+    console.log(result.months)
     return res.send(result.months)
   } else return res.status(403).send("something went wrong")
 })

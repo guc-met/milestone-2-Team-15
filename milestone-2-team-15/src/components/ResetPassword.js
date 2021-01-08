@@ -26,13 +26,13 @@ export default function ResetPassword(props) {
       setResetSuccess("")
     } else if (
       !(NewPassword === NewRenterPassword) &&
-      (NewRenterPassword === "")
+      NewRenterPassword === ""
     ) {
       setNotsameError("")
       setSame(false)
       setResetSuccess("")
-    }
-     else if (
+      setResetAgainWithSamePassword("")
+    } else if (
       NewPassword === NewRenterPassword &&
       !(NewPassword === "" && NewRenterPassword === "")
     ) {
@@ -48,18 +48,18 @@ export default function ResetPassword(props) {
   const handleReset = async () => {
     console.log(Same)
     if (Same == true) {
-      // await axios({
-      //     method: "post",
-      //     url: "http://localhost:3000/resetPassword",
-      //     data: {
-      //       password: NewPassword,
-      //     },
-      //   }).then((res) => {
-      //   console.log(res)
-      setNotsameError()
-      setResetSuccess("RESET Successfully")
-      setResetAgainWithSamePassword("")
-      //   })
+      await axios({
+        method: "post",
+        url: "http://localhost:3000/resetPassword",
+        data: {
+          password: NewPassword,
+        },
+      }).then((res) => {
+        console.log(res)
+        setNotsameError()
+        setResetSuccess("RESET Successfully")
+        setResetAgainWithSamePassword("")
+      })
     } else {
       setResetAgainWithSamePassword("please enter different password")
       setResetSuccess("")
@@ -68,7 +68,9 @@ export default function ResetPassword(props) {
   return (
     <Card className="ResetPasswordCard">
       <Form.Group as={Row} controlId="formBasicPassword">
-        <Form.Label className="ResetPasswordLabel">Enter New Password</Form.Label>
+        <Form.Label className="ResetPasswordLabel">
+          Enter New Password
+        </Form.Label>
         <Col xs={6} className="ResetPasswordtextBoxCol">
           <Form.Control
             type="password"
@@ -82,7 +84,9 @@ export default function ResetPassword(props) {
         </Col>
       </Form.Group>
       <Form.Group as={Row} controlId="formBasicPassword">
-        <Form.Label className="ResetPasswordLabel">Confirm New Password</Form.Label>
+        <Form.Label className="ResetPasswordLabel">
+          Confirm New Password
+        </Form.Label>
         <Col xs={6} className="ResetPasswordtextBoxCol">
           <Form.Control
             type="password"
