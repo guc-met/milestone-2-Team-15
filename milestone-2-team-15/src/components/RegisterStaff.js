@@ -29,7 +29,7 @@ function RegisterStaff(props) {
     console.log(salary);
     console.log(location);
 
-    const response = await axios.post(`http://localhost:3000/HR/addLocation`, {
+    const response = await axios.post(`http://localhost:3000/HR/register`, {
       type: type,
       staff: {
         name: name,
