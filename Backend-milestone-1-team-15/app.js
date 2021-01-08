@@ -7,17 +7,15 @@ const instructor_routes = require("./routes/instructor_routes.js");
 const courseCoordinator_routes = require("./routes/Coor_routes");
 
 const HoD_routes = require("./routes/HOD_routes");
-const cors = require("cors");
 
 const app = express();
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
-app.use(cors());
 app.use(express.json()); //readbody
 app.use("/ac_routes", ac_routes);
 app.use("/HoD", HoD_routes);
 app.use("/courseCoordinator_routes", courseCoordinator_routes);
-// app.use("", Staff_routes);
+app.use("", Staff_routes);
 app.use("/instructor_routes", instructor_routes);
 app.use("/HR", HR_routes);
 
