@@ -1,60 +1,83 @@
- /* The sidebar menu */
- .sidenav {
-    height: 32%; /* Full-height: remove this if you want "auto" height */
-    width: 4.86vw; /* Set the width of the sidebar */
-    position: fixed; /* Fixed Sidebar (stay in place on scroll) */
-    z-index: 1; /* Stay on top */
-    top: 3.919vw; /* Stay at the top */
-    left: 0;
-    background-color: rgba(53, 58, 64); /* Black */
-    overflow-x: hidden; /* Disable horizontal scroll */
-    padding-top: 1.389vw;
-  }
+/* The sidebar menu */
+.sidenav {
+  height: 32%; /* Full-height: remove this if you want "auto" height */
+  width: 7.86vw; /* Set the width of the sidebar */
+  position: fixed; /* Fixed Sidebar (stay in place on scroll) */
+  z-index: 1; /* Stay on top */
+  top: 2.919vw; /* Stay at the top */
+  left: 0;
+  background-color: rgba(53, 58, 64); /* Black */
+  overflow-x: hidden; /* Disable horizontal scroll */
+  padding-top: 1.389vw;
+}
 
-  .red {
-    height: 32%;
-    width: 4.86vw; 
-    position: fixed; 
-    z-index: 1; 
-    top: 19.097vw; 
-    left: 0;
-    background-color: rgba(253, 4, 4, 0.911); 
-    overflow-x: hidden; 
-    padding-top: 1.389vw;
-  }
-  .yellow {
-    height: 100%; 
-    width: 4.86vw; 
-    position: fixed; 
-    z-index: 1;
-    top: 35.76389vw; 
-    left: 0;
-    background-color: rgb(255, 238, 0,0.911); 
-    overflow-x: hidden; 
-    padding-top: 1.389vw;
-  }
-  
-  /*navigation menu links*/
-  .sidenav a {
-    padding: 0.4167vw 0.56vw 0.4167vw 1.1112vw;
-    text-decoration: none;
-    font-size: 1.1112vw;
-    color: #c7c4c4;
-    display: block;
-  }
-  
-  /* hover */
-  .sidenav a:hover {
-    color: #f1f1f1;
-  }
-  
+.red {
+  height: 32%;
+  width: 7.86vw; 
+  position: fixed; 
+  z-index: 1; 
+  top: 19.097vw; 
+  left: 0;
+  background-color: rgba(253, 4, 4, 0.911); 
+  overflow-x: hidden; 
+  padding-top: 1.389vw;
+}
+.red a {
+  padding: 0.4167vw 0.56vw 0.4167vw 1.1112vw;
+  text-decoration: none;
+  font-size: 1.1112vw;
+  color: #c7c4c4;
+  display: block;
+}
 
-  .main {
-    margin-left: 6.9445vw; 
-    padding: 0vw 0.6944vw;
-  }
-  
-  @media screen and (max-height: 31.25vw) {
-    .sidenav {padding-top: 1.04167vw;}
-    .sidenav a {font-size: 1.25vw;}
-  } 
+.yellow {
+  height: 100%; 
+  width: 7.86vw; 
+  position: fixed; 
+  z-index: 1;
+  top: 35.76389vw; 
+  left: 0;
+  background-color: rgb(255, 238, 0,0.911); 
+  overflow-x: hidden; 
+  padding-top: 1.389vw;
+}
+.red a:hover {
+  color: #f1f1f1;
+}
+.yellow a {
+  padding: 0.4167vw 0.56vw 0.4167vw 1.1112vw;
+  text-decoration: none;
+  font-size: 1.1112vw;
+  color: #c7c4c4;
+  display: block;
+}
+
+.yellow a:hover {
+  color: #f1f1f1;
+}
+/*navigation menu links*/
+.sidenav a {
+  padding: 0.4167vw 0.56vw 0.4167vw 1.1112vw;
+  text-decoration: none;
+  font-size: 1.1112vw;
+  color: #c7c4c4;
+  display: block;
+}
+
+
+
+/* hover */
+.sidenav a:hover {
+  color: #f1f1f1;
+}
+
+
+.main {
+  margin-left: 6.9445vw; 
+  padding: 0vw 0.6944vw;
+}
+
+@media screen and (max-height: 31.25vw) {
+  .sidenav {padding-top: 1.04167vw;}
+  .sidenav a {font-size: 1.25vw;}
+}
