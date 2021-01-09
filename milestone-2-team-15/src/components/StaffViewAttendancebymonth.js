@@ -5,12 +5,15 @@ import Listview from "./Listview"
 import "../stylesheets/staffViewAttendance.css"
 export default function StaffViewAttendance(props) {
   const [Data, setData] = useState([])
+  const [month,setMonth]=useState()
   useEffect(async () => {
+    setData(props.data)
+    setMonth(props.month)
     // await axios({
     //   method: "post",
     //   url: "http://localhost:3000/attendance/:month",
     //   params{
-    //     month:
+    //     month:props.month
     //   }
     //   // headers:{
     //   //   token :token
@@ -19,9 +22,10 @@ export default function StaffViewAttendance(props) {
     //   console.log(res)
     //   setData(res.data)
     // })
-    setData(props.data)
+    
     console.log(Data)
-  })
+    console.log(month)
+  },[props.month])
 
   return (
     <div className="ViewStaffAttendanceCard">

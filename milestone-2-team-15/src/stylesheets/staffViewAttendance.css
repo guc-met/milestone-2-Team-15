@@ -26,15 +26,30 @@
     border-color: #343a40 !important;
     height:2.7777777777777777vw;
     line-height: 0.4861111111111111vw;
-    font-size: medium;
+    font-size: 0.9722222222222222vw;
     margin-bottom: 0.5%; 
     margin-right: 0.2%
     
 }
 .lala{
-    padding-top: 0px;
-    height: 110px;
+    padding-top: 0vw;
+    height: 7.638888888888889vw;
     overflow: hidden scroll;
+}
+.btn-viewStaffAttendancemenubutton,.btn-viewStaffAttendancemenubutton:hover,.btn-viewStaffAttendancemenubutton:active,.viewStaffAttendancemenuitem:active{
+    display: block;
+   
+    padding: .25rem 1.5rem;
+    clear: both;
+    font-weight: 400;
+    color: #212529 !important;
+    text-align: inherit;
+    white-space: nowrap;
+    background-color: white;
+    border: 0vw white!important;
+    border-radius: 0vw;
+    text-decoration: none!important;
+
 }
 
 .ViewStaffAttendancLabel{ 
