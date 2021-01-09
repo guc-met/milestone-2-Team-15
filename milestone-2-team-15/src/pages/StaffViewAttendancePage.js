@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react"
 import StaffViewAttendance from "../components/StaffViewAttendance"
 import StaffViewAttendancebymonth from "../components/StaffViewAttendancebymonth"
-
-import axios from "axios"
-import { Row, DropdownButton, Dropdown } from "react-bootstrap"
+import {  Dropdown } from "react-bootstrap"
 import "../stylesheets/staffViewAttendance.css"
 export default function StaffViewAttendancePage(props) {
   const [table, setTable] = useState()

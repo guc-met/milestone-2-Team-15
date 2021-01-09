@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react"
 import axios from "axios"
-import { Col, Row, Form, Card, Table } from "react-bootstrap"
-import Listview from "./Listview"
+import {  Table } from "react-bootstrap"
 import "../stylesheets/staffViewAttendance.css"
 export default function StaffViewAttendance(props) {
   const [Data, setData] = useState(props.data)
