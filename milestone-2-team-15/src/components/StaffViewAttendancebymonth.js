@@ -8,7 +8,10 @@ export default function StaffViewAttendance(props) {
   useEffect(async () => {
     // await axios({
     //   method: "post",
-    //   url: "http://localhost:3000/attendance",
+    //   url: "http://localhost:3000/attendance/:month",
+    //   params{
+    //     month:
+    //   }
     //   // headers:{
     //   //   token :token
     //   // }
@@ -17,7 +20,7 @@ export default function StaffViewAttendance(props) {
     //   setData(res.data)
     // })
     setData(props.data)
-    // console.log(Data)
+    console.log(Data)
   })
 
   return (

@@ -1,6 +1,8 @@
 import React, { useState } from "react"
 import StaffViewAttendance from "../components/StaffViewAttendance"
 import axios from "axios"
+import { Row, DropdownButton, Dropdown } from "react-bootstrap"
+import "../stylesheets/staffViewAttendance.css"
 export default function StaffViewAttendancePage(props) {
   const [Arr, setArr] = useState([
     {
@@ -341,5 +343,58 @@ export default function StaffViewAttendancePage(props) {
       ],
     },
   ])
-  return <StaffViewAttendance data={Arr} />
+  return (
+    <div className="ViewStaffAttendanceDiv">
+      <Dropdown>
+        <Dropdown.Toggle
+          variant="success"
+          id="dropdown-basic"
+          className="ViewStaffAttenndanceDropDownStyle"
+        >
+          Choose Month
+        </Dropdown.Toggle> 
+
+        <Dropdown.Menu className="lala" >
+          <Dropdown.Item as="button" style={{ width: "fit-content" }}>
+            January
+          </Dropdown.Item>
+          <Dropdown.Item as="button" style={{ width: "fit-content" }}>
+            Febuary
+          </Dropdown.Item>
+          <Dropdown.Item as="button" style={{ width: "fit-content" }}>
+            March
+          </Dropdown.Item>
+          <Dropdown.Item as="button" style={{ width: "fit-content" }}>
+            April
+          </Dropdown.Item>
+          <Dropdown.Item as="button" style={{ width: "fit-content" }}>
+            May
+          </Dropdown.Item>
+          <Dropdown.Item as="button" style={{ width: "fit-content" }}>
+            June
+          </Dropdown.Item>
+          <Dropdown.Item as="button" style={{ width: "fit-content" }}>
+            July
+          </Dropdown.Item>
+          <Dropdown.Item as="button" style={{ width: "fit-content" }}>
+            August
+          </Dropdown.Item>
+          <Dropdown.Item as="button" style={{ width: "fit-content" }}>
+            September
+          </Dropdown.Item>
+          <Dropdown.Item as="button" style={{ width: "fit-content" }}>
+            October
+          </Dropdown.Item>
+          <Dropdown.Item as="button" style={{ width: "fit-content" }}>
+            November
+          </Dropdown.Item>
+          <Dropdown.Item as="button" style={{ width: "fit-content" }}>
+            December
+          </Dropdown.Item>
+        </Dropdown.Menu>
+      </Dropdown>
+
+      <StaffViewAttendance data={Arr} />
+    </div>
+  )
 }
