@@ -15,6 +15,7 @@ export default function sideBar(props) {
         </div>
     <div class="sidenav">
     <a href="/coordinator/sendReq">Send Requests</a> <br/>
+    <a href="/coordinator/viewrequest">View Requests</a> <br/>
         
         
     </div>

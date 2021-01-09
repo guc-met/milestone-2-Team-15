@@ -19,6 +19,8 @@ import SendRequestCoor from "./components/sendRequestCoor";
 import Sendrepreqtorep from "./components/ReplacmentRqToRep"
 import SendrepreqtoHOD from "./components/replacmentreqtoHOD"
 import SendLeaveReq from "./components/sendLeaveReq"
+import Viewreq from "./components/viewRequests"
+
 function App() {
   return (
     <div>
@@ -27,19 +29,23 @@ function App() {
       <Route path="/HOD" component={Sidebarhodhome} />
       <Route path="/HOD/sendReq" component={SendRequestHOD} />
       <Route path="/HOD/sendlinkReq" component={SendLinkRequest} />
+      <Route path="/HOD/viewrequest" component={Viewreq} />
       <Route path="/Instructor" component={SidebarInstructorHome} />
       <Route path="/Instructor/sendReq" component={SendRequestInstructor} />
       <Route path="/Instructor/sendlinkReq" component={SendLinkRequest} />
       <Route path="/Instructor/changedayoff" component={SendChangeDayOffRequest} />
-      <Route path="/Instructor/replacementrequest" component={SendrepreqtoHOD} />
+      <Route path="/Instructor/replacementrequest" component={Sendrepreqtorep} />
       <Route path="/Instructor/replacementrequestHOD" component={SendrepreqtoHOD} />
       <Route path="/Instructor/leaverequest" component={SendLeaveReq} />
+      <Route path="/Instructor/viewrequest" component={Viewreq} />
       <Route path="/coordinator" component={Sidebardcoor} />
       <Route path="/coordinator/sendReq" component={SendRequestCoor}/>
       <Route path="/coordinator/changedayoff" component={SendChangeDayOffRequest}/>
       <Route path="/coordinator/replacementrequest" component={Sendrepreqtorep} />
       <Route path="/coordinator/replacementrequestHOD" component={SendrepreqtoHOD} />
       <Route path="/coordinator/leaverequest" component={SendLeaveReq} />
+      <Route path="/coordinator/viewrequest" component={Viewreq} />
+      
 
 
       
