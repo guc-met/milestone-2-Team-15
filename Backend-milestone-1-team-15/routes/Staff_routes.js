@@ -280,7 +280,7 @@ router.route("/signout").post(async (req, res) => {
     }
     if (daysigns.length > 0 && days[today.getDay()] != "Friday") {
       //sign in withou sign out
-      let signinhour = hours
+      let signinhour = daysigns[0].signin.hours
       let signinmin = daysigns[0].signin.minutes
       let signinsec = daysigns[0].signin.secounds
       days[0].signout = {
