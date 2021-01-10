@@ -23,12 +23,13 @@ import Sidebarhodhome from "./components/sidebarhodhome"
 import ResetPassword from "./components/ResetPassword"
 import StaffViewAttendancePage from "./pages/StaffViewAttendancePage"
 import StaffViewmissingDaysPage from "./pages/StaffViewmissingDaysPage"
+import ExtraHoursPage from "./pages/ExtraHoursPage"
+import MissingHoursPage from "./pages/MissingHoursPage"
 
 function App() {
-  return (<div>
-    <Header/>
-    <StaffViewmissingDaysPage/>
-    <Sidebarhodhome/>
+  return (
+    <div>
+      <MissingHoursPage />
     </div>
   )
 }

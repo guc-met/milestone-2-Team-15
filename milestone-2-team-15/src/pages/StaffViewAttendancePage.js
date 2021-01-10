@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react"
 import StaffViewAttendance from "../components/StaffViewAttendance"
 import StaffViewAttendancebymonth from "../components/StaffViewAttendancebymonth"
+import Header from "../components/header"
+import Sidebarhodhome from "../components/sidebarhodhome"
+
 import {  Dropdown } from "react-bootstrap"
 import "../stylesheets/staffViewAttendance.css"
 export default function StaffViewAttendancePage(props) {
@@ -362,7 +365,10 @@ export default function StaffViewAttendancePage(props) {
     return
   }
   useEffect(() => {})
-  return (
+  return (<div>
+     <Header/>
+    <Sidebarhodhome/>
+ 
     <div className="ViewStaffAttendanceDiv">
       <Dropdown>
         <Dropdown.Toggle
@@ -509,6 +515,7 @@ export default function StaffViewAttendancePage(props) {
         </Dropdown.Menu>
       </Dropdown>
       <>{table}</>
+    </div>
     </div>
   )
 }
