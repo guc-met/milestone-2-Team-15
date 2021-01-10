@@ -7,7 +7,7 @@ export default function ExtraHoursPage(props) {
     <div>
       <Header />
       <Sidebarhodhome />
-      <ExtraHours Extra={12}/>
+      <ExtraHours />
     </div>
   )
 }

@@ -4,6 +4,7 @@ import "../stylesheets/ResetPassword.css"
 import axios from "axios"
 
 export default function ResetPassword(props) {
+  const token =localStorage.getItem("token")
   const [NewPassword, setNewPassword] = useState("")
   const [NewRenterPassword, setNewRenterPassword] = useState("")
   const [NotsameError, setNotsameError] = useState("")
@@ -54,6 +55,9 @@ export default function ResetPassword(props) {
         data: {
           password: NewPassword,
         },
+        headers:{
+          token:token
+        }
       }).then((res) => {
         console.log(res)
         setNotsameError()

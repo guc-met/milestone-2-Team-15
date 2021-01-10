@@ -3,22 +3,21 @@ import axios from "axios"
 import {  Table } from "react-bootstrap"
 import "../stylesheets/staffViewAttendance.css"
 export default function StaffViewAttendance(props) {
-  const [Data, setData] = useState(props.data)
-  useEffect(
-    async () => {
-    // await axios({
-    //   method: "post",
-    //   url: "http://localhost:3000/missingdays",
-    //   // headers:{
-    //   //   token :token
-    //   // }
-    // }).then((res) => {
-    //   console.log(res)
-    //   setData(res.data)
-    // })
-    setData(props.data)
-    console.log(Data)
-  },[Data])
+  const token =localStorage.getItem("token")
+  const [Data, setData] = useState([])
+  useEffect(async () => {
+    await axios({
+      method: "post",
+      url: "http://localhost:3000/missingdays",
+      headers:{
+        token :token
+      }
+    }).then((res) => {
+      console.log(res)
+      setData(res.data)
+    })
+   
+  })
   const days = [
     "Sunday",
     "Monday",
@@ -45,7 +44,7 @@ export default function StaffViewAttendance(props) {
           </tr>
         </thead>
         <>
-          {Data.map((eachrecord) => {
+          { Data.map((eachrecord) => {
             return (
               <tbody>
                 <tr>

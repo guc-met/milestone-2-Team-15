@@ -4,19 +4,20 @@ import { Col, Row, Form, Card } from "react-bootstrap"
 import Listview from "./Listview"
 import "../stylesheets/staffViewAttendance.css"
 export default function StaffViewAttendance(props) {
+  const token= localStorage.getItem("token")
   const [Data, setData] = useState([])
   useEffect(async () => {
-    // await axios({
-    //   method: "post",
-    //   url: "http://localhost:3000/attendance",
-    //   // headers:{
-    //   //   token :token
-    //   // }
-    // }).then((res) => {
-    //   console.log(res)
-    //   setData(res.data)
-    // })
-    setData(props.data)
+    await axios({
+      method: "post",
+      url: "http://localhost:3000/attendance",
+      headers:{
+        token :token
+      }
+    }).then((res) => {
+      console.log(res.data)
+      setData(res.data)
+    })
+   // setData(props.data)
     // console.log(Data)
   })
 

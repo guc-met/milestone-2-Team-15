@@ -24,19 +24,26 @@ export default function Login(props) {
           email: Email,
           password: Password,
         },
-        // headers:{
-        //   token:token
-        // }
       }).then((res) => {
-        console.log(Token_Secret.Token_Secret)
         const result = jwt.verify(res.data, Token_Secret.Token_Secret)
+
         if (result) {
+          localStorage.setItem("token", res.data)
           // console.log(result)
           ///////////////////////////////////////////////////hereeeeeeeeeeeeeeeeee lseesasas
           let type = result.type
           switch (type) {
             case "instructor":
-              history.push("/instructor_routes")
+              history.push("/instructor")
+              break
+            case "HR":
+              history.push("/HR")
+              break
+            case "TA":
+              history.push("/TA")
+              break
+            case "CourseCoordinator":
+              history.push("/CourseCoordinator")
               break
 
             default:
@@ -94,6 +101,16 @@ export default function Login(props) {
           Login
         </Button>
       </Col>
+      {/* <Col className="LoginButtonCol ">
+        <Button
+          variant="dark "
+          size="LoginButton"
+          type="submit"
+          onClick={handleLogin}
+        >
+          Login
+        </Button>
+      </Col> */}
     </div>
   )
 }

@@ -61,10 +61,8 @@ router.use(async (req, res, next) => {
   if (token) {
     if (!found) {
       const result = jwt.verify(token, process.env.Token_Secret)
-      console.log("here" + result)
 
       if (result) {
-        console.log("gowa")
         req.id = result.id // zwdna 7aga 3la result
         req.type = result.type
         next()
@@ -474,7 +472,7 @@ router.route("/attendance").post(async (req, res) => {
   const result = await staff_model.findOne({ ID: ID })
   if (result) {
     res.status(200)
-    console.log(result.months)
+    //console.log(result.months)
     return res.send(result.months)
   } else return res.status(403).send("something went wrong")
 })
@@ -485,16 +483,17 @@ router.route("/attendance/:month").post(async (req, res) => {
   // req.params.month=month
   const result = await staff_model.findOne({ ID: ID })
   if (result) {
-    let month = req.params.month
-    //console.log(result.months[month])
+    let month = req.query.month
+
     const monattend = result.months[month].attendance.map((record) => {
       if (
-        (record.month == req.params.month && record.realday >= 11) ||
-        (record.month == req.params.month + 1 && record.realday <= 10)
+        (record.month == req.query.month && record.realday >= 10) ||
+        (record.month == req.query.month + 1 && record.realday <= 11)
       )
         return record
     })
     res.status(200)
+    console.log(monattend)
     return res.send(monattend)
   } else return res.status(403).send("something went wrong")
 })

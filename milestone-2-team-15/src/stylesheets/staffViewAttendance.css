@@ -4,7 +4,8 @@
    
     
     text-align: center;
-    height:38.88888888888889vw    ;
+    height:fit-content;
+    max-height:38.88888888888889vw    ;
     background-color: #f7fafd;
     box-shadow: 0 0.2777777777777778vw 0.5555555555555556vw 0 rgba(0,0,0,0.3);
     border-radius: 1.7361111111111112vw;

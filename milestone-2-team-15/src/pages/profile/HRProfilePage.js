@@ -2,18 +2,21 @@ import Reac, { useEffect, useState } from "react"
 import HRProfile from "../../components/profile/HRProfile"
 import Sidebar from "../../components/sideBar"
 import Header from "../../components/header"
+import axios from "axios"
+
 export default function HRProfilePage(props) {
-  useEffect(async () => {
-    await axios({
-      method: "get",
-      url: "http://localhost:3000/extrahours",
-      headers: {
-        token: token,
-      },
-    }).then((res) => {
-      console.log(res.data)
-    })
-  })
+  // const token = localStorage.getItem("token")
+  // useEffect(async () => {
+  //   await axios({
+  //     method: "get",
+  //     url: "http://localhost:3000/extrahours",
+  //     headers: {
+  //       token: token,
+  //     },
+  //   }).then((res) => {
+  //     console.log(res.data)
+  //   })
+  // })
   return (
     <div>
       <Header />

@@ -1,19 +1,21 @@
 import React, { useEffect, useState } from "react"
 import { Table } from "react-bootstrap"
 import "../stylesheets/extrahours.css"
+import axios from "axios"
 export default function ExtraHours(props) {
-  const [Extra, setExtra] = useState(props.Extra)
+  const token = localStorage.getItem("token")
+  const [Extra, setExtra] = useState()
   useEffect(async () => {
-    // await axios({
-    //   method: "post",
-    //   url: "http://localhost:3000/extrahours",
-    //   // headers:{
-    //   //   token :token
-    //   // }
-    // }).then((res) => {
-    //   console.log(res)
-    //   setExtra(res.data)
-    // })
+    await axios({
+      method: "post",
+      url: "http://localhost:3000/extrahours",
+      headers:{
+        token :token
+      }
+    }).then((res) => {
+      console.log(res)
+      setExtra(res.data)
+    })
   })
   return (
     <div className="ExtraHoursCard">
