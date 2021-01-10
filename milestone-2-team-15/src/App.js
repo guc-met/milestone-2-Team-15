@@ -13,10 +13,10 @@ import LoginPage from "./pages/LoginPage"
 // import Header from "./components/header"
 // import Sidebarhodhome from "./components/sidebarhodhome"
 
-// import HRProfilePage from "./pages/profile/HRProfilePage"
-// import InstructorProfilePage from "./pages/profile/InstructorProfilePage"
-// import HODProfilePage from "./pages/profile/HODProfilePage"
-// import TAProfilePage from "./pages/profile/TAProfilePage"
+ import HRProfilePage from "./pages/profile/HRProfilePage"
+ import InstructorProfilePage from "./pages/profile/InstructorProfilePage"
+import HODProfilePage from "./pages/profile/HODProfilePage"
+ import TAProfilePage from "./pages/profile/TAProfilePage"
 
 import ResetPasswordPage from "./pages/ResetPasswordPage"
 import StaffViewAttendancePage from "./pages/StaffViewAttendancePage"
@@ -36,7 +36,10 @@ function App() {
         <Route exact path="/extrahours" component={ExtraHoursPage} />
         <Route exact path="/missinghours" component={MissingHoursPage} />
         <Route exact path="/resetpassword" component={ResetPasswordPage} />
-
+        <Route exact path="/HRprofile" component={HRProfilePage} />
+        <Route exact path="/instructorprofile" component={InstructorProfilePage} />
+        <Route exact path="/hodprofile" component={HODProfilePage} />
+        <Route exact path="/taprofile" component={TAProfilePage} />
         {/* <Route path="/HR/RegisterStaff" component={RegisterStaff} />
         <Route path="/HR/UpdateStaff" component={UpdateStaff} />
         <Route path="/HR/DeleteStaff" component={DeleteStaff} />

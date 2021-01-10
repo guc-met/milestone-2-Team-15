@@ -34,7 +34,7 @@ export default function Login(props) {
           let type = result.type
           switch (type) {
             case "instructor":
-              history.push("/instructor")
+              history.push("/instructorprofile")
               break
             case "HR":
               history.push("/HR")

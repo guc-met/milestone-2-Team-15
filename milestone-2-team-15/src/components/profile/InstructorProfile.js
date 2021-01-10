@@ -8,67 +8,59 @@ export default function InstructorProfile(props) {
   const [Email, setEmail] = useState("")
   const [Salary, setSalary] = useState("")
   const [DayOff, setDayoff] = useState("")
+  const [Department, setDepartment] = useState("")
+  const [Faculty, setFaculty] = useState("")
   useEffect(() => {
     setId(props.ID)
     setName(props.Name)
     setEmail(props.Email)
     setSalary(props.Salary)
     setDayoff(props.DayOff)
+    setDepartment(props.Department)
+    setFaculty(props.Faculty)
   })
 
   return (
-   
     <Card body className="InstructorProfileCardd">
-      <Row >
+      <Row>
         <Col>
           <Form.Label className="InstructorProfileLabel">ID : {ID}</Form.Label>
         </Col>
         <Col>
-          <Form.Label className="InstructorProfileLabel">Name : {Name}</Form.Label>
+          <Form.Label className="InstructorProfileLabel">
+            Name : {Name}
+          </Form.Label>
         </Col>
         <Col>
-          {" "}
-          <Form.Label className="InstructorProfileLabel">Salary : {Salary} </Form.Label>
+          <Form.Label className="InstructorProfileLabel">
+            Salary : {Salary}
+          </Form.Label>
         </Col>
       </Row>
-      
-      <Row >
+      <Row>
         <Col>
-          <Form.Label className="InstructorProfileLabel">ID : {ID}</Form.Label>
+          <Form.Label className="InstructorProfileLabel">
+            Faculty : {Faculty}
+          </Form.Label>
         </Col>
         <Col>
-          <Form.Label className="InstructorProfileLabel">Name : {Name}</Form.Label>
-        </Col>
-        <Col>
-          {" "}
-          <Form.Label className="InstructorProfileLabel">Salary : {Salary} </Form.Label>
-        </Col>
-      </Row>
-      <Row >
-        <Col>
-          <Form.Label className="InstructorProfileLabel">ID : {ID}</Form.Label>
-        </Col>
-        <Col>
-          <Form.Label className="InstructorProfileLabel">Name : {Name}</Form.Label>
-        </Col>
-        <Col>
-          {" "}
-          <Form.Label className="InstructorProfileLabel">Salary : {Salary} </Form.Label>
+          <Form.Label className="InstructorProfileLabel">
+            Department : {Department}
+          </Form.Label>
         </Col>
       </Row>
-      
       <Row>
         <Col xs={8}>
-          {" "}
-          <Form.Label className="InstructorProfileLabel">Email : {Email}</Form.Label>
+          <Form.Label className="InstructorProfileLabel">
+            Email : {Email}
+          </Form.Label>
         </Col>
         <Col xs={4}>
-          {" "}
-          <Form.Label className="InstructorProfileLabel">DayOff : {DayOff}</Form.Label>
+          <Form.Label className="InstructorProfileLabel">
+            DayOff : {DayOff}
+          </Form.Label>
         </Col>
       </Row>
-      
     </Card>
-    
   )
 }

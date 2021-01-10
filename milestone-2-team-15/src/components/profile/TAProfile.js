@@ -8,12 +8,16 @@ export default function TAProfile(props) {
   const [Email, setEmail] = useState("")
   const [Salary, setSalary] = useState("")
   const [DayOff, setDayoff] = useState("")
+  const [Department, setDepartment] = useState("")
+  const [Faculty, setFaculty] = useState("")
   useEffect(() => {
     setId(props.ID)
     setName(props.Name)
     setEmail(props.Email)
     setSalary(props.Salary)
     setDayoff(props.DayOff)
+    setDepartment(props.Department)
+    setFaculty(props.Faculty)
   })
 
   return (
@@ -34,28 +38,14 @@ export default function TAProfile(props) {
       
       <Row >
         <Col>
-          <Form.Label className="TAProfileLabel">ID : {ID}</Form.Label>
+          <Form.Label className="TAProfileLabel">Faculty : {Faculty}</Form.Label>
         </Col>
         <Col>
-          <Form.Label className="TAProfileLabel">Name : {Name}</Form.Label>
+          <Form.Label className="TAProfileLabel">Department : {Deoartment}</Form.Label>
         </Col>
-        <Col>
-          {" "}
-          <Form.Label className="TAProfileLabel">Salary : {Salary} </Form.Label>
-        </Col>
+
       </Row>
-      <Row >
-        <Col>
-          <Form.Label className="TAProfileLabel">ID : {ID}</Form.Label>
-        </Col>
-        <Col>
-          <Form.Label className="TAProfileLabel">Name : {Name}</Form.Label>
-        </Col>
-        <Col>
-          {" "}
-          <Form.Label className="TAProfileLabel">Salary : {Salary} </Form.Label>
-        </Col>
-      </Row>
+    
       
       <Row>
         <Col xs={8}>

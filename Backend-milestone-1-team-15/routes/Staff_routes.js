@@ -6,6 +6,10 @@ const jwt = require("jsonwebtoken")
 const app = require("../app")
 const Ta_model = require("../models/ta")
 const HR_model = require("../models/HR")
+const Faculty = require("../models/faculty")
+const FacultyModel = Faculty.faculty
+const department_model = require("../models/department")
+
 const courseCoordinator_model = require("../models/courseCoordinator")
 const instructor_model = require("../models/instructor")
 const attendance_model = require("../models/attendance").model
@@ -383,6 +387,8 @@ router.route("/profile").get(async (req, res) => {
   if (result) {
     let which
     let whichmodel
+    let faculty
+    let department
     switch (type) {
       case "HR":
         which = await HR_model.findOne({ ID: ID })
@@ -391,25 +397,48 @@ router.route("/profile").get(async (req, res) => {
       case "ta":
         which = await Ta_model.findOne({ ID: ID })
         whichmodel = Ta_model
+        // facullty = await faculty_model.findOne({ _id: which.faculty })
+        // department = await department_model.findOne({
+        //   _id: which.department,
+        // })
         break
       case "courseCoordinator":
         which = await courseCoordinator_model.findOne({ ID: ID })
         whichmodel = courseCoordinator_model
+        // facullty = await faculty_model.findOne({ _id: which.faculty })
+        // department = await department_model.findOne({
+        //   _id: which.department,
+        // })
         break
       case "instructor":
         which = await instructor_model.findOne({ ID: ID })
         whichmodel = instructor_model
+        //console.log(which.faculty)
+        // facullty = await FacultyModel.findOne({ _id: which.faculty })
+        // department = await department_model.findOne({
+        //   _id: which.department,
+        // })
+
         break
       case "HOD":
         which = await HoD_model.findOne({ ID: ID })
         whichmodel = HoD_model
+        // facullty = await faculty_model.findOne({ _id: which.faculty })
+        // department = await department_model.findOne({
+        //   _id: which.department,
+        // })
         break
       default:
         break
     }
-    // console.log(which)
+    // console.log(faculty)
     res.status(200)
-    return res.json({ staff: result, staffreally: which })
+    return res.json({
+      staff: result,
+      staffreally: which,
+      Faculty: faculty,
+      Department: department,
+    })
   } else return res.status(403).send("something went wrong")
 })
 // router.route("/editprofile").post(async (req, res) => {
@@ -753,7 +782,7 @@ router.route("/missingdays").post(async (req, res) => {
     await staff_model.findOneAndUpdate(
       { ID: req.id },
       {
-        misisngdays: missed,
+        missingdays: missed,
         acceptedannual: numannual,
         acceptedleaves: newleave,
       }
