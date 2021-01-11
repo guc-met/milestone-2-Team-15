@@ -33,10 +33,10 @@ router
   .route("/login") // find btrg3 array list falw a7ed arraylist [0] find one btrg3 json
   .post(async (req, res) => {
     const result = await staff_model.findOne({ email: req.body.email })
-    console.log(req.body)
+    //console.log(req.body)
     if (!result) {
       console.log("ana hna")
-      res.status(404).send("user not found")
+      return res.status(404).send("user not found")
     } else {
       // if (result.firstPassEntered == false)
       //   return res.status(403).send("please reset ur password");
@@ -50,7 +50,7 @@ router
           process.env.Token_Secret
         )
         let r = await blacklist.findOneAndRemove({ token: token })
-        console.log(r)
+        //console.log(r)
         // stored in browser we bybtha howa fe kol req
         return res.header("token", token).send(token)
       } else return res.status(401).send("wrong password")
@@ -83,7 +83,7 @@ router
     })
     await x.save()
     //  console.log(await blacklist.find({}))
-    if (result) return res.status(200).send("logout successfully")
+    if (x) return res.status(200).send("logout successfully")
     else return res.status(404).send("something went wrong")
   })
 
@@ -166,7 +166,7 @@ router.route("/signin").post(async (req, res) => {
         signout: null,
         realday: today.getDate(),
       })
-      console.log(today)
+      // console.log(today)
       result.months[today.getMonth() + 1].attendance.push(newAttendanceRecord)
 
       result.missinghours = result.missinghours + (8 + 24 / 60)
@@ -204,7 +204,7 @@ router.route("/signin").post(async (req, res) => {
         )
         return res.status(200).send("sign in successfully in dayoff")
       }
-      return res.status(200).send("you cant sign in friday")
+      return res.status(403).send("you cant sign in friday")
     }
   } else return res.status(403).send("something went wrong")
 })
@@ -522,7 +522,7 @@ router.route("/attendance/:month").post(async (req, res) => {
         return record
     })
     res.status(200)
-    console.log(monattend)
+    // console.log(monattend)
     return res.send(monattend)
   } else return res.status(403).send("something went wrong")
 })
