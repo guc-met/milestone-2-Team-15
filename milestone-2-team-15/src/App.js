@@ -13,16 +13,22 @@ import LoginPage from "./pages/LoginPage"
 // import Header from "./components/header"
 // import Sidebarhodhome from "./components/sidebarhodhome"
 
- import HRProfilePage from "./pages/profile/HRProfilePage"
- import InstructorProfilePage from "./pages/profile/InstructorProfilePage"
+import HRProfilePage from "./pages/profile/HRProfilePage"
+import InstructorProfilePage from "./pages/profile/InstructorProfilePage"
 import HODProfilePage from "./pages/profile/HODProfilePage"
- import TAProfilePage from "./pages/profile/TAProfilePage"
+import TAProfilePage from "./pages/profile/TAProfilePage"
 
 import ResetPasswordPage from "./pages/ResetPasswordPage"
 import StaffViewAttendancePage from "./pages/StaffViewAttendancePage"
 import StaffViewmissingDaysPage from "./pages/StaffViewmissingDaysPage"
 import ExtraHoursPage from "./pages/ExtraHoursPage"
 import MissingHoursPage from "./pages/MissingHoursPage"
+
+
+import Signin from "./components/Signin"
+import Signout from "./components/Signout"
+import Logout from "./components/Logout"
+
 
 function App() {
   const token = localStorage.getItem("token")
@@ -40,17 +46,11 @@ function App() {
         <Route exact path="/instructorprofile" component={InstructorProfilePage} />
         <Route exact path="/hodprofile" component={HODProfilePage} />
         <Route exact path="/taprofile" component={TAProfilePage} />
-        {/* <Route path="/HR/RegisterStaff" component={RegisterStaff} />
-        <Route path="/HR/UpdateStaff" component={UpdateStaff} />
-        <Route path="/HR/DeleteStaff" component={DeleteStaff} />
-        <Route
-          path="/HR/staffAttendanceRecords"
-          component={staffAttendanceRecords}
-        />
-        <Route path="/HR/staffMissingDays" component={staffMissingDays} />
-        <Route path="/HR/staffMissingHours" component={staffMissingHours} />
-        <Route path="/HR/UpdateSalary" component={UpdateSalary} />
-        <Route path="/HR/Faculties" component={Faculties} /> */}
+        <Route exact path="/signin" component={Signin} />
+        <Route exact path="/signout" component={Signout} />
+        <Route exact path="/logout" component={Logout} />
+
+       
       </BrowserRouter>
     </div>
   )

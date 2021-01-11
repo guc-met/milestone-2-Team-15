@@ -5,13 +5,20 @@ import Header from "../../components/header"
 import axios from "axios"
 export default function InstructorProfilePage(props) {
   const [data, setData] = useState()
+  const limittime = 2 + 59 / 60
   const [ID, setID] = useState()
   const [Name, setName] = useState()
+
   const [Salary, setSalary] = useState()
+  const [NewSalary, setNewSalary] = useState()
+  const [NewREAlSalary, setNewREALSalary] = useState()
+
+  const [missingdays, setMissingdays] = useState(true)
+  const [missinghours, setMissinghours] = useState(true)
   const [DayOff, setDayOff] = useState()
   const [Email, setEmail] = useState()
-  const [Faculty,setFaculty]=useState()
-  const [Department,setDepartment]=useState()
+  const [Faculty, setFaculty] = useState()
+  const [Department, setDepartment] = useState()
   const token = localStorage.getItem("token")
   const days = [
     "Sunday",
@@ -29,19 +36,66 @@ export default function InstructorProfilePage(props) {
       headers: {
         token: token,
       },
-    }).then((res) => {
+    }).then(async (res) => {
       console.log(res.data.staff)
       setData(res.data)
       setID(res.data.staff.ID)
       setEmail(res.data.staff.email)
       setName(res.data.staffreally.name)
-      setSalary(res.data.staffreally.salary.$numberDecimal)
       setDayOff(res.data.staffreally.dayOff)
       setFaculty(res.data.staffreally.faculty)
       setDepartment(res.data.staffreally.department)
+      setSalary(res.data.staffreally.salary.$numberDecimal)
+      let ss = res.data.staffreally.salary.$numberDecimal
+      let nn = ss
+      await axios({
+        method: "post",
+        url: "http://localhost:3000/missinghours",
+        headers: {
+          token: token,
+        },
+      }).then((res) => {
+        console.log("missing hours"+ res.data)
+        if (res.data > limittime) {
+          let minutes = res.data
+          let hours = 0
+          let x= res.data % 10
+          console.log("X : "+8.4%10.0)
+          while (minutes > 0) {
+            console.log("min"+minutes)
 
+            minutes -= 1
+            hours += 1
+          }
+          minutes = minutes * 60
+          let deductedSalaryHours = hours * (nn / 180)
+          let deductedSalaryminute = minutes * (nn / (180 * 60))
+          console.log("h " + deductedSalaryHours)
+          console.log("m " + deductedSalaryminute)
+
+          nn = nn - deductedSalaryHours - deductedSalaryminute
+        }
+      })
+      await axios({
+        method: "post",
+        url: "http://localhost:3000/missingdays",
+        headers: {
+          token: token,
+        },
+      }).then((res) => {
+        console.log("miss"+res.data)
+        let deducted = 0
+        res.data.map((eeachday) => {
+          deducted = deducted + nn / 60
+        })
+        console.log("d " + deducted)
+
+        nn = nn - deducted
+      })
+      setNewSalary(nn)
     })
   })
+
   return (
     <div>
       <Header />
@@ -50,6 +104,8 @@ export default function InstructorProfilePage(props) {
         Name={Name}
         Email={Email}
         Salary={Salary}
+        NewREAlSalary={NewREAlSalary}
+        NewSalary={NewSalary}
         DayOff={days[DayOff]}
         Faculty={Faculty}
         Department={Department}

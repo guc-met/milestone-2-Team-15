@@ -13,18 +13,22 @@ export default function Login(props) {
   const history = useHistory()
   const [Email, setEmail] = useState("")
   const [Password, setPassword] = useState("")
+  const [err, setErr] = useState("")
   const handleLogin = async () => {
-    console.log({ Email })
-    try {
-      await axios({
-        method: "post",
-        url: "http://localhost:3000/login",
+    await axios({
+      method: "post",
+      url: "http://localhost:3000/login",
 
-        data: {
-          email: Email,
-          password: Password,
-        },
-      }).then((res) => {
+      data: {
+        email: Email,
+        password: Password,
+      },
+    }).then((res) => {
+      console.log(res.status)
+      if (res.status == 404) {
+        console.log("here")
+        setErr("wrong Email")
+      } else {
         const result = jwt.verify(res.data, Token_Secret.Token_Secret)
 
         if (result) {
@@ -34,7 +38,7 @@ export default function Login(props) {
           let type = result.type
           switch (type) {
             case "instructor":
-              history.push("/instructorprofile")
+              history.push("/attendance")
               break
             case "HR":
               history.push("/HR")
@@ -50,10 +54,8 @@ export default function Login(props) {
               break
           }
         }
-      })
-    } catch (error) {
-      console.log(error)
-    }
+      }
+    })
   }
   return (
     <div className="login">
@@ -100,6 +102,7 @@ export default function Login(props) {
         >
           Login
         </Button>
+        <Form.Control.Feedback type="invalid">{err}</Form.Control.Feedback>
       </Col>
       {/* <Col className="LoginButtonCol ">
         <Button
