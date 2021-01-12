@@ -388,10 +388,39 @@ router.route("/viewAllreq").post(async (req, res) => {//number 4 in 4.1
     const leavereqs = head.leaves;
     let result = [];
     for(let i=0; i<changereqs.length; i++){
-       result.push("change dayOff: ",changereqs[i]);
+        let m = {
+            "type":"change dayOff",
+            "smail": changereqs[i].smail,
+            "name": changereqs[i].name,
+            "day": changereqs[i].day,
+            "state": changereqs[i].state,
+            "HoDname": changereqs[i].HoDname,
+            "comment": changereqs[i].comment 
+
+        }
+       result.push(m);
     }
     for(let i=0; i<leavereqs.length; i++){
-        result.push("Leave: ",leavereqs[i]);
+        let m = {
+            "type":"Leave",
+            "smail": leavereqs[i].smail,
+            "rmail": leavereqs[i].rmail,
+            "day": leavereqs[i].day,
+            "month": leavereqs[i].month,
+            "year": leavereqs[i].year,
+            "name": leavereqs[i].name,
+            "replacementName": leavereqs[i].replacementName,
+            "requesterid":leavereqs[i].requesterid,
+            "replacmentid":leavereqs[i].replacmentid,
+            "replacmentAcceptance":leavereqs[i].replacmentAcceptance,
+            "slotnumber": leavereqs[i].slotnumber,
+            "leaveType": leavereqs[i].leaveType,
+            "state": leavereqs[i].state,
+            "HoDname": leavereqs[i].HoDname,
+            "comment": leavereqs[i].comment  
+
+        }
+        result.push(m);
     }
     res.send(result);
 });
@@ -801,7 +830,7 @@ router.route("/viewCoursesCover").post(async (req, res) => {//number 7 in 4.1
 
 
 
-
+//working backend & frontend
 //viewTeachAssign working with no errors bs l list fadya so far 
 router.route("/viewTeachAssign").post(async (req, res) => {//number 8 in 4.1 
     const headID = req.body.id;
