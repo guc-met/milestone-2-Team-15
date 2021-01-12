@@ -20,6 +20,7 @@ export default function sideBar(props) {
         <a href="#">View DayOff </a>
         <a href="/HOD/sendReq">Send Requests </a>
         <a href="/HOD/viewrequest">View Requests</a> <br/>
+        <a href="#">View Schedule</a> <br/>
         
         
     </div>

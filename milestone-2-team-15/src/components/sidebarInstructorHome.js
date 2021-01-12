@@ -16,6 +16,7 @@ export default function sideBar(props) {
     <div class="sidenav">
     <a href="/Instructor/sendReq">Send Requests</a> <br/>
     <a href="/Instructor/viewrequest">View Requests</a> <br/>
+    <a href="#">View Schedule</a> <br/>
         
         
     </div>

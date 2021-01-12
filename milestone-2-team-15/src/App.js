@@ -20,7 +20,9 @@ import Sendrepreqtorep from "./components/ReplacmentRqToRep"
 import SendrepreqtoHOD from "./components/replacmentreqtoHOD"
 import SendLeaveReq from "./components/sendLeaveReq"
 import Viewreq from "./components/viewRequests"
-
+import Viewlinkreq from "./components/coorlinkslotreqs";
+import Addslot from "./components/cooraddslot";
+import DeleteSlot from "./components/deleteslotcoor";
 function App() {
   return (
     <div>
@@ -45,6 +47,12 @@ function App() {
       <Route path="/coordinator/replacementrequestHOD" component={SendrepreqtoHOD} />
       <Route path="/coordinator/leaverequest" component={SendLeaveReq} />
       <Route path="/coordinator/viewrequest" component={Viewreq} />
+      <Route path="/coordinator/viewrecievedlinkslotreqs" component={Viewlinkreq} />
+      <Route path="/coordinator/addslot" component={Addslot} />
+      <Route path="/coordinator/deleteslot" component={DeleteSlot} />
+      
+
+     
       
 
 
