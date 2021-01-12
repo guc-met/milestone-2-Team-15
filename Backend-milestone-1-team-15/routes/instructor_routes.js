@@ -20,31 +20,31 @@ const { profile, Console } = require("console");
 //const { findOne, findOneAndUpdate } = require("../models/course");
 
 
-router.use(async (req, res, next) => {
-    //middlewares wihtout next itwont terminate if not res.send
-    const token = req.headers.token
-    // console.log(token)
-    const found = await blacklist.findOne({ token: token })
-    console.log(found)
-    if (!found) {
-      const result = jwt.verify(token, process.env.Token_Secret)
-      if (result) {
-        // console.log(result)
-        req.id = result.id // zwdna 7aga 3la result
-        req.type = result.type
-        next()
-      } else return res.status(404).send("error")
-    } else return res.status(403).send("u arent authorized")
-  })
+// router.use(async (req, res, next) => {
+//     //middlewares wihtout next itwont terminate if not res.send
+//     const token = req.headers.token
+//     // console.log(token)
+//     const found = await blacklist.findOne({ token: token })
+//     console.log(found)
+//     if (!found) {
+//       const result = jwt.verify(token, process.env.Token_Secret)
+//       if (result) {
+//         // console.log(result)
+//         req.id = result.id // zwdna 7aga 3la result
+//         req.type = result.type
+//         next()
+//       } else return res.status(404).send("error")
+//     } else return res.status(403).send("u arent authorized")
+//   })
 
 
 router.route("/viewCourseCoverage").post(async (req, res) => {//4.2 number 1
    
     //const instID1 = req.id;
     //const instID2 = await InstructorModel.findOne({ID:instID1});
-    const instID2 = await InstructorModel.findOne({ID:req.id});
-
+    const instID2 = await InstructorModel.findOne({ID:req.body.id});
     const fac = await FacultyModel.findOne({name:req.body.facName});
+    console.log(req.body.facName)
 
     let coverage=[];
     

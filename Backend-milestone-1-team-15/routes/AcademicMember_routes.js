@@ -290,7 +290,7 @@ router.route("/slotLinkingRequest").post(async (req, res) => {
     const course_id=req.body.code;
     const slotid=req.body.sid
     let ACMember = await StaffModel.findOne({ID: ACmember});
-    console.log(ACmember);
+    console.log(ACMember);
     let coordinator = await courseCoordinatorModel.findOne({ID: coorid});
     let request;
     if(!coordinator || !(coordinator.courses.includes(course_id)) ){
