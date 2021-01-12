@@ -1,53 +1,42 @@
-import logo from "./logo.svg";
 import React, { useState, useEffect } from "react";
-import HR from "./pages/HR";
-import HOD from "./pages/HOD"
-import Location from "./pages/Location";
+import HOD from "./pages/HOD.js"
+import AssignInst from "./components/assignInst.js"
+import Deletetest from "./components/deletetest.js"
+import ViewStaff from "./components/viewStaffhod.js"
+import Viewdayoff from "./components/viewdayOffhod.js"
+import UpdateInst from "./components/updateInst.js"
+import Sidebarhodhome from "./components/sidebarhodhome";
 import { BrowserRouter, Route } from "react-router-dom";
-//import logo from './logo.svg';
-//import Login from "./components/login"
-import SideBar from "./components/sideBar"
-import Header from "./components/header"
-import Sidebarhodhome from "./components/sidebarhodhome"
+
 import DropDown from "./components/dropDown";
-import RegisterStaff from "./components/RegisterStaff";
-import UpdateStaff from "./components/UpdateStaff";
-import DeleteStaff from "./components/DeleteStaff";
+
 
 // function App() {
 //   return (
 
 function App() {
-  // return (<div>
-  //   <DropDown/>
-
-  //   <Sidebarhodhome/>
-  //  </div>
-  // )
   return (
     <div>
       <DropDown />
       <BrowserRouter>
-        <Route path="/hod" component={HOD} />
-        <Route path="/Locations" component={Location} />
-        <Route path="/HR/RegisterStaff" component={RegisterStaff} />
-        <Route path="/HR/UpdateStaff" component={UpdateStaff} />
-        <Route path="/HR/DeleteStaff" component={DeleteStaff} />
+      {/* mainpage */}
+      {/* <Route path="/HOD" component={Sidebarhodhome} /> */}
+        <Route path="/hod" component={HOD} /> 
+        {/* delete instructor */}
+        <Route path="/hod/deletetest" component={Deletetest} />
+        {/* assign Instructor */}
+        <Route path="/hod/AssignInst" component={AssignInst} />
+        {/* update instructor */}
+        <Route path="/hod/UpdateInst" component={UpdateInst} />
+        {/* hod views staff */}
+        <Route path="/hod/viewStaff" component={ViewStaff} />
+        {/* /hod/viewStaffdayoff */}
+        {/* <Route path="/hod/viewStaffdayoff" component={Viewdayoff} /> */}
+
+
       </BrowserRouter>
     </div>
   );
-  // return (
-  //   <div>
-  //     <DropDown />
-  //     <BrowserRouter>
-  //       <Route path="/HR" component={HR} />
-  //       <Route path="/Locations" component={Location} />
-  //       <Route path="/HR/RegisterStaff" component={RegisterStaff} />
-  //       <Route path="/HR/UpdateStaff" component={UpdateStaff} />
-  //       <Route path="/HR/DeleteStaff" component={DeleteStaff} />
-  //     </BrowserRouter>
-  //   </div>
-  // );
 }
 
 export default App;

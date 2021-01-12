@@ -25,4 +25,4 @@ function Dayoff(props){
 
 } 
 
-export default Dayoff 
+export default Dayoff;

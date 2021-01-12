@@ -27,20 +27,20 @@ function RegisterStaff(props) {
     console.log(courseid);
     console.log(facid);
 
-    const response = await axios.post(`http://localhost:3000/HR/addLocation`, {
-      type: type,
-      staff: {
-        id: instid,
-        salary: salary,
-        locationID: location,
-        email: email,
-      },
-    });
+    // const response = await axios.post(`http://localhost:3000/HR/addLocation`, {
+    //   type: type,
+    //   staff: {
+    //     id: instid,
+    //     salary: salary,
+    //     locationID: location,
+    //     email: email,
+    //   },
+    // });
     // console.log(response);
   };
 
   return (
-    <div class="Hr-Buttons">
+    <div class="hod-Buttons">
       <Form validated onFinish={handleSubmit}>
       {/* const [instid, setInstid] = useState("");
   const [courseid, setCourseid] = useState("");
@@ -81,7 +81,7 @@ function RegisterStaff(props) {
           />
         </Form.Group>
 
-        <Form.Group class="HR_input" role="form">
+        <Form.Group class="hod_input" role="form">
           <Button
             // type="submit"
             onClick={handleSubmit}

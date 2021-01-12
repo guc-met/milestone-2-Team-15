@@ -1,30 +1,24 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
-function HR() {
+function HOD() {
   const history = useHistory();
-//   function onclick() {
-//     history.push("/Locations");
-//     return;
-//   }
+
 
   return (
     <div>
       <div class="red"></div>
       <div class="yellow"></div>
       <div class="sidenav">
-        <a href="/HOD/RegisterStaff">Register Staff</a>
-
-        {/* <a href="/HR/UpdateStaff">Update Staff</a>
-        <a href="/HR/DeleteStaff">Delete Staff</a>
-
-        <a href="#">Add Signin/signout</a>
-        <a href="#">view any staff attendance record</a>
-        <a href="#">view staff with missing hours </a>
-        <a href="#">view staff with missing days</a>
-        <a href="#">Update the salary of a staff member</a> */}
+        
+        <a href="/hod/deletetest">delete Instructor</a>
+        <a href="/hod/AssignInst">Assign Instructor</a>
+        <a href="/hod/UpdateInst">Update Instructor</a>
+        <a href="/hod/viewStaff">View Staff</a>
+        {/* <a href="/hod/viewStaffdayoff">View Staff dayoff</a> */}
+        
       </div>
     </div>
   );
 }
 
-export default HR;
+export default HOD;
