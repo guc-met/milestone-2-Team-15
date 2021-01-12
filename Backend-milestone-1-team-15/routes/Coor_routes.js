@@ -13,25 +13,26 @@ const CoorModel = require('../models/courseCoordinator.js');
 const slotModel = require("../models/slot.js");
 const slotlinkModel = require("../models/slotLinkingRequest.js");
 const Staff = require("../models/Staff.js");
+const blacklist = require("../models/blacklist");
 require("dotenv").config()
 
-// router.use(async (req, res, next) => {
-//     //middlewares wihtout next itwont terminate if not res.send
-//     const token = req.headers.token
-//     // console.log(token)
-//     const found = await blacklist.findOne({ token: token })
-//     console.log(found)
-//     if (!found) {
-//       const result = jwt.verify(token, process.env.Token_Secret)
-//       if (result) {
-//         // console.log(result)
-//         req.id = result.id // zwdna 7aga 3la result
-//         req.type = result.type
-//         next()
-//       }else return res.status(404).send("error")
+router.use(async (req, res, next) => {
+    //middlewares wihtout next itwont terminate if not res.send
+    const token = req.headers.token
+    // console.log(token)
+    const found = await blacklist.findOne({ token: token })
+    console.log(found)
+    if (!found) {
+      const result = jwt.verify(token, process.env.Token_Secret)
+      if (result) {
+        // console.log(result)
+        req.id = result.id // zwdna 7aga 3la result
+        req.type = result.type
+        next()
+      }else return res.status(404).send("error")
        
-//     } else return res.status(403).send("u arent authorized")
-//   })
+    } else return res.status(403).send("u arent authorized")
+  })
 
 //viewSlotLinkingReq is working 
 router.route("/viewSlotLinkingReq").post(async (req, res) => {//number 1 in 4.3 

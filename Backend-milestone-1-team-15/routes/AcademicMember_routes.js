@@ -12,30 +12,29 @@ const InstructorModel=require("../models/instructor");
 const bycrpt = require("bcrypt")
 const jwt = require("jsonwebtoken")
 const HeadOfDepartmentModel = require('../models/HoD.js');
-
 const leavee = require("../models/leave");
 const faculty = require("../models/faculty");
 const slotLinkingRequest = require("../models/slotLinkingRequest");
 const changeDayreq = require("../models/changeDayreq");
 const { restart } = require("nodemon");
+const blacklist = require("../models/blacklist")
 
-
-// router.use(async (req, res, next) => {
-//     //middlewares wihtout next itwont terminate if not res.send
-//     const token = req.headers.token
-//     // console.log(token)
-//     const found = await blacklist.findOne({ token: token })
-//     console.log(found)
-//     if (!found) {
-//       const result = jwt.verify(token, process.env.Token_Secret)
-//       if (result) {
-//         // console.log(result)
-//         req.id = result.id // zwdna 7aga 3la result
-//         req.type = result.type
-//         next()
-//       } else return res.send("error")
-//     } else return res.status(403).send("u arent authorized")
-//   })
+router.use(async (req, res, next) => {
+    //middlewares wihtout next itwont terminate if not res.send
+    const token = req.headers.token
+    // console.log(token)
+    const found = await blacklist.findOne({ token: token })
+    console.log(found)
+    if (!found) {
+      const result = jwt.verify(token, process.env.Token_Secret)
+      if (result) {
+        // console.log(result)
+        req.id = result.id // zwdna 7aga 3la result
+        req.type = result.type
+        next()
+      } else return res.send("error")
+    } else return res.status(403).send("u arent authorized")
+  })
  
 
   router.route("/viewschedule").post(async (req, res) => {//annual leaves req

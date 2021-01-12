@@ -12,6 +12,7 @@ const InstructorModel = require('../models/instructor.js');
 const StaffModel = require('../models/Staff.js');
 const TaModel = require('../models/ta.js');
 const CoorModel = require('../models/courseCoordinator.js');
+const blacklist = require("../models/blacklist")
 
 router.use(async (req, res, next) => {
     //middlewares wihtout next itwont terminate if not res.send

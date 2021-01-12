@@ -17,6 +17,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const Joi = require("joi");
 const HR = require("../models/HR");
+const blacklist = require("../models/blacklist")
 // router.route("").get(async (req, res) => {
 //   console.log(req.body.user);
 //   res.send(req.body.user);
