@@ -98,7 +98,7 @@ function Updateinst(props) {
       </Dropdown>
       <Modal show={show} onHide={() => setShow(false)}>
         <Modal.Header>
-          <Modal.Title> Assigning Instructor to {coursename} course </Modal.Title>
+          <Modal.Title> updating Instructor in {coursename} course </Modal.Title>
         </Modal.Header>
         <Modal.Body>
             <Form.Group class="hod_input" controlId="formGridroomKind">

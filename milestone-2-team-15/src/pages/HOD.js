@@ -14,7 +14,7 @@ function HOD() {
         <a href="/hod/AssignInst">Assign Instructor</a>
         <a href="/hod/UpdateInst">Update Instructor</a>
         <a href="/hod/viewStaff">View Staff</a>
-        {/* <a href="/hod/viewStaffdayoff">View Staff dayoff</a> */}
+        <a href="/hod/viewStaffdayoff">View Staff dayoff</a>
         
       </div>
     </div>

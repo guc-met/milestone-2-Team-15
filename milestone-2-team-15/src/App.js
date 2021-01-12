@@ -31,7 +31,7 @@ function App() {
         {/* hod views staff */}
         <Route path="/hod/viewStaff" component={ViewStaff} />
         {/* /hod/viewStaffdayoff */}
-        {/* <Route path="/hod/viewStaffdayoff" component={Viewdayoff} /> */}
+        <Route path="/hod/viewStaffdayoff" component={Viewdayoff} />
 
 
       </BrowserRouter>
