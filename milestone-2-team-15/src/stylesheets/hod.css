@@ -1,24 +1,10 @@
-/* .btn-Loginbutton {
-  /* width: 10%;
-  height: 50px;
-  font-size: large;
-  font-weight: bolder;
-  border-radius: 3px; 
-  width: 30%;
+.hod-Buttons {
+  margin-left: 20%;
+  height: 1000vh;
+  padding: 1%;
+  width: 80%;
+  background-color: whitesmoke;
 }
-.Hr-Button {
-  width: 100px;
-  border-radius: 3px;
-  background-color: rgb(5, 255, 255);
-  border: rgb(5, 255, 255);
-} */
-.Hr-Buttons {
-    margin-left: 20%;
-    height: 1000vh;
-    padding: 1%;
-    width: 80%;
-    background-color: whitesmoke;
-  }
   .col {
     margin: 10px;
   }
@@ -44,12 +30,13 @@
     color: brown;
     height: 100px;
   }
-  .HR_input {
+  .hod_input {
     width: 280px;
   }
   
-  .HR_Submit {
+  .hod_Submit {
     width: 30%;
     margin-top: auto;
     padding: 100px;
   }
+  

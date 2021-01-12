@@ -3,7 +3,7 @@ import axios from "axios";
 
 
 import "bootstrap/dist/css/bootstrap.min.css"
-import "../stylesheets/HOD.css"
+
 
 import {
   ListGroup,

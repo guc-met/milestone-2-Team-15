@@ -17,7 +17,6 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const Joi = require("joi");
 const HR = require("../models/HR");
-const blacklist = require("../models/blacklist")
 // router.route("").get(async (req, res) => {
 //   console.log(req.body.user);
 //   res.send(req.body.user);
@@ -40,9 +39,22 @@ const blacklist = require("../models/blacklist")
 //     res.status(200).send("viewed successfully");
 //   } else res.status(403).send("something went wrong");
 // });
-
+router.route("/ViewLocations").get(async (req, res) => {
+  let locations = await LocationModel.find();
+  console.log(locations);
+  if (locations) {
+    return res.status(200).json(locations);
+  } else return res.status(404).send("location not found");
+});
+router.route("/ViewStaffs").get(async (req, res) => {
+  let staffs = await StaffModel.find();
+  if (staffs) {
+    return res.status(200).json(staffs);
+  } else return res.status(404).send("staff not found");
+});
 router.route("/addLocation").post(async (req, res) => {
   const location = req.body;
+  console.log(location);
   const locationSchema = Joi.object({
     roomKind: Joi.string(),
     NumberOfPersons: Joi.number(),
@@ -55,6 +67,7 @@ router.route("/addLocation").post(async (req, res) => {
   try {
     const value = await locationSchema.validateAsync(location);
   } catch (err) {
+    console.log(err.message);
     return res.status(403).json(err.message);
   }
 
@@ -991,10 +1004,10 @@ router.route("/DeleteStaff").post(async (req, res) => {
   if (!result) {
     return res.status(404).json("Staff not Found");
   }
-  console.log(staffID.substring(3, 4));
+  console.log(staffID.substring(3, staffID.lengt));
   if (result.type != "HR") {
     const result2 = await ACModel.findOneAndDelete({
-      ID: staffID.substring(3, 4),
+      ID: staffID.substring(3, staffID.length),
     });
     if (!result2) return res.status(404).json("Academic Member not Found");
   }

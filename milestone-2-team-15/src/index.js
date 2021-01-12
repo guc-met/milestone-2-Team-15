@@ -4,7 +4,9 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import "./stylesheets/sideBar.css";
 import "./stylesheets/HR.css";
-import "./stylesheets/HOD.css";
+import "./stylesheets/hod.css";
+import "./stylesheets/HOD1.css"
+import "./stylesheets/InstructorProfile.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 // Put any other imports below so that CSS from your
 // components takes precedence over default styles.
