@@ -777,9 +777,10 @@ router.route("/rejectreq").post(async (req, res) => {//Reject req number 6 in 4.
     }
 });
 
+//working backend & frontend
 //viewCoursesCover working bs kol l courses l coverage bta3et-hom null
 router.route("/viewCoursesCover").post(async (req, res) => {//number 7 in 4.1 
-    const headID = req.id;
+    const headID = req.body.id;
     const facultyid = req.body.facid;
     let faculty = await FacultyModel.findOne({ _id: facultyid });
     let head = await HeadOfDepartmentModel.findOne({ID: headID});
@@ -790,7 +791,7 @@ router.route("/viewCoursesCover").post(async (req, res) => {//number 7 in 4.1
     for(let i=0; i< departments.length ;i++){
         if(departments[i]._id == departmentname){
             for(let j=0; j<(departments[i].courses).length ; j++){
-                result.push("course: ",(departments[i].courses).name, ", coverage: ", (departments[i].courses).coverage);
+                result.push("course: "+(departments[i].courses)[j].courseName+ ", coverage: "+ (departments[i].courses)[j].coverage);
             }
             break;
         }
@@ -803,7 +804,7 @@ router.route("/viewCoursesCover").post(async (req, res) => {//number 7 in 4.1
 
 //viewTeachAssign working with no errors bs l list fadya so far 
 router.route("/viewTeachAssign").post(async (req, res) => {//number 8 in 4.1 
-    const headID = req.id;
+    const headID = req.body.id;
     const facultyid = req.body.facid;
     const faculty = await FacultyModel.findOne({ _id: facultyid });
     const head = await HeadOfDepartmentModel.findOne({ID: headID});
@@ -817,7 +818,16 @@ router.route("/viewTeachAssign").post(async (req, res) => {//number 8 in 4.1
             for(let j=0; j<courses.length ; j++){
                 slots = courses[j].slots;
                 for(let k=0; k<slots.length; k++){
-                    result.push("course: ",courses[j].courseName, ", slot info: ", slots[k]);  
+                    let m = {
+                        "course": courses[j].courseName,
+                        "slotid":slots[k]._id, 
+                        "kind": slots[k].kind,
+                        "academicMember": slots[k].academicMember,
+                        "timing": slots[k].timing,
+                        "courseCode": slots[k].courseCode,
+                        "location": slots[k].location 
+                    }
+                    result.push(m);  
                 }
             }
             break;

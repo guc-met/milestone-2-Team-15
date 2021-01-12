@@ -15,6 +15,10 @@ function HOD() {
         <a href="/hod/UpdateInst">Update Instructor</a>
         <a href="/hod/viewStaff">View Staff</a>
         <a href="/hod/viewStaffdayoff">View Staff dayoff</a>
+        <a href="/hod/viewAllreqs">View and manage requests</a>
+        <a href="/hod/viewCoverage">View Coverage of each course</a>
+        <a href="/hod/viewTeachAssigns">View Teaching Assignments</a>
+
         
       </div>
     </div>
