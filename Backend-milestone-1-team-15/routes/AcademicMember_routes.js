@@ -20,26 +20,26 @@ const changeDayreq = require("../models/changeDayreq");
 const { restart } = require("nodemon");
 
 
-router.use(async (req, res, next) => {
-    //middlewares wihtout next itwont terminate if not res.send
-    const token = req.headers.token
-    // console.log(token)
-    const found = await blacklist.findOne({ token: token })
-    console.log(found)
-    if (!found) {
-      const result = jwt.verify(token, process.env.Token_Secret)
-      if (result) {
-        // console.log(result)
-        req.id = result.id // zwdna 7aga 3la result
-        req.type = result.type
-        next()
-      } else return res.status(404).send("error")
-    } else return res.status(403).send("u arent authorized")
-  })
+// router.use(async (req, res, next) => {
+//     //middlewares wihtout next itwont terminate if not res.send
+//     const token = req.headers.token
+//     // console.log(token)
+//     const found = await blacklist.findOne({ token: token })
+//     console.log(found)
+//     if (!found) {
+//       const result = jwt.verify(token, process.env.Token_Secret)
+//       if (result) {
+//         // console.log(result)
+//         req.id = result.id // zwdna 7aga 3la result
+//         req.type = result.type
+//         next()
+//       } else return res.status(404).send("error")
+//     } else return res.status(403).send("u arent authorized")
+//   })
  
 
   router.route("/viewschedule").post(async (req, res) => {//annual leaves req
-    const ACid = req.id; //id elly 3awez ye3mel view ll req bta3to
+    const ACid = req.body.id; //id elly 3awez ye3mel view ll req bta3to
     let currentAcademicMember=await StaffModel.findOne({ ID: ACid });
     if(!currentAcademicMember){
         res.status(404).send("no such academic member");
@@ -83,7 +83,7 @@ router.use(async (req, res, next) => {
    res.send(sch);
 });
 router.route("/viewReplacmentRequest").post(async (req, res) => {//annual leaves req
-     const ACid = req.id; //id elly 3awez ye3mel view ll req bta3to
+     const ACid = req.body.id; //id elly 3awez ye3mel view ll req bta3to
      let currentAcademicMember=await StaffModel.findOne({ ID: ACid });
     
      if(!currentAcademicMember){
@@ -118,7 +118,7 @@ router.route("/viewReplacmentRequest").post(async (req, res) => {//annual leaves
     res.send(returnRequests);
 });
 router.route("/SendReplacmentRequestToReplacment").post(async (req, res) => {//request annual leave
-    const ACid = req.id; //elly 3awez ye3mel request
+    const ACid = req.body.id; //elly 3awez ye3mel request
     const repid=req.body.rid;
     let ACmember= await StaffModel.findOne({ ID:ACid });
     let replacment= await StaffModel.findOne({ ID:repid });
@@ -219,7 +219,7 @@ router.route("/SendReplacmentRequestToReplacment").post(async (req, res) => {//r
 });
 
 router.route("/SendReplacmentRequestToHod").post(async (req, res) => {//request annual leave
-    const ACid = req.id; //elly 3awez ye3mel request
+    const ACid = req.body.id; //elly 3awez ye3mel request
     const hodid=req.body.hid;
     const leaveid=req.body.lid
     let ACmember= await StaffModel.findOne({ ID:ACid });
@@ -281,7 +281,7 @@ router.route("/SendReplacmentRequestToHod").post(async (req, res) => {//request 
 
 router.route("/slotLinkingRequest").post(async (req, res) => {
     const coorid=req.body.coid;
-    const ACmember=req.id;
+    const ACmember=req.body.id;
     const slotnumberr=req.body.slotnumber;
     const course_id=req.body.code;
     const slotid=req.body.sid
@@ -344,7 +344,7 @@ res.send("Done");
 });
 
 router.route("/changedayreq").post(async (req, res) => {
-    const acm=req.id;
+    const acm=req.body.id;
     const hod=req.body.hid;
     const dayy=req.body.d;
     const cmnt=req.body.comment;
@@ -406,7 +406,7 @@ router.route("/changedayreq").post(async (req, res) => {
 });
 
 router.route("/leaveReq").post(async (req, res) => {
-    const acm=req.id;
+    const acm=req.body.id;
     const hod=req.body.hid;
     const cmnt=req.body.comment;
     const type=req.body.t
@@ -524,7 +524,7 @@ router.route("/leaveReq").post(async (req, res) => {
 
 
 router.route("/viewAccepted").post(async (req, res) =>{
-    const acm=req.id;
+    const acm=req.body.id;
     let ACM=await StaffModel.findOne({ ID:acm });
     let ACM1=await StaffModel.findOne({ ID:acm });
     const accepted=[];
@@ -579,7 +579,7 @@ router.route("/viewAccepted").post(async (req, res) =>{
 })
 
 router.route("/viewRejected").post(async (req, res) =>{
-    const acm=req.id;
+    const acm=req.body.id;
     let ACM=await StaffModel.findOne({ ID:acm });
     let ACM1=await StaffModel.findOne({ID:acm})
     const rejected=[];
@@ -633,7 +633,7 @@ router.route("/viewRejected").post(async (req, res) =>{
 })
 
 router.route("/viewPending").post(async (req, res) =>{
-    const acm=req.id;
+    const acm=req.body.id;
     let ACM=await StaffModel.findOne({ ID:acm });
     let ACM1=await StaffModel.findOne({ID:acm});
     const pending=[];
@@ -687,7 +687,7 @@ router.route("/viewPending").post(async (req, res) =>{
 })
 
 router.route("/viewAllRequests").post(async (req, res) =>{
-    const acm=req.id;
+    const acm=req.body.id;
     let ACM=await StaffModel.findOne({ ID:acm });
     let ACM1=await StaffModel.findOne({ID:acm});
     const reqs=[];
@@ -732,7 +732,7 @@ router.route("/viewAllRequests").post(async (req, res) =>{
 })
 
 router.route("/cancelRequest").post(async (req, res) =>{
-    const acm=req.id;
+    const acm=req.body.id;
     const reqType=req.body.type;
     const reqid=req.body.rid;
     let ACM=await StaffModel.findOne({ ID:acm });

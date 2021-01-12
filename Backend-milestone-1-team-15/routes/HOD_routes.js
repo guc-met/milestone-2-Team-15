@@ -382,13 +382,14 @@ router.route("/viewonestaffdayoff").post(async (req, res) => {//number 3 in 4.1 
 
 //viewAllreq
 router.route("/viewAllreq").post(async (req, res) => {//number 4 in 4.1 
-    const headid = req.id;
+    const headid = req.body.id;
     const head = await HeadOfDepartmentModel.findOne({ID: headid});
     const changereqs = head.changereq;
     const leavereqs = head.leaves;
     let result = [];
     for(let i=0; i<changereqs.length; i++){
         let m = {
+            "reqid":changereqs[i]._id,
             "type":"change dayOff",
             "smail": changereqs[i].smail,
             "name": changereqs[i].name,
@@ -403,6 +404,7 @@ router.route("/viewAllreq").post(async (req, res) => {//number 4 in 4.1
     for(let i=0; i<leavereqs.length; i++){
         let m = {
             "type":"Leave",
+            "reqid":leavereqs[i]._id,
             "smail": leavereqs[i].smail,
             "rmail": leavereqs[i].rmail,
             "day": leavereqs[i].day,
@@ -429,8 +431,9 @@ router.route("/viewAllreq").post(async (req, res) => {//number 4 in 4.1
 ///////////////need to know things 1st:
 
 //acceptreq for dayoff is working 
+
 router.route("/acceptreq").post(async (req, res) => {//Accept req number 5 in 4.1 
-    const headid = req.id;
+    const headid = req.body.id;
     const reqid = req.body.rid;
     const reqtype = req.body.rtype;
     // "hid": "10",
@@ -673,7 +676,7 @@ router.route("/acceptreq").post(async (req, res) => {//Accept req number 5 in 4.
 
 //rejectreq is working (garrabtaha 3al TA bs bema2en kollohom nafs l 7aga bs condition mo5talef it should work for all)
 router.route("/rejectreq").post(async (req, res) => {//Reject req number 6 in 4.1 
-    const headid = req.id; // 6
+    const headid = req.body.id; // 6
     const reqid = req.body.rid;// "5fe2ab1d8fa26d38e8bc8ff7"
     const reqtype = req.body.rtype; //leave
     let head = await HeadOfDepartmentModel.findOne({ID: headid});

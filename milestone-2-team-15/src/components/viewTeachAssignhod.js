@@ -4,7 +4,7 @@ import axios from "axios";
 import { useHistory } from "react-router-dom";
 import { Row, Col, Card, Form } from "react-bootstrap"
 import "bootstrap/dist/css/bootstrap.min.css"
-export default function InstructorProfile(props) {
+export default function ViewTeachassigns(props) {
     const [facID, setFacID] = useState("");
     const [show, setShow] = useState(false);
     const [teachinassign, setTeachinassign] = useState("");
