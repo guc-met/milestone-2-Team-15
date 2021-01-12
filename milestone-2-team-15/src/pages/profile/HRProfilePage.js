@@ -7,6 +7,8 @@ import axios from "axios"
 export default function HRProfilePage(props) {
   const [data, setData] = useState()
   const [ID, setID] = useState()
+
+  const limittime = 2 + 59 / 60
   const [Name, setName] = useState()
   const [Salary, setSalary] = useState()
   const [DayOff, setDayOff] = useState()
@@ -30,16 +32,62 @@ export default function HRProfilePage(props) {
       headers: {
         token: token,
       },
-    }).then((res) => {
+    }).then(async(res) => {
       console.log(res.data.staff)
       setData(res.data)
       setID(res.data.staff.ID)
       setEmail(res.data.staff.email)
       setName(res.data.staffreally.name)
-      setSalary(res.data.staffreally.salary.$numberDecimal)
       setDayOff(res.data.staffreally.dayOff)
-      
+      // setSalary(res.data.staffreally.salary.$numberDecimal)
+      let ss = res.data.staffreally.salary.$numberDecimal
+      let nn = ss
+      await axios({
+        method: "post",
+        url: "http://localhost:3000/missinghours",
+        headers: {
+          token: token,
+        },
+      }).then((res) => {
+        console.log("missing hours"+ res.data)
+        if (res.data > limittime) {
+          let minutes = res.data
+          let hours = 0
+          let x= res.data % 10
+          console.log("X : "+8.4%10.0)
+          while (minutes > 0) {
+            
 
+            minutes -= 1
+            hours += 1
+          }
+          minutes = minutes * 60
+          console.log("min"+minutes)
+          let deductedSalaryHours = hours * (nn / 180)
+          let deductedSalaryminute = minutes * (nn / (180 * 60))
+          console.log("h " + deductedSalaryHours)
+          console.log("m " + deductedSalaryminute)
+
+          nn = nn - deductedSalaryHours - deductedSalaryminute
+        }
+      })
+      await axios({
+        method: "post",
+        url: "http://localhost:3000/missingdays",
+        headers: {
+          token: token,
+        },
+      }).then((res) => {
+        console.log("miss"+res.data)
+        let deducted = 0
+        res.data.map((eeachday) => {
+          deducted = deducted + nn / 60
+        })
+        console.log("d " + deducted)
+
+        nn = nn - deducted
+      })
+      setSalary(nn)
     })
   })
   return (

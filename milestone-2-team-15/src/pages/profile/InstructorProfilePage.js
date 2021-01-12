@@ -10,11 +10,8 @@ export default function InstructorProfilePage(props) {
   const [Name, setName] = useState()
 
   const [Salary, setSalary] = useState()
-  const [NewSalary, setNewSalary] = useState()
-  const [NewREAlSalary, setNewREALSalary] = useState()
-
-  const [missingdays, setMissingdays] = useState(true)
-  const [missinghours, setMissinghours] = useState(true)
+ 
+ 
   const [DayOff, setDayOff] = useState()
   const [Email, setEmail] = useState()
   const [Faculty, setFaculty] = useState()
@@ -62,12 +59,13 @@ export default function InstructorProfilePage(props) {
           let x= res.data % 10
           console.log("X : "+8.4%10.0)
           while (minutes > 0) {
-            console.log("min"+minutes)
+            
 
             minutes -= 1
             hours += 1
           }
           minutes = minutes * 60
+          console.log("min"+minutes)
           let deductedSalaryHours = hours * (nn / 180)
           let deductedSalaryminute = minutes * (nn / (180 * 60))
           console.log("h " + deductedSalaryHours)
@@ -92,7 +90,7 @@ export default function InstructorProfilePage(props) {
 
         nn = nn - deducted
       })
-      setNewSalary(nn)
+      setSalary(nn)
     })
   })
 
@@ -104,8 +102,6 @@ export default function InstructorProfilePage(props) {
         Name={Name}
         Email={Email}
         Salary={Salary}
-        NewREAlSalary={NewREAlSalary}
-        NewSalary={NewSalary}
         DayOff={days[DayOff]}
         Faculty={Faculty}
         Department={Department}

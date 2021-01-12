@@ -36,15 +36,9 @@ router
     //console.log(req.body)
     if (!result) {
       console.log("ana hna")
-      return res.status(404).send("user not found")
+      return res.status(4004).send("user not found")
     } else {
-      // if (result.firstPassEntered == false)
-      //   return res.status(403).send("please reset ur password");
-      const correctpass = await bcrypt.compare(
-        req.body.password,
-        result.password
-      ) //byshyl salt we byst5dmo fe hashing old password
-      if (correctpass) {
+      if (result.firstPassEntered == false) {
         const token = jwt.sign(
           { id: result.ID, type: result.type },
           process.env.Token_Secret
@@ -52,8 +46,24 @@ router
         let r = await blacklist.findOneAndRemove({ token: token })
         //console.log(r)
         // stored in browser we bybtha howa fe kol req
-        return res.header("token", token).send(token)
-      } else return res.status(401).send("wrong password")
+        res.header("token", token)
+        return res.status(200).send("please reset ur password")
+      } else {
+        const correctpass = await bcrypt.compare(
+          req.body.password,
+          result.password
+        ) //byshyl salt we byst5dmo fe hashing old password
+        if (correctpass) {
+          const token = jwt.sign(
+            { id: result.ID, type: result.type },
+            process.env.Token_Secret
+          )
+          let r = await blacklist.findOneAndRemove({ token: token })
+          //console.log(r)
+          // stored in browser we bybtha howa fe kol req
+          return res.header("token", token).send(token)
+        } else return res.status(401).send("wrong password")
+      }
     }
   })
 router.use(async (req, res, next) => {
@@ -514,15 +524,15 @@ router.route("/attendance/:month").post(async (req, res) => {
   if (result) {
     let month = req.query.month
 
-    const monattend = result.months[month].attendance.map((record) => {
+    const monattend = result.months[month].attendance.filter((record) => {
       if (
-        (record.month == req.query.month && record.realday >= 10) ||
-        (record.month == req.query.month + 1 && record.realday <= 11)
+        (record.month == req.query.month && record.realday >= 11) ||
+        (record.month == req.query.month + 1 && record.realday <= 10)
       )
         return record
     })
     res.status(200)
-    // console.log(monattend)
+    console.log(monattend)
     return res.send(monattend)
   } else return res.status(403).send("something went wrong")
 })

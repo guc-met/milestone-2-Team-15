@@ -9,7 +9,7 @@ export default function InstructorProfile(props) {
 
   const [Salary, setSalary] = useState("")
   const [NewSalary, setNewSalary] = useState()
-  const [NewREAlSalary, setNewREALSalary] = useState()  
+  const [NewREAlSalary, setNewREALSalary] = useState()
   const [DayOff, setDayoff] = useState("")
   const [Department, setDepartment] = useState("")
   const [Faculty, setFaculty] = useState("")
@@ -18,8 +18,6 @@ export default function InstructorProfile(props) {
     setName(props.Name)
     setEmail(props.Email)
     setSalary(props.Salary)
-    setNewSalary(props.NewSalary)
-    setNewREALSalary(props.NewREAlSalary) 
     setDayoff(props.DayOff)
     setDepartment(props.Department)
     setFaculty(props.Faculty)
@@ -40,22 +38,6 @@ export default function InstructorProfile(props) {
           <Form.Label className="InstructorProfileLabel">
             Salary : {Salary}
           </Form.Label>
-        </Col>
-      </Row>
-      <Row>
-        <Col>
-          <Form.Label className="TAProfileLabel">
-            New Salary : {NewSalary}
-          </Form.Label>
-        </Col>
-        <Col>
-          <Form.Label className="TAProfileLabel">
-            New Real Salary : {NewREAlSalary}
-          </Form.Label>
-        </Col>
-        <Col>
-          {" "}
-          <Form.Label className="TAProfileLabel">Salary : {Salary} </Form.Label>
         </Col>
       </Row>
       <Row>

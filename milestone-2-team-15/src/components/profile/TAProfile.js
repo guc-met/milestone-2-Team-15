@@ -40,22 +40,6 @@ export default function TAProfile(props) {
           <Form.Label className="TAProfileLabel">Salary : {Salary} </Form.Label>
         </Col>
       </Row>
-      <Row>
-        <Col>
-          <Form.Label className="TAProfileLabel">
-            New Salary : {NewSalary}
-          </Form.Label>
-        </Col>
-        <Col>
-          <Form.Label className="TAProfileLabel">
-            New Real Salary : {NewREAlSalary}
-          </Form.Label>
-        </Col>
-        <Col>
-          {" "}
-          <Form.Label className="TAProfileLabel">Salary : {Salary} </Form.Label>
-        </Col>
-      </Row>
 
       <Row>
         <Col>

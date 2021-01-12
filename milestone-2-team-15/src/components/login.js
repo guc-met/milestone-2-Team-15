@@ -14,6 +14,7 @@ export default function Login(props) {
   const [Email, setEmail] = useState("")
   const [Password, setPassword] = useState("")
   const [err, setErr] = useState("")
+  const [re, setRe] = useState("")
   const handleLogin = async () => {
     await axios({
       method: "post",
@@ -25,7 +26,10 @@ export default function Login(props) {
       },
     }).then((res) => {
       console.log(res.status)
-      if (res.status == 404) {
+      if (res.data == "please reset ur password" && res.status == 200) {
+        setErr("please reset ur password")
+      }
+      if (res.status == 4004) {
         console.log("here")
         setErr("wrong Email")
       } else {
@@ -56,6 +60,9 @@ export default function Login(props) {
         }
       }
     })
+  }
+  const handlereset = async () => {
+    if (err=="please reset ur password") history.push("/resetpassword")
   }
   return (
     <div className="login">
@@ -104,16 +111,16 @@ export default function Login(props) {
         </Button>
         <Form.Control.Feedback type="invalid">{err}</Form.Control.Feedback>
       </Col>
-      {/* <Col className="LoginButtonCol ">
+      <Col className="LoginButtonCol ">
         <Button
           variant="dark "
           size="LoginButton"
           type="submit"
-          onClick={handleLogin}
+          onClick={handlereset}
         >
-          Login
+          Reset Password
         </Button>
-      </Col> */}
+      </Col>
     </div>
   )
 }
