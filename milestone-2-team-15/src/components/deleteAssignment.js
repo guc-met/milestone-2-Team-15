@@ -20,43 +20,75 @@ require("dotenv").config();
 function DeleteAssignment(props) {
 
     const history = useHistory();
-   
+    
+  const [deleteID,setDeleteID] = useState();
+  const [isTAbool,setIsTAbool] = useState(false);
+  const [instid,setInstid] = useState();
+  const [cc,setCc] = useState();
+  const [faculty,setFaculty] = useState();
+  const [msg,setmsg]=useState("");
+  
+    const sendReq = async (event) => {
+    
+      setInstid("12");
+      
+      const response = axios.post("http://localhost:3000/instructor_routes/deleteAssignment", {
+        delID:deleteID,
+        isTA:isTAbool,
+        id:instid,
+        courseCode:cc,
+        facName: faculty    
+   });
+   setmsg((await response).data);
+console.log("suppppppp"+(await response).data+"\n");
+    }
       
   return (
 
         <div >
         <Form style={{padding:"60px 0px 0px 260px"}}>
             <label for="delid">Enter Academic Member ID</label> <br/>
-            <input type="text" class="delIDInput" id="delID" aria-describedby="delIDHelp" placeholder="Enter ID"/>
+            <input type="text" class="delIDInput" id="delID" aria-describedby="delIDHelp" placeholder="Enter ID"
+             onChange={(event) => {setDeleteID(event.target.value);}}
+            />
 
             <br/>
             <br/>
 
             <div>
-                <input type="radio" id="delTA" name="type" value="isDelTA"/>
+                <input type="radio" id="delTA" name="type" value="true"
+                 onChange={(event) => {setIsTAbool(event.target.value);}}
+                />
                 <label for="TA">This academic member is a TA</label><br/>
-                <input type="radio" id="isOldTA" name="type" value="notisOldTA"/>
+                <input type="radio" id="isOldTA" name="type" value="false"
+                 onChange={(event) => {setIsTAbool(event.target.value);}}
+                />
                 <label for="notDelTA">This academic member is NOT a TA</label>
             </div>
 
             <br/>
 
             <Form>
-                <label for="facID">Faculty ID of That Course</label> <br/>
-                <input type="text" class="facID" id="facIDInputID" aria-describedby="facIDHelp" placeholder="Enter your faculty name"/>
+                <label for="facID">Faculty Name of That Course</label> <br/>
+                <input type="text" class="facID" id="facIDInputID" aria-describedby="facIDHelp" placeholder="Enter your faculty name"
+                 onChange={(event) => {setFaculty(event.target.value);}}
+                />
                 
             </Form>
             <br/>
             <Form>
                 <label for="courseCode">Enter the Code of The Course of The Slot</label> <br/>
-                <input type="text" class="courseCode" id="courseCode" aria-describedby="courseCodeHelp" placeholder="Enter Course Code"/>
+                <input type="text" class="courseCode" id="courseCode" aria-describedby="courseCodeHelp" placeholder="Enter Course Code"
+                 onChange={(event) => {setCc(event.target.value);}}
+                />
 
             </Form>
             <br/>
             <br/>
-            <Button onClick={() => history.push("deleteAssignment")}>Delete Slot Assignment</Button>
+            <Button onClick={sendReq}>Delete Slot Assignment</Button>
+            <br/><br/>
+        <p>{msg}</p>
         </Form>
-
 
     </div>
   );

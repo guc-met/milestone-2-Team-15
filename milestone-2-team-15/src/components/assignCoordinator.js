@@ -19,9 +19,8 @@ import { Plus } from "react-bootstrap-icons";
 require("dotenv").config();
 function AssignCoordinator(props) {
 
-    const history = useHistory();
-   
-      
+
+
   return (
 
         <div >
@@ -45,7 +44,7 @@ function AssignCoordinator(props) {
             </Form>
             <br/>
             <br/>
-            <Button onClick={() => history.push("assignCoordinator")}>Assign Coorditor</Button>
+            <Button>Assign Coorditor</Button>
         </Form>
 
 
