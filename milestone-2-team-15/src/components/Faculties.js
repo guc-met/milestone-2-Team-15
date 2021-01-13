@@ -26,12 +26,19 @@ function Faculties(props) {
   const [faculties, setFaculties] = useState(0);
   const [facultyName, setFacultyName] = useState("");
   const [facultyID, setFacultyID] = useState("");
+  const [faculty, setFaculty] = useState("");
 
   const [departmentName, setDepartmentName] = useState("");
   const [departmentID, setDepartmentID] = useState("");
+  const [department, setDepartment] = useState("");
 
   const [courseName, setCourseName] = useState("");
   const [courseCode, setCourseCode] = useState("");
+  const [courseTeachingSlots, setTeachingSlots] = useState(-1);
+  const [courseCoverage, setCourseCoverage] = useState(-1);
+  const [courseAssignedSlots, setAssignedSlots] = useState(-1);
+  const [courseCover, setCover] = useState(-1);
+  const [course, setCourse] = useState("");
   const [courseID, setCourseID] = useState("");
   const [flag, setFlag] = useState(false);
   const [response, setResponse] = useState();
@@ -42,11 +49,15 @@ function Faculties(props) {
   useEffect(() => {
     async function fetchData() {
       setFacultyName("");
+      setFacultyID("");
       setDepartmentName("");
+      setDepartmentID("");
       setCourseName("");
       setCourseCode("");
-      setFacultyID("");
-      setDepartmentID("");
+      setCourseCoverage(-1);
+      setCover(-1);
+      setTeachingSlots(-1);
+      setAssignedSlots(-1);
       setCourseID("");
       setWhich(-1);
 
@@ -58,6 +69,7 @@ function Faculties(props) {
       const hi = response.data.map((faculty) => {
         const facultyPanels = faculty.departments.map((department) => {
           const departmentPanels = department.courses.map((course) => {
+            console.log(course.coverage);
             let InstructorsPanels = course.Instructors.map((Instructor) => {
               return <Panel>{Instructor.name}</Panel>;
             });
@@ -65,7 +77,16 @@ function Faculties(props) {
               return <Panel>{TA.name}</Panel>;
             });
             let slotsPanels = course.slots.map((slot) => {
-              return <Panel>{slot.name}</Panel>;
+              return (
+                <Panel>
+                  <ListGroup variant="flush">
+                    <ListGroup.Item> Kind: {slot.kind}</ListGroup.Item>
+                    <ListGroup.Item> Timing: {slot.timing}</ListGroup.Item>
+
+                    <ListGroup.Item> Location:{slot.location}</ListGroup.Item>
+                  </ListGroup>
+                </Panel>
+              );
             });
             return (
               <Panel
@@ -77,6 +98,7 @@ function Faculties(props) {
                           setCourseID(course._id);
                           setDepartmentID(department._id);
                           setFacultyID(faculty._id);
+                          setCourse(course);
                           setWhich(6);
 
                           // If you don't want click extra trigger collapse, you can prevent this:
@@ -91,7 +113,7 @@ function Faculties(props) {
                           setDepartmentID(department._id);
                           setFacultyID(faculty._id);
 
-                          //  DeleteCourse();
+                          DeleteCourse(course._id, department._id, faculty._id);
 
                           // If you don't want click extra trigger collapse, you can prevent this:
                           event.stopPropagation();
@@ -115,13 +137,26 @@ function Faculties(props) {
 
                   <ListGroup variant="flush">
                     <ListGroup.Item>
-                      Instructors :<Collapse>{InstructorsPanels}</Collapse>
+                      teachingSlots: {course.teachingSlots}
                     </ListGroup.Item>
                     <ListGroup.Item>
-                      TAs :<Collapse>{TAsPanels}</Collapse>
+                      assignedSlots: {course.assignedSlots}
                     </ListGroup.Item>
                     <ListGroup.Item>
-                      Slots :<Collapse>{slotsPanels}</Collapse>
+                      cover: {course.cover === 1 ? "True" : "False"}
+                    </ListGroup.Item>
+                    <ListGroup.Item>
+                      coverage:
+                      {course.coverage ? course.coverage.$numberDecimal : null}
+                    </ListGroup.Item>
+                    <ListGroup.Item>
+                      Instructors: <Collapse>{InstructorsPanels}</Collapse>
+                    </ListGroup.Item>
+                    <ListGroup.Item>
+                      TAs: <Collapse>{TAsPanels}</Collapse>
+                    </ListGroup.Item>
+                    <ListGroup.Item>
+                      Slots: <Collapse>{slotsPanels}</Collapse>
                     </ListGroup.Item>
                   </ListGroup>
                 </Card>
@@ -151,7 +186,7 @@ function Faculties(props) {
                       onClick={(event) => {
                         setDepartmentID(department._id);
                         setFacultyID(faculty._id);
-
+                        setDepartment(department);
                         //////////////modal
                         setWhich(4);
                         // If you don't want click extra trigger collapse, you can prevent this:
@@ -165,7 +200,7 @@ function Faculties(props) {
                         setDepartmentID(department._id);
                         setFacultyID(faculty._id);
 
-                        //  DeleteDepartment();
+                        DeleteDepartment(department._id, faculty._id);
 
                         // If you don't want click extra trigger collapse, you can prevent this:
                         event.stopPropagation();
@@ -214,9 +249,7 @@ function Faculties(props) {
                 <Tooltip placement="top" title="Delete Faculty">
                   <DeleteOutlined
                     onClick={(event) => {
-                      setFacultyID(faculty._id);
-
-                      //  DeleteFaculty();
+                      DeleteFaculty(faculty._id);
 
                       // If you don't want click extra trigger collapse, you can prevent this:
                       event.stopPropagation();
@@ -227,6 +260,9 @@ function Faculties(props) {
             }
           >
             <p>{faculty.name}</p>
+            {!faculty.assigned ? (
+              <p style={{ color: "red" }}>{"( Removed )"}</p>
+            ) : null}
             <Collapse>{facultyPanels}</Collapse>
           </Panel>
         );
@@ -271,12 +307,12 @@ function Faculties(props) {
     }
     setFlag(!flag);
   };
-  const DeleteFaculty = async (event) => {
-    if (facultyID != "") {
+  const DeleteFaculty = async (facultyid) => {
+    if (facultyid != "") {
       const response = await axios.post(
         `http://localhost:3000/HR/DeleteFaculty`,
         {
-          id: facultyID,
+          id: facultyid,
         }
       );
       if (response.status == 200)
@@ -311,6 +347,14 @@ function Faculties(props) {
     setFlag(!flag);
   };
   const UpdateDepartment = async (event) => {
+    console.log(departmentName, facultyID, departmentID);
+    console.log({
+      id: facultyID,
+      department: {
+        id: departmentID,
+        name: departmentName,
+      },
+    });
     if (departmentName != "" && facultyID != "" && departmentID != "") {
       const response = await axios.post(
         `http://localhost:3000/HR/UpdateDepartment`,
@@ -322,26 +366,27 @@ function Faculties(props) {
           },
         }
       );
+      console.log(response);
       if (response.status == 200)
         setResponse(<Alert variant="success">{response.data} </Alert>);
       else setResponse(<Alert variant="danger">{response.data} </Alert>);
     } else {
       setResponse(
         <Alert variant="danger">
-          Department name or ID or Faculty ID Undefined{" "}
+          Department name or ID or Faculty ID Undefined
         </Alert>
       );
     }
     setFlag(!flag);
   };
-  const DeleteDepartment = async (event) => {
-    if (facultyID != "" && departmentID != "") {
+  const DeleteDepartment = async (department_ID, faculty_ID) => {
+    if (faculty_ID != "" && department_ID != "") {
       const response = await axios.post(
         `http://localhost:3000/HR/DeleteDepartment`,
         {
-          id: facultyID,
+          id: faculty_ID,
           department: {
-            id: departmentID,
+            id: department_ID,
           },
         }
       );
@@ -362,13 +407,18 @@ function Faculties(props) {
       facultyID != "" &&
       departmentID != ""
     ) {
+      const course = {};
+      course.courseName = courseName;
+      course.code = courseCode;
+      if (courseAssignedSlots != -1) course.assignedSlots = courseAssignedSlots;
+      if (courseTeachingSlots != -1) course.teachingSlots = courseTeachingSlots;
+      if (courseCover != -1) course.cover = courseCover;
+      if (courseCoverage != -1) course.coverage = courseCoverage;
+
       const response = await axios.post(`http://localhost:3000/HR/addCourse`, {
         facultyid: facultyID,
         departmentid: departmentID,
-        course: {
-          courseName: courseName,
-          code: courseCode,
-        },
+        course: course,
       });
       if (response.status == 200)
         setResponse(<Alert variant="success">{response.data} </Alert>);
@@ -390,11 +440,17 @@ function Faculties(props) {
       (courseName != "" || courseCode != "")
     ) {
       const course = {};
+
+      if (courseAssignedSlots != -1) course.assignedSlots = courseAssignedSlots;
+      if (courseTeachingSlots != -1) course.teachingSlots = courseTeachingSlots;
+      if (courseCover != -1) course.cover = courseCover;
+      if (courseCoverage != -1) course.coverage = courseCoverage;
+
       if (courseName != "") {
         course.courseName = courseName;
       }
       if (courseCode != "") {
-        course.courseCode = courseCode;
+        course.code = courseCode;
       }
       console.log(course);
       const response = await axios.post(
@@ -418,14 +474,14 @@ function Faculties(props) {
     }
     setFlag(!flag);
   };
-  const DeleteCourse = async (event) => {
-    if (facultyID != "" && departmentID != "" && courseID != "") {
+  const DeleteCourse = async (courseid, departmentid, facultyid) => {
+    if (facultyid != "" && departmentid != "" && courseid != "") {
       const response = await axios.post(
         `http://localhost:3000/HR/DeleteCourse`,
         {
-          facultyid: facultyID,
-          departmentid: departmentID,
-          courseid: courseID,
+          facultyid: facultyid,
+          departmentid: departmentid,
+          courseid: courseid,
         }
       );
       if (response.status == 200)
@@ -448,6 +504,7 @@ function Faculties(props) {
       event.stopPropagation();
       setValidated(false);
     }
+    console.log(which);
     if (which == 1) addFaculty();
     else if (which == 2) UpdateFaculty();
     else if (which == 3) addDepartment();
@@ -459,6 +516,17 @@ function Faculties(props) {
   return (
     <div class="Hr-Buttons">
       <Collapse defaultActiveKey={["1"]}>{faculties}</Collapse>
+      <Card>
+        <Button
+          variant="primary"
+          onClick={() => {
+            setWhich(1);
+          }}
+          style={{ textAlign: "center" }}
+        >
+          <Icon.Plus size={96} />
+        </Button>
+      </Card>
       {response}
       <Modal
         footer={null}
@@ -512,11 +580,7 @@ function Faculties(props) {
             />
           </Form.Group>
           <Form.Group class="HR_input" role="form">
-            <Button
-              type="submit"
-              style={{ marginTop: "1%", float: "right" }}
-              variant="primary"
-            >
+            <Button type="submit" style={{ marginTop: "1%", float: "right" }}>
               Submit
             </Button>
           </Form.Group>
@@ -534,7 +598,7 @@ function Faculties(props) {
           <Form.Group class="HR_input" controlId="formGridroomKind">
             <Form.Label>Course Name</Form.Label>
             <Form.Control
-              required
+              required={which == 5}
               type="text"
               onChange={(event) => {
                 setCourseName(event.target.value);
@@ -545,12 +609,66 @@ function Faculties(props) {
           <Form.Group class="HR_input" controlId="formGridroomKind">
             <Form.Label>Course Code</Form.Label>
             <Form.Control
-              required
+              required={which == 5}
               type="text"
               onChange={(event) => {
                 setCourseCode(event.target.value);
               }}
               placeholder="CSEN 102,MATH 201"
+            />
+          </Form.Group>
+
+          <Form.Group class="HR_input" controlId="formGridroomKind">
+            <Form.Label>teaching slots</Form.Label>
+            <Form.Control
+              type="number"
+              onChange={(event) => {
+                setTeachingSlots(event.target.value);
+              }}
+              placeholder="22,11 ..."
+            />
+          </Form.Group>
+          <Form.Group class="HR_input" controlId="formGridroomKind">
+            <Form.Label>coverage </Form.Label>
+            <Form.Control
+              type="number"
+              onChange={(event) => {
+                setCourseCoverage(event.target.value);
+              }}
+              placeholder="22,11 ..."
+            />
+          </Form.Group>
+          <Form.Group class="HR_input" controlId="formGridroomKind">
+            <Form.Label>assigned slots</Form.Label>
+            <Form.Control
+              type="number"
+              onChange={(event) => {
+                setAssignedSlots(event.target.value);
+              }}
+              placeholder="22,11 ..."
+            />
+          </Form.Group>
+          <Form.Group class="HR_input" controlId="formGridroomKind">
+            <Form.Label as="legend" column sm={2}>
+              Cover
+            </Form.Label>
+            <Form.Check
+              onChange={() => {
+                setCover(0);
+              }}
+              type="radio"
+              label="False"
+              name="type"
+              id="False"
+            />
+            <Form.Check
+              onChange={() => {
+                setCover(1);
+              }}
+              type="radio"
+              label="True"
+              name="type"
+              id="True"
             />
           </Form.Group>
           <Form.Group class="HR_input" role="form">

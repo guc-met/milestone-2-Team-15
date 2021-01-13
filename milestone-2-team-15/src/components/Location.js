@@ -10,6 +10,7 @@ import {
   Card,
   Row,
   Col,
+  Alert,
 } from "react-bootstrap";
 import * as Icon from "react-bootstrap-icons";
 import { Plus } from "react-bootstrap-icons";
@@ -29,6 +30,7 @@ function Location() {
   const [NumberOfAvailablePeople, setNumberOfAvailablePeople] = useState(-1);
   const [NumberOfPersons, setNumberOfPersons] = useState(-1);
   const [validated, setValidated] = useState(true);
+  const [response, setResponse] = useState();
 
   useEffect(() => {
     async function fetchData() {
@@ -59,7 +61,7 @@ function Location() {
                 </ListGroup.Item>
               </ListGroup>
               <Card.Body style={{ textAlign: "center" }}>
-                <Button class="Location__Button__delete">
+                <Button variant="dark" class="Location__Button__delete">
                   <Icon.Trash />
                 </Button>
 
@@ -69,6 +71,7 @@ function Location() {
                     setEdit(true);
                     setVisibility(true);
                   }}
+                  variant="dark"
                   class="Location__Button__Edit"
                 >
                   <Icon.PencilSquare />
@@ -86,7 +89,6 @@ function Location() {
                 setEdit(false);
                 setVisibility(true);
               }}
-              style={{ textAlign: "center" }}
             >
               <Icon.Plus size={96} />
             </Button>
@@ -125,11 +127,13 @@ function Location() {
           NumberOfPersons: NumberOfPersons,
         }
       );
-      console.log(response);
+      if (response.status == 200)
+        setResponse(<Alert variant="success">{response.data} </Alert>);
+      else setResponse(<Alert variant="danger">{response.data} </Alert>);
     } else {
       const location = {};
       if (buildingCharacter != "")
-        location.BuildingCharacter = buildingCharacter;
+        location.BuildingCharachter = buildingCharacter;
       if (roomKind != "") location.roomKind = roomKind;
       if (floorNumber != -1) location.FloorNumber = floorNumber;
       if (roomNumber != -1) location.roomNumber = roomNumber;
@@ -143,6 +147,10 @@ function Location() {
           location: location,
         }
       );
+      console.log(response.data);
+      if (response.status == 200)
+        setResponse(<Alert variant="success">{response.data} </Alert>);
+      else setResponse(<Alert variant="danger">{response.data} </Alert>);
     }
 
     setRoomKind("");
@@ -151,6 +159,8 @@ function Location() {
     setRoomNumber(-1);
     setNumberOfPersons(-1);
     setNumberOfAvailablePeople(-1);
+    setFlag(!flag);
+    setVisibility(false);
   };
 
   return (
@@ -158,20 +168,22 @@ function Location() {
       <Row xs={1} sm={2} md={3} lg={4} xl={5} noGutter>
         {locationsCards}
       </Row>
+      {response}
+
       <Modal
         show={visibility}
         onHide={() => {
           setVisibility(false);
         }}
       >
-        <Form validated={edit ? false : validated} onFinish={handleSubmit}>
+        <Form validated={edit ? false : validated} onSubmit={handleSubmit}>
           <Form.Group as={Row}>
             <Form.Label as="legend" column sm={2}>
               roomKind:
             </Form.Label>
             <Col sm={10}>
               <Form.Check
-                required
+                required={!edit}
                 onChange={() => {
                   setRoomKind("tutorial room");
                 }}
@@ -216,7 +228,7 @@ function Location() {
             </Form.Label>
             <Col sm={10}>
               <Form.Check
-                required
+                required={!edit}
                 onChange={() => {
                   setBuildingCharacter("B");
                 }}
@@ -257,7 +269,7 @@ function Location() {
           <Form.Group controlId="formGridroomKind">
             <Form.Label> FloorNumber :</Form.Label>
             <Form.Control
-              required
+              required={!edit}
               type="number"
               onChange={(event) => {
                 setFloorNumber(event.target.value);
@@ -269,7 +281,7 @@ function Location() {
             <Form.Label>roomNumber:</Form.Label>
             <Form.Control
               type="number"
-              required
+              required={!edit}
               onChange={(event) => {
                 setRoomNumber(event.target.value);
               }}
@@ -280,7 +292,7 @@ function Location() {
           <Form.Group controlId="formGridroomKind">
             <Form.Label>NumberOfAvailablePeople :</Form.Label>
             <Form.Control
-              required
+              required={!edit}
               type="number"
               onChange={(event) => {
                 setNumberOfAvailablePeople(event.target.value);
@@ -291,7 +303,7 @@ function Location() {
           <Form.Group controlId="formGridNumberOfPersons">
             <Form.Label>NumberOfPersons</Form.Label>
             <Form.Control
-              required
+              required={!edit}
               type="number"
               onChange={(event) => {
                 setNumberOfPersons(event.target.value);
@@ -300,11 +312,10 @@ function Location() {
             />
           </Form.Group>
           <Form.Group role="form">
-            <Button
-              onClick={handleSubmit}
-              style={{ float: "right" }}
-              variant="primary"
-            >
+            <Button variant="primary" onClick={() => setVisibility(false)}>
+              Cancel
+            </Button>
+            <Button variant="primary" type="submit" style={{ float: "right" }}>
               Submit
             </Button>
           </Form.Group>

@@ -31,7 +31,13 @@ function RegisterStaff(props) {
       const staff = response.data.map((staff, index) => {
         return (
           <Dropdown.Item>
-            <Button onClick={() => handleClick(staff)}>{staff.email}</Button>
+            <Button
+              variant="primary"
+              class="HR__ALL__Buttons"
+              onClick={() => handleClick(staff)}
+            >
+              {staff.email}
+            </Button>
           </Dropdown.Item>
         );
       });
@@ -77,7 +83,7 @@ function RegisterStaff(props) {
           Are you sure you want to delete {staffChosen.email}
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShow(false)}>
+          <Button variant="primary" onClick={() => setShow(false)}>
             Cancel
           </Button>
           <Button

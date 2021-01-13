@@ -10,40 +10,136 @@ import {
   Card,
   Row,
   Col,
+  Alert,
 } from "react-bootstrap";
 import * as Icon from "react-bootstrap-icons";
-
+import { Select } from "antd";
 import { Plus } from "react-bootstrap-icons";
+import Faculties from "./Faculties";
+
+const { Option, OptGroup } = Select;
 require("dotenv").config();
 function RegisterStaff(props) {
-  const [type, setType] = useState();
+  const [type, setType] = useState("");
   const [name, setName] = useState("");
-  const [email, setEmail] = useState(0);
-  const [salary, setSalary] = useState(0);
-  const [location, setLocation] = useState(0);
+  const [email, setEmail] = useState("");
+  const [salary, setSalary] = useState("");
+  const [location, setLocation] = useState("");
+  const [dayOff, setDayOff] = useState("");
+  const [gender, setGender] = useState("");
+  const [faculties, setFaculties] = useState("");
+  const [faculty, setFaculty] = useState("");
+  const [department, setDepartment] = useState("");
+  const [locations, setLocations] = useState("");
+  const [validated, setValidated] = useState(true);
+  const [flag, setFlag] = useState(false);
+  const [response, setResponse] = useState();
+
+  useEffect(() => {
+    async function fetchData() {
+      setType("");
+      setName("");
+      setEmail("");
+      setSalary("");
+      setLocation("");
+      setDayOff("");
+      setGender("");
+      setFaculty("");
+      setDepartment("");
+
+      const response = await axios.get(
+        `http://localhost:3000/HR/ViewFaculties`
+      );
+      console.log(response.data);
+
+      const faculties = response.data.map((faculty) => {
+        const departments = faculty.departments.map((department) => {
+          const value = {};
+          value.department = department._id;
+          value.faculty = faculty._id;
+          return (
+            <Option value={department._id}>
+              <Button
+                onClick={() => {
+                  setFaculty(faculty._id);
+                  setDepartment(department._id);
+                }}
+              >
+                {department.name}
+              </Button>
+            </Option>
+          );
+        });
+        return <OptGroup label={faculty.name}> {departments}</OptGroup>;
+      });
+      console.log(faculties);
+      setFaculties(faculties);
+      const response2 = await axios.get(
+        `http://localhost:3000/HR/ViewLocations`
+      );
+      console.log(response2.data);
+
+      const locations = response2.data.map((location) => {
+        return (
+          <Form.Check
+            required
+            onChange={() => {
+              setLocation(location.locationId);
+            }}
+            type="radio"
+            label={location.BuildingCharachter + location.roomNumber}
+            name="location"
+            id={location.locationId}
+          />
+        );
+      });
+      setLocations(locations);
+    }
+    fetchData();
+  }, [flag]);
 
   const handleSubmit = async (event) => {
-    console.log(type);
-    console.log(name);
-    console.log(email);
-    console.log(salary);
-    console.log(location);
+    const form = event.currentTarget;
+    event.preventDefault();
+    if (form.checkValidity() === false) {
+      event.stopPropagation();
+      return;
+    }
+    const staff = {};
+    staff.name = name;
+    staff.salary = salary;
+    staff.locationID = location;
+    staff.email = email;
+    if (dayOff != "") staff.dayOff = dayOff;
+    if (gender != "") staff.gender = gender;
+    if (department != "") staff.department = department;
+    if (faculty != "") staff.faculty = faculty;
 
+    console.log(dayOff);
+    console.log(gender);
+    console.log(department);
+    console.log(faculty);
     const response = await axios.post(`http://localhost:3000/HR/register`, {
       type: type,
-      staff: {
-        name: name,
-        salary: salary,
-        locationID: location,
-        email: email,
-      },
+      staff: staff,
     });
-    console.log(response);
+    if (response.status == 200)
+      setResponse(
+        <Alert style={{ marginTop: "10%" }} variant="success">
+          {response.data}
+        </Alert>
+      );
+    else
+      setResponse(
+        <Alert style={{ marginTop: "10%" }} variant="danger">
+          {response.data}
+        </Alert>
+      );
   };
 
   return (
     <div class="Hr-Buttons">
-      <Form validated onFinish={handleSubmit}>
+      <Form validated={validated} onSubmit={handleSubmit}>
         <Form.Group as={Row}>
           <Form.Label as="legend" column sm={2}>
             type :
@@ -73,9 +169,9 @@ function RegisterStaff(props) {
                 setType("ta");
               }}
               type="radio"
-              label="Teacing Assistant"
+              label="Teaching Assistant"
               name="type"
-              id="Teacing Assistant"
+              id="Teaching Assistant"
             />
             <Form.Check
               onChange={() => {
@@ -97,7 +193,6 @@ function RegisterStaff(props) {
             />
           </Col>
         </Form.Group>
-
         <Form.Group class="HR_input" controlId="formGridroomKind">
           <Form.Label> Name: </Form.Label>
           <Form.Control
@@ -120,7 +215,6 @@ function RegisterStaff(props) {
             placeholder="ahmed2000@guc.edu.eg"
           />
         </Form.Group>
-
         <Form.Group class="HR_input" controlId="formGridroomKind">
           <Form.Label>Salary</Form.Label>
           <Form.Control
@@ -132,30 +226,105 @@ function RegisterStaff(props) {
             placeholder="2003,4004,1002..."
           />
         </Form.Group>
-
-        <Form.Group class="HR_input" controlId="formGridroomKind">
-          <Form.Label>Location </Form.Label>
-          <Form.Control
-            required
-            type="number"
-            onChange={(event) => {
-              setLocation(event.target.value);
-            }}
-            placeholder="50,40,10..."
-          />
+        <Form.Group as={Row}>
+          <Form.Label as="legend" column sm={2}>
+            Location
+          </Form.Label>
+          {locations}
         </Form.Group>
 
+        <Form.Group class="HR_input" controlId="formGridroomKind">
+          <Form.Label>day Off</Form.Label>
+          <Col sm={10}>
+            <Form.Check
+              onChange={() => {
+                setDayOff(6);
+              }}
+              type="radio"
+              label="Saturday"
+              name="DayOff"
+              id="Saturday"
+            />
+            <Form.Check
+              onChange={() => {
+                setDayOff(0);
+              }}
+              type="radio"
+              label="Sunday"
+              name="DayOff"
+              id="Sunday"
+            />
+            <Form.Check
+              onChange={() => {
+                setDayOff(1);
+              }}
+              type="radio"
+              label="Monday"
+              name="DayOff"
+              id="Monday"
+            />
+            <Form.Check
+              onChange={() => {
+                setDayOff(2);
+              }}
+              type="radio"
+              label="Tuesday"
+              name="DayOff"
+              id="Tuesday"
+            />
+            <Form.Check
+              onChange={() => {
+                setDayOff(3);
+              }}
+              type="radio"
+              label="Wednesday"
+              name="DayOff"
+              id="Wednesday"
+            />
+            <Form.Check
+              onChange={() => {
+                setDayOff(4);
+              }}
+              type="radio"
+              label="Thursday"
+              name="DayOff"
+              id="Thursday"
+            />
+          </Col>
+        </Form.Group>
+        <Form.Group class="HR_input" controlId="formGridroomKind">
+          <Form.Label>gender</Form.Label>
+          <Form.Check
+            onChange={() => {
+              setGender("M");
+            }}
+            type="radio"
+            label="Male"
+            name="Gender"
+            id="Male"
+          />
+          <Form.Check
+            onChange={() => {
+              setGender("F");
+            }}
+            type="radio"
+            label="Female"
+            name="Gender"
+            id="Female"
+          />
+        </Form.Group>
+        <Form.Group class="HR_input" controlId="formGridroomKind">
+          <Select defaultValue="choose Department" style={{ width: 200 }}>
+            {faculties}
+          </Select>
+        </Form.Group>
         <Form.Group class="HR_input" role="form">
-          <Button
-            // type="submit"
-            onClick={handleSubmit}
-            style={{ float: "right" }}
-            variant="primary"
-          >
+          <Button type="submit" style={{ float: "right" }} variant="primary">
             Submit
           </Button>
         </Form.Group>
       </Form>
+      {response}
     </div>
   );
 }

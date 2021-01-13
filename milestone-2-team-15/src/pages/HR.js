@@ -25,7 +25,7 @@ function HR() {
         <a href="/HR/staffAttendanceRecords">
           view any staff attendance record
         </a>
-        <a href="#">Add Signin/signout</a>
+        <a href="/HR/AddSign">Add Signin/Signout</a>
         <a href="/HR/staffMissingHours">view staff with missing hours </a>
         <a href="/HR/staffMissingDays">view staff with missing days</a>
         <a href="/HR/UpdateSalary">Update the salary of a staff member</a>

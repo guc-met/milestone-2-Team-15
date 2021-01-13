@@ -15,9 +15,7 @@ import staffMissingDays from "./components/StaffMissingDays";
 import staffMissingHours from "./components/StaffMissingHours";
 import UpdateSalary from "./components/UpdateSalary";
 import Faculties from "./components/Faculties";
-
-// function App() {
-//   return (
+import AddSignin from "./components/AddSigninSignOut";
 
 function App() {
   return (
@@ -33,6 +31,8 @@ function App() {
           path="/HR/staffAttendanceRecords"
           component={staffAttendanceRecords}
         />
+        <Route path="/HR/AddSign" component={AddSignin} />
+
         <Route path="/HR/staffMissingDays" component={staffMissingDays} />
         <Route path="/HR/staffMissingHours" component={staffMissingHours} />
         <Route path="/HR/UpdateSalary" component={UpdateSalary} />
