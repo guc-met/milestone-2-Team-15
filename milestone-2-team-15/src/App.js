@@ -46,6 +46,14 @@ import SendRequestCoor from "./components/sendRequestCoor";
 import Sendrepreqtorep from "./components/ReplacmentRqToRep"
 import SendrepreqtoHOD from "./components/replacmentreqtoHOD"
 import SendLeaveReq from "./components/sendLeaveReq"
+import ViewCoverageInstructor from "./components/viewCoverageInstructor"
+import ViewAssignedSlotsOfCourse from "./components/viewAssignedSlotsOfCourse"
+import ViewStaffProfileByDept from "./components/viewStaffProfileByDept"
+import AssignAcademicMember from "./components/assignAcademicMember"
+import UpdateAssignment from "./components/updateAssignment"
+import DeleteAssignment from "./components/deleteAssignment"
+import DeleteMemberFromCourse from"./components/deleteMemberFromCourse"
+import AssignCoordinator from "./components/assignCoordinator"
 import Viewreq from "./components/viewRequests"
 import Viewlinkreq from "./components/coorlinkslotreqs";
 import Addslot from "./components/cooraddslot";
@@ -60,6 +68,8 @@ import UpdateSalary from "./components/UpdateSalary";
 import Faculties from "./components/Faculties";
 import AddSignin from "./components/AddSigninSignOut";
 function App() {
+
+  
   return (
     <div>
     <DropDown />
@@ -131,8 +141,14 @@ function App() {
         <Route path="/HR/UpdateSalary" component={UpdateSalary} />
         <Route path="/HR/Faculties" component={Faculties} />
         <Route path="/HR/AddSign" component={AddSignin} />
-      
-
+        <Route path="/Instructor/viewCoverage" component={ViewCoverageInstructor} />
+      <Route path="/Instructor/viewAssignedSlotsOfCourse" component={ViewAssignedSlotsOfCourse} />
+      <Route path="/Instructor/viewStaffProfileByDept" component={ViewStaffProfileByDept} />
+      <Route path="/Instructor/assignAcademicMember" component={AssignAcademicMember} />
+      <Route path="/Instructor/updateAssignment" component={UpdateAssignment} />
+      <Route path="/Instructor/deleteAssignment" component={DeleteAssignment} />
+      <Route path="/Instructor/deleteMemberFromCourse" component={DeleteMemberFromCourse} />
+      <Route path="/Instructor/assignCoordinator" component={AssignCoordinator} />
      
       
 

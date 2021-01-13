@@ -1,6 +1,6 @@
 /* The sidebar menu */
 .sidenav {
-  height: 32%; /* Full-height: remove this if you want "auto" height */
+  height:  16.276041666666668vw; /* Full-height: remove this if you want "auto" height */
   width: 7.86vw; /* Set the width of the sidebar */
   position: fixed; /* Fixed Sidebar (stay in place on scroll) */
   z-index: 1; /* Stay on top */
@@ -73,11 +73,9 @@
   padding: 0.4167vw 0.56vw 0.4167vw 1.1112vw;
   text-decoration: none;
   font-size: 1.1112vw;
-  color: #c7c4c4;
+  color: #c4c4c4;
   display: block;
 }
-
-
 
 /* hover */
 .sidenav a:hover {

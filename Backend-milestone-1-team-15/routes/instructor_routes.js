@@ -17,35 +17,24 @@ const CoordinatorModel = require("../models/courseCoordinator");
 
 const { deprecate } = require("util");
 const { profile, Console } = require("console");
-const blacklist = require("../models/blacklist")
 //const { findOne, findOneAndUpdate } = require("../models/course");
 
 
-router.use(async (req, res, next) => {
-    //middlewares wihtout next itwont terminate if not res.send
-    const token = req.headers.token
-    // console.log(token)
-    const found = await blacklist.findOne({ token: token })
-    console.log(found)
-    if (!found) {
-      const result = jwt.verify(token, process.env.Token_Secret)
-      if (result) {
-        // console.log(result)
-        req.id = result.id // zwdna 7aga 3la result
-        req.type = result.type
-        next()
-      } else return res.status(404).send("error")
-    } else return res.status(403).send("u arent authorized")
-  })
 
+router.route("/findFacID").get(async (req,res) => {
+    const inst = await InstructorModel.findOne({ID:req.body.id});
+   // console.log("instttttt"+inst);
+    const fac = await FacultyModel.findOne({name:inst.faculty})
+    res.send(fac.name);
+})
 
 router.route("/viewCourseCoverage").post(async (req, res) => {//4.2 number 1
    
     //const instID1 = req.id;
     //const instID2 = await InstructorModel.findOne({ID:instID1});
     const instID2 = await InstructorModel.findOne({ID:req.body.id});
+
     const fac = await FacultyModel.findOne({name:req.body.facName});
-    console.log(req.body.facName)
 
     let coverage=[];
     
@@ -77,7 +66,7 @@ router.route("/viewAssignedSlotOfCourse").post(async (req, res) => {//4.2 number
     /*const instID2 = req.body.id;
     const instID1 = await InstructorModel.findOne({ID:instID2});*/
     
-    const instID1 = await InstructorModel.findOne({ID:req.id});
+    const instID1 = await InstructorModel.findOne({ID:req.body.id});
     
     const facultyName = req.body.facName;
     const fac =await FacultyModel.findOne({name:facultyName});
@@ -100,9 +89,18 @@ router.route("/viewAssignedSlotOfCourse").post(async (req, res) => {//4.2 number
                     //let tempCourse=CourseModel.findOne({_id:tempDept.courses[j]._id})
                     //coverage.add(tempDept.course[j].coverage);
                     //console.log(tempDept.courses[j]);
-                    assignments.push(tempDept.courses[j].courseName);
+                    
+                    //                    assignments.push(tempDept.courses[j].courseName);
                     for(let k=0; k<tempDept.courses[j].slots.length; k++){
-                        assignments.push(tempDept.courses[j].slots[k]);
+                        let m={"courseName":tempDept.courses[j].courseName,
+                            "kind":tempDept.courses[j].slots[k].kind,
+                            "academicMember":tempDept.courses[j].slots[k].academicMember,
+                            "timing":tempDept.courses[j].slots[k].timing,
+                            "courseCode":tempDept.courses[j].slots[k].courseCode,
+                            "location":tempDept.courses[j].slots[k].location}
+
+                            assignments.push(m);
+                       // assignments.push(tempDept.courses[j].slots[k]);
                     }
                 }
             }
@@ -116,7 +114,7 @@ router.route("/viewStaffProfileByDept").post(async (req, res) => {//4.2 number 1
     const instID1 = await InstructorModel.findOne({ID:instID2});*/
     
     
-    const instID1 = await InstructorModel.findOne({ID:req.id});
+    const instID1 = await InstructorModel.findOne({ID:req.body.id});
 
     const facultyName = req.body.facName;
     const fac =await FacultyModel.findOne({name:facultyName});
@@ -133,33 +131,119 @@ router.route("/viewStaffProfileByDept").post(async (req, res) => {//4.2 number 1
             //console.log("OVER HEREEE: "+ instID1.department+ "  "+fac.departments[i].name+"\n");
 
             if(instID1.department == fac.departments[i].name){
-                let tempDept = fac.departments[i];
+               let tempDept = fac.departments[i];
                // console.log(tempDept);
                let hod = await HeadOfDepartmentModel.findOne({ID:tempDept.HeadOfDepartmentID});
-               assignments.push(hod);
-                for(let j=0; j<tempDept.courses.length;j++){
+
+               if(hod){
+                   
+                   let mhod = {"schedule":hod.schedule,
+                   "changereq":hod.changereq,
+                   "leaves":hod.leaves,
+                   "linkslotreqs":hod.linkslotreqs,
+                   "email":hod.email,
+                        "locationID":hod.locationID,
+                        "ID":hod.ID,
+                        "name":hod.name,
+                        "faculty":hod.faculty,
+                        "dayOff":hod.dayOff,
+                        "missingDays":hod.missingDays,
+                        "mustAttendHours":hod.mustAttendHours,
+                        "attendedHours":hod.attendedHours,
+                        "signinTime":hod.signinTime,
+                        "signoutTime":hod.signoutTime,
+                        "signIn":hod.signIn,
+                        "signOut":hod.signOut,
+                        "salary":hod.salary,
+                        "deduction":hod.deduction,
+                        "gender":hod.gender,
+                        "leaveBalance":hod.leaveBalance,
+                        "department":hod.department,
+                        "accidentalLeaves":hod.accidentalLeaves
+                    }
+                    
+                    assignments.push(mhod);
+                }
+                    for(let j=0; j<tempDept.courses.length;j++){
                     //let tempCourse=CourseModel.findOne({_id:tempDept.courses[j]._id})
                     //coverage.add(tempDept.course[j].coverage);
                    // console.log(tempDept.courses[j].courseName);
                 
-                   // assignments[j] = new Array();
-
-
-                   assignments.push(tempDept.courses[j].courseName);
+                   // assignments[j] = new Array();                        
+                   
+                   //assignments.push(tempDept.courses[j].courseName);
                    for(let k=0; k<tempDept.courses[j].Instructors.length; k++){
-                       assignments.push(tempDept.courses[j].Instructors[k]);
+
+                                
+                       let minst = {"schedule":tempDept.courses[j].Instructors[k].schedule,
+                        "changereq":tempDept.courses[j].Instructors[k].changereq,
+                        "leaves":tempDept.courses[j].Instructors[k].leaves,
+                        "linkslotreqs":tempDept.courses[j].Instructors[k].linkslotreqs,
+                        "email":tempDept.courses[j].Instructors[k].email,
+                        "locationID":tempDept.courses[j].Instructors[k].locationID,
+                        "ID":tempDept.courses[j].Instructors[k].ID,
+                        "name":tempDept.courses[j].Instructors[k].name,
+                        "faculty":tempDept.courses[j].Instructors[k].faculty,
+                        "dayOff":tempDept.courses[j].Instructors[k].dayOff,
+                        "missingDays":tempDept.courses[j].Instructors[k].missingDays,
+                        "mustAttendHours":tempDept.courses[j].Instructors[k].mustAttendHours,
+                        "attendedHours":tempDept.courses[j].Instructors[k].attendedHours,
+                        "signinTime":tempDept.courses[j].Instructors[k].signinTime,
+                        "signoutTime":tempDept.courses[j].Instructors[k].signoutTime,
+                        "signIn":tempDept.courses[j].Instructors[k].signIn,
+                        "signOut":tempDept.courses[j].Instructors[k].signOut,
+                        "salary":tempDept.courses[j].Instructors[k].salary,
+                        "deduction":tempDept.courses[j].Instructors[k].deduction,
+                        "gender":tempDept.courses[j].Instructors[k].gender,
+                        "leaveBalance":tempDept.courses[j].Instructors[k].leaveBalance,
+                        "department":tempDept.courses[j].Instructors[k].department,
+                        "accidentalLeaves":tempDept.courses[j].Instructors[k].accidentalLeaves
+                    }
+                    
+                        assignments.push(minst);
                    }
                    for(let k=0; k<tempDept.courses[j].TAs.length; k++){
-                        assignments.push(tempDept.courses[j].TAs[k]);
-                   }
+                       
+                    let mta = {"schedule":tempDept.courses[j].TAs[k].schedule,
+                    "changereq":tempDept.courses[j].TAs[k].changereq,
+                    "leaves":tempDept.courses[j].TAs[k].leaves,
+                    "linkslotreqs":tempDept.courses[j].TAs[k].linkslotreqs,
+                    "email":tempDept.courses[j].TAs[k].email,
+                    "locationID":tempDept.courses[j].TAs[k].locationID,
+                    "ID":tempDept.courses[j].TAs[k].ID,
+                    "name":tempDept.courses[j].TAs[k].name,
+                    "faculty":tempDept.courses[j].TAs[k].faculty,
+                    "dayOff":tempDept.courses[j].TAs[k].dayOff,
+                    "missingDays":tempDept.courses[j].TAs[k].missingDays,
+                    "mustAttendHours":tempDept.courses[j].TAs[k].mustAttendHours,
+                    "attendedHours":tempDept.courses[j].TAs[k].attendedHours,
+                    "signinTime":tempDept.courses[j].TAs[k].signinTime,
+                    "signoutTime":tempDept.courses[j].TAs[k].signoutTime,
+                    "signIn":tempDept.courses[j].TAs[k].signIn,
+                    "signOut":tempDept.courses[j].TAs[k].signOut,
+                    "salary":tempDept.courses[j].TAs[k].salary,
+                    "deduction":tempDept.courses[j].TAs[k].deduction,
+                    "gender":tempDept.courses[j].TAs[k].gender,
+                    "leaveBalance":tempDept.courses[j].TAs[k].leaveBalance,
+                    "department":tempDept.courses[j].TAs[k].department,
+                    "accidentalLeaves":tempDept.courses[j].TAs[k].accidentalLeaves
                 }
+                
+                assignments.push(mta);
             }
+            /*let m = {
+                "HoD":mhod,
+                "instructor":minst,
+                "ta":mta
+            }*/
+        }
+        }
         }
         res.send(assignments);
     }
 });
 
-router.route("/assignAcademicMember").put(async (req, res)=> {
+router.route("/assignAcademicMember").post(async (req, res)=> {
     const newAM = req.body.id;
     const isTA = req.body.isTA;
 
@@ -170,7 +254,7 @@ router.route("/assignAcademicMember").put(async (req, res)=> {
     const instID1 = await InstructorModel.findOne({ID:instID2});
     
     //const facultyName = req.body.facName;
-    const fac =await FacultyModel.findOne({_id:req.body.facID});
+    const fac =await FacultyModel.findOne({name:req.body.facName});
     
     const courseCode= req.body.courseCode;
 
@@ -268,21 +352,21 @@ router.route("/assignAcademicMember").put(async (req, res)=> {
 });
 
 
-router.route("/deleteAssignment").delete(async (req, res)=> {
+router.route("/deleteAssignment").post(async (req, res)=> {
     let isTA = req.body.isTA;
     let done = false;
 
-    const delAM = req.body.id;
+    const delAM = req.body.delID;
     const delTA = await TaModel.findOne({ID:delAM});
     const delProf = await InstructorModel.findOne({ID:delAM});
 
     /*const instID2 = req.body.instID;
     const instID1 = await InstructorModel.findOne({ID:instID2});*/
     
-    const instID1 = await InstructorModel.findOne({ID:req.id});
+    const instID1 = await InstructorModel.findOne({ID:req.body.id});
     
     //const facultyName = req.body.facName;
-    const fac =await FacultyModel.findOne({_id:req.body.facID});
+    const fac =await FacultyModel.findOne({name:req.body.facName});
     
     const courseCode= req.body.courseCode;
     
@@ -409,7 +493,7 @@ router.route("/deleteAssignment").delete(async (req, res)=> {
     
 });
 
-router.route("/updateAssignment").delete(async (req, res)=> {
+router.route("/updateAssignment").post(async (req, res)=> {
     let isOldTA = req.body.isOldTA;
     let isNewTA = req.body.isNewTA;
 
@@ -426,10 +510,11 @@ router.route("/updateAssignment").delete(async (req, res)=> {
     //const instID2 = req.body.instID;
     //const instID1 = await InstructorModel.findOne({ID:instID2});
     
-    const instID1 = await InstructorModel.findOne({ID:req.id});
+    const instID1 = await InstructorModel.findOne({ID:req.body.id});
     
     //const facultyName = req.body.facName;
-    const fac =await FacultyModel.findOne({_id:req.body.facID});
+    const fac =await FacultyModel.findOne({name:req.body.facName});
+    console.log("\n"+fac.name+"\n");
     
     const courseCode= req.body.courseCode;
 
@@ -552,7 +637,7 @@ router.route("/updateAssignment").delete(async (req, res)=> {
 
 
 //incomplete
-router.route("/deleteMemberFromCourse").delete(async (req, res)=> {
+router.route("/deleteMemberFromCourse").post(async (req, res)=> {
     const isTA = req.body.isTA;
     const delAM = req.body.id;
     const CourseCode = req.body.courseCode;
@@ -630,7 +715,7 @@ router.route("/deleteMemberFromCourse").delete(async (req, res)=> {
 
 
 //go to staff, search by email and name, and change type to coordinator
-router.route("/assignCoordinator").put(async (req, res)=> {
+router.route("/assignCoordinator").post(async (req, res)=> {
 
     const instID3 = await InstructorModel.findOne({ID:req.body.InstructorID});
     
@@ -639,7 +724,7 @@ router.route("/assignCoordinator").put(async (req, res)=> {
     //const facultyName = req.body.facName;
     const courseID= req.body.courseID;
     const newCoordinator = await TaModel.findOne({ID:req.body.id})
-    const fac = await FacultyModel.findOne({_id:req.body.facID});
+    const fac = await FacultyModel.findOne({name:req.body.facName});
    
     if(!fac){
         res.status(404).send("Faculty not found");
@@ -688,7 +773,7 @@ router.route("/assignCoordinator").put(async (req, res)=> {
                     await createCoordinator.save();
 
                     let updateTA = await TaModel.findOne({ID:newCoordinator.ID});
-                    //updateTA.coordinator=true;
+                    updateTA.coordinator=true;
                     await TaModel.findOneAndUpdate({ID: newCoordinator.ID},updateTA);
 
                     let tempCoordinator = await CoordinatorModel.findOne({ID:createCoordinator.ID});
