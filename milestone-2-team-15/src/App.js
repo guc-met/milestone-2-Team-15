@@ -65,7 +65,7 @@ function App() {
     <DropDown />
     <BrowserRouter>
     
-    <Redirect from="/" to="/login" />
+    {/* <Redirect from="/" to="/login" /> */}
         <Route exact path="/login" component={LoginPage} />
         <Route exact path="/attendance" component={StaffViewAttendancePage} />
         <Route exact path="/missingdays" component={StaffViewmissingDaysPage} />

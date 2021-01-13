@@ -28,41 +28,43 @@ export default function Login(props) {
       console.log(res.status)
       if (res.data == "please reset ur password" && res.status == 200) {
         setErr("please reset ur password")
-      }
-      if (res.status == 4004) {
-        console.log("here")
-        setErr("wrong Email")
+        localStorage.setItem("token", res.data)
       } else {
-        const result = jwt.verify(res.data, Token_Secret.Token_Secret)
+        if (res.status == 4004) {
+          console.log("here")
+          setErr("wrong Email")
+        } else {
+          const result = jwt.verify(res.data, Token_Secret.Token_Secret)
 
-        if (result) {
-          localStorage.setItem("token", res.data)
-          // console.log(result)
-          ///////////////////////////////////////////////////hereeeeeeeeeeeeeeeeee lseesasas
-          let type = result.type
-          switch (type) {
-            case "instructor":
-              history.push("/instructorprofile")
-              break
-            case "HR":
-              history.push("/HR")
-              break
-            case "TA":
-              history.push("/TA")
-              break
-            case "CourseCoordinator":
-              history.push("/CourseCoordinator")
-              break
+          if (result) {
+            localStorage.setItem("token", res.data)
+            // console.log(result)
+            ///////////////////////////////////////////////////hereeeeeeeeeeeeeeeeee lseesasas
+            let type = result.type
+            switch (type) {
+              case "instructor":
+                history.push("/instructor")
+                break
+              case "HR":
+                history.push("/HR")
+                break
+              case "TA":
+                history.push("/TA")
+                break
+              case "CourseCoordinator":
+                history.push("/CourseCoordinator")
+                break
 
-            default:
-              break
+              default:
+                break
+            }
           }
         }
       }
     })
   }
   const handlereset = async () => {
-    if (err=="please reset ur password") history.push("/resetpassword")
+    if (err == "please reset ur password") history.push("/resetpassword")
   }
   return (
     <div className="login">
