@@ -10,8 +10,7 @@ export default function InstructorProfilePage(props) {
   const [Name, setName] = useState()
 
   const [Salary, setSalary] = useState()
- 
- 
+
   const [DayOff, setDayOff] = useState()
   const [Email, setEmail] = useState()
   const [Faculty, setFaculty] = useState()
@@ -52,20 +51,18 @@ export default function InstructorProfilePage(props) {
           token: token,
         },
       }).then((res) => {
-        console.log("missing hours"+ res.data)
+        console.log("missing hours" + res.data)
         if (res.data > limittime) {
           let minutes = res.data
           let hours = 0
-          let x= res.data % 10
-          console.log("X : "+8.4%10.0)
+          let x = res.data % 10
+          console.log("X : " + (8.4 % 10.0))
           while (minutes > 0) {
-            
-
             minutes -= 1
             hours += 1
           }
           minutes = minutes * 60
-          console.log("min"+minutes)
+          console.log("min" + minutes)
           let deductedSalaryHours = hours * (nn / 180)
           let deductedSalaryminute = minutes * (nn / (180 * 60))
           console.log("h " + deductedSalaryHours)
@@ -81,7 +78,7 @@ export default function InstructorProfilePage(props) {
           token: token,
         },
       }).then((res) => {
-        console.log("miss"+res.data)
+        console.log("miss" + res.data)
         let deducted = 0
         res.data.map((eeachday) => {
           deducted = deducted + nn / 60

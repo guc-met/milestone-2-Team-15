@@ -25,8 +25,9 @@ export default function Login(props) {
         password: Password,
       },
     }).then((res) => {
-      console.log(res.status)
+      console.log(res.headers)
       if (res.data == "please reset ur password" && res.status == 200) {
+        localStorage.setItem("token", res.data)
         setErr("please reset ur password")
       } else {
         if (res.status == 4004) {
@@ -115,6 +116,7 @@ export default function Login(props) {
       <Col className="LoginButtonCol ">
         <Button
           variant="dark "
+          style={{ width: "auto !important" }}
           size="LoginButton"
           type="submit"
           onClick={handlereset}

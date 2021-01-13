@@ -12,8 +12,8 @@ export default function TAProfilePage(props) {
   const [Salary, setSalary] = useState()
   const [DayOff, setDayOff] = useState()
   const [Email, setEmail] = useState()
-  const [Faculty,setFaculty]=useState()
-  const [Department,setDepartment]=useState()
+  const [Faculty, setFaculty] = useState()
+  const [Department, setDepartment] = useState()
   const token = localStorage.getItem("token")
   const days = [
     "Sunday",
@@ -31,7 +31,7 @@ export default function TAProfilePage(props) {
       headers: {
         token: token,
       },
-    }).then(async(res) => {
+    }).then(async (res) => {
       console.log(res.data.staff)
       setData(res.data)
       setID(res.data.staff.ID)
@@ -40,7 +40,7 @@ export default function TAProfilePage(props) {
       setDayOff(res.data.staffreally.dayOff)
       setFaculty(res.data.staffreally.faculty)
       setDepartment(res.data.staffreally.department)
-  //  setSalary(res.data.staffreally.salary.$numberDecimal)
+      //  setSalary(res.data.staffreally.salary.$numberDecimal)
       let ss = res.data.staffreally.salary.$numberDecimal
       let nn = ss
       await axios({
@@ -50,20 +50,18 @@ export default function TAProfilePage(props) {
           token: token,
         },
       }).then((res) => {
-        console.log("missing hours"+ res.data)
+        console.log("missing hours" + res.data)
         if (res.data > limittime) {
           let minutes = res.data
           let hours = 0
-          let x= res.data % 10
-          console.log("X : "+8.4%10.0)
+          let x = res.data % 10
+          console.log("X : " + (8.4 % 10.0))
           while (minutes > 0) {
-            
-
             minutes -= 1
             hours += 1
           }
           minutes = minutes * 60
-          console.log("min"+minutes)
+          console.log("min" + minutes)
           let deductedSalaryHours = hours * (nn / 180)
           let deductedSalaryminute = minutes * (nn / (180 * 60))
           console.log("h " + deductedSalaryHours)
@@ -79,7 +77,7 @@ export default function TAProfilePage(props) {
           token: token,
         },
       }).then((res) => {
-        console.log("miss"+res.data)
+        console.log("miss" + res.data)
         let deducted = 0
         res.data.map((eeachday) => {
           deducted = deducted + nn / 60
@@ -89,20 +87,19 @@ export default function TAProfilePage(props) {
         nn = nn - deducted
       })
       setSalary(nn)
-
     })
   })
   return (
     <div>
       <Header />
       <TAProfile
-         ID={ID}
-         Name={Name}
-         Email={Email}
-         Salary={Salary}
-         DayOff={days[DayOff]}
-         Faculty={Faculty}
-         Department={Department}
+        ID={ID}
+        Name={Name}
+        Email={Email}
+        Salary={Salary}
+        DayOff={days[DayOff]}
+        Faculty={Faculty}
+        Department={Department}
       />
       <Sidebar />
     </div>

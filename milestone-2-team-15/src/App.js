@@ -24,18 +24,16 @@ import StaffViewmissingDaysPage from "./pages/StaffViewmissingDaysPage"
 import ExtraHoursPage from "./pages/ExtraHoursPage"
 import MissingHoursPage from "./pages/MissingHoursPage"
 
-
 import Signin from "./components/Signin"
 import Signout from "./components/Signout"
 import Logout from "./components/Logout"
-
 
 function App() {
   const token = localStorage.getItem("token")
   return (
     <div>
       <BrowserRouter>
-        <Redirect from="/" to="/login" />
+        {/* //  <Redirect from="/" to="/login" /> */}
         <Route exact path="/login" component={LoginPage} />
         <Route exact path="/attendance" component={StaffViewAttendancePage} />
         <Route exact path="/missingdays" component={StaffViewmissingDaysPage} />
@@ -43,14 +41,16 @@ function App() {
         <Route exact path="/missinghours" component={MissingHoursPage} />
         <Route exact path="/resetpassword" component={ResetPasswordPage} />
         <Route exact path="/HRprofile" component={HRProfilePage} />
-        <Route exact path="/instructorprofile" component={InstructorProfilePage} />
+        <Route
+          exact
+          path="/instructorprofile"
+          component={InstructorProfilePage}
+        />
         <Route exact path="/hodprofile" component={HODProfilePage} />
         <Route exact path="/taprofile" component={TAProfilePage} />
         <Route exact path="/signin" component={Signin} />
         <Route exact path="/signout" component={Signout} />
         <Route exact path="/logout" component={Logout} />
-
-       
       </BrowserRouter>
     </div>
   )
