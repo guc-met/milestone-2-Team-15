@@ -24,8 +24,10 @@ router.use(async (req, res, next) => {
     const token = req.headers.token
     // console.log(token)
     const found = await blacklist.findOne({ token: token })
-    console.log(found)
+    //console.log(found)
     if (!found) {
+        console.log("hii")
+        console.log(token);
       const result = jwt.verify(token, process.env.Token_Secret)
       if (result) {
         // console.log(result)

@@ -63,6 +63,7 @@ router.use(async (req, res, next) => {
   // console.log(!found)
   if (token) {
     if (!found) {
+      console.log(token);
       const result = jwt.verify(token, process.env.Token_Secret)
 
       if (result) {
