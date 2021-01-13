@@ -50,11 +50,21 @@ import Viewreq from "./components/viewRequests"
 import Viewlinkreq from "./components/coorlinkslotreqs";
 import Addslot from "./components/cooraddslot";
 import DeleteSlot from "./components/deleteslotcoor";
+import RegisterStaff from "./components/RegisterStaff";
+import UpdateStaff from "./components/UpdateStaff";
+import DeleteStaff from "./components/DeleteStaff";
+import staffAttendanceRecords from "./components/staffAttendanceRecords";
+import staffMissingDays from "./components/StaffMissingDays";
+import staffMissingHours from "./components/StaffMissingHours";
+import UpdateSalary from "./components/UpdateSalary";
+import Faculties from "./components/Faculties";
+import AddSignin from "./components/AddSigninSignOut";
 function App() {
   return (
     <div>
     <DropDown />
     <BrowserRouter>
+    
     <Redirect from="/" to="/login" />
         <Route exact path="/login" component={LoginPage} />
         <Route exact path="/attendance" component={StaffViewAttendancePage} />
@@ -107,6 +117,20 @@ function App() {
         <Route path="/hod/viewCoverage" component={CoverageOfCourses} />
         {/* viewTeachAssigns */}
         <Route path="/hod/viewTeachAssigns" component={ViewTeachAssigns} />
+        <Route path="/HR" component={HR} />
+        <Route path="/HR/Locations" component={Location} />
+        <Route path="/HR/RegisterStaff" component={RegisterStaff} />
+        <Route path="/HR/UpdateStaff" component={UpdateStaff} />
+        <Route path="/HR/DeleteStaff" component={DeleteStaff} />
+        <Route
+          path="/HR/staffAttendanceRecords"
+          component={staffAttendanceRecords}
+        />
+            <Route path="/HR/staffMissingDays" component={staffMissingDays} />
+        <Route path="/HR/staffMissingHours" component={staffMissingHours} />
+        <Route path="/HR/UpdateSalary" component={UpdateSalary} />
+        <Route path="/HR/Faculties" component={Faculties} />
+        <Route path="/HR/AddSign" component={AddSignin} />
       
 
      
