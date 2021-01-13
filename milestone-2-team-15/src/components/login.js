@@ -25,9 +25,11 @@ export default function Login(props) {
         password: Password,
       },
     }).then((res) => {
-      console.log(res.headers)
+      // console.log("ana")
+      // console.log(res)
+      // console.log(res.headers.token)
       if (res.data == "please reset ur password" && res.status == 200) {
-        localStorage.setItem("token", res.data)
+        localStorage.setItem("token", res.headers.token)
         setErr("please reset ur password")
       } else {
         if (res.status == 4004) {
@@ -37,7 +39,7 @@ export default function Login(props) {
           const result = jwt.verify(res.data, Token_Secret.Token_Secret)
 
           if (result) {
-            localStorage.setItem("token", res.data)
+            localStorage.setItem("token", res.headers.token)
             // console.log(result)
             ///////////////////////////////////////////////////hereeeeeeeeeeeeeeeeee lseesasas
             let type = result.type
