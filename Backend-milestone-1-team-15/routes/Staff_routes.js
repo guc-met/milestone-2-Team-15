@@ -52,7 +52,11 @@ router
           let r = await blacklist.findOneAndRemove({ token: token })
           //console.log(r)
           // stored in browser we bybtha howa fe kol req
-          return res.header("token", token).send(token)
+          res.setHeader("Access-Control-Expose-headers", '*')
+          res.setHeader("Access-Control-Allow-Origin", '*')
+          res.set("token",token)
+          // return res.header("token", token).send(token)
+          return res.status(200).send("welcome")
         } else return res.status(401).send("wrong password")
       }
     }

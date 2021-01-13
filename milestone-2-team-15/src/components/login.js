@@ -36,7 +36,7 @@ export default function Login(props) {
           console.log("here")
           setErr("wrong Email")
         } else {
-          const result = jwt.verify(res.data, Token_Secret.Token_Secret)
+          const result = jwt.verify(res.headers.token, Token_Secret.Token_Secret)
 
           if (result) {
             localStorage.setItem("token", res.headers.token)
@@ -50,13 +50,13 @@ export default function Login(props) {
               case "HR":
                 history.push("/HR")
                 break
-              case "TA":
+              case "ta":
                 history.push("/TA")
                 break
               case "CourseCoordinator":
                 history.push("/CourseCoordinator")
                 break
-                case "hod":
+                case "HoD":
                   history.push("/hod")
                   break
               default:
