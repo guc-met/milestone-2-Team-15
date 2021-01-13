@@ -23,22 +23,23 @@ export default function InstructorProfile(props) {
     const [allreqs, setAllreqs] = useState("");
     const [comment, setComment]= useState("");
     const [response, setResponse] = useState();
-
+    const token =localStorage.getItem("token");
   useEffect(() => {
     async function fetchData() {
 
-       
+      
       
     //   router.route("/viewAllreq").post(async (req, res) => {//number 4 in 4.1 
     //     const headid = req.body.id;
-        const facdep = await axios.post(`http://localhost:3000/HoD/ViewDepIDandFacID`,{
-              hid:"ac-100"
+        const facdep = await axios({method:'post', url:`http://localhost:3000/HoD/ViewDepIDandFacID`,
+        headers:{token:token}
         });
+
         console.log(facdep.data);
         setFacID(facdep.data[0]);
         let facidd= facdep.data[0];
-        const response = await axios.post(`http://localhost:3000/HoD/viewAllreq`,{
-          id:"ac-100",
+        const response = await axios({method:'post', url:`http://localhost:3000/HoD/viewAllreq`,
+        headers:{token:token}
         });
 
         const teachassigns = response.data.map((req) => {
@@ -218,22 +219,22 @@ export default function InstructorProfile(props) {
     //     const reqid = req.body.rid;// "5fe2ab1d8fa26d38e8bc8ff7"
     //     const reqtype = req.body.rtype; //leave
   const handleaccept = async(headid , reqid, reqtype) => {
-    const response = await axios.post(`http://localhost:3000/HoD/assignCourseInst`, {
-        id: "ac-100",
-        rid: reqid,
-        rtype: reqtype,
-        rcomment: comment
+    const response = await axios({method:'post', url:`http://localhost:3000/HoD/assignCourseInst`,
+    data:{rid: reqid,
+      rtype: reqtype,
+      rcomment: comment},
+    headers:{token:token}
     });
     // if (response.status == 200)
     setResponse(<Alert variant="success">{response.data} </Alert>);
   }
 
   const handlereject = async(headid , reqid, reqtype) => {
-    const response = await axios.post(`http://localhost:3000/HoD/assignCourseInst`, {
-      id: "ac-100",
-      rid: reqid,
+    const response = await axios({method:'post', url:`http://localhost:3000/HoD/assignCourseInst`,
+    data:{rid: reqid,
       rtype: reqtype,
-      rcomment: comment
+      rcomment: comment},
+    headers:{token:token}
     });
     // if (response.status == 200)
     setResponse(<Alert variant="success">{response.data} </Alert>);
