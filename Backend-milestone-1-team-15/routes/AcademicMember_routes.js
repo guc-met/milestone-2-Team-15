@@ -686,7 +686,7 @@ router.route("/viewPending").post(async (req, res) =>{
 
 })
 
-router.route("/viewAllRequests").post(async (req, res) =>{
+router.route("/viewAllRequests").get(async (req, res) =>{
     const acm=req.id;
     let ACM=await StaffModel.findOne({ ID:acm });
     let ACM1=await StaffModel.findOne({ID:acm});

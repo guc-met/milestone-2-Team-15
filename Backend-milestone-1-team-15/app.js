@@ -9,7 +9,7 @@ const courseCoordinator_routes = require("./routes/Coor_routes");
 const HoD_routes = require("./routes/HOD_routes");
 
 const app = express();
-const jwt = require("jsonwebtoken");
+//const jwt = require("jsonwebtoken");
 require("dotenv").config();
 app.use(express.json()); //readbody
 app.use("/ac_routes", ac_routes);
