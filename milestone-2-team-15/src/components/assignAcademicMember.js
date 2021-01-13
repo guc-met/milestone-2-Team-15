@@ -44,7 +44,6 @@ function AssignAcademicMember(props) {
         facName: faculty    
    });
    setmsg((await response).data);
-console.log("suppppppp"+(await response).data+"\n");
     }
 
   return (
@@ -97,7 +96,8 @@ console.log("suppppppp"+(await response).data+"\n");
             <Button
             onClick={sendReq}
             >Assign Academic Member </Button>
-            <h3 >{msg}</h3>
+            <br/>
+            <p >{msg}</p>
         </Form> 
 
 

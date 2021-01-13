@@ -38,6 +38,7 @@ function AssignCoordinator(props) {
       facName:fac   
  });
  setmsg((await response).data);
+ console.log("suppppppp"+(await response).data+"\n");
   }
 
   return (
@@ -70,7 +71,7 @@ function AssignCoordinator(props) {
             <br/>
             <br/>
             <Button onClick={sendReq}>Assign Coorditor</Button>
-            <br/>
+            <br/><br/>
             <p>{msg}</p>
         </Form>
 

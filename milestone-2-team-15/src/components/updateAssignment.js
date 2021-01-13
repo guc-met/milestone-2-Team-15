@@ -47,8 +47,8 @@ function UpdateAssignment(props) {
 
         id:"16"
    });
-   console.log("yadi el nila "+JSON.stringify(response))
-   setmsg(response);
+   setmsg((await response).data);
+   console.log("suppppppp"+(await response).data+"\n");
 }
   return (
 
@@ -114,9 +114,10 @@ function UpdateAssignment(props) {
             <br/>
             <br/>
             <Button onClick={sendReq}>Update Academic Member Assignment</Button>
+            <br/><br/>
+            <p>{msg}</p>
         </Form>
 
-            <p>{msg}</p>
 
     </div>
   );
