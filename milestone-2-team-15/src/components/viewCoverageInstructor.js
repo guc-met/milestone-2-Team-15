@@ -24,14 +24,17 @@ function ViewCoverageInstructor(props) {
    
     const [facname, setFacname] = useState();
     const [msg, setmsg]= useState([]);
-    let response=[]
+    let response=[];
+    const token =localStorage.getItem("token ");
 
    const view = async (event) => {
-          response = await axios.post( "http://localhost:3000/instructor_routes/viewCourseCoverage",
-          {
+          response = await axios( {method:'post',url:"http://localhost:3000/instructor_routes/viewCourseCoverage",
+          data:{
             id:"12",
             facName:facname
-          });
+          },  headers:{token:token}
+        }
+          );
 
     if(response.length==0){
       return;

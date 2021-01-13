@@ -76,8 +76,7 @@ function DeleteMemberFromCourse(props) {
             <br/>
             <br/>
             <Button onClick={sendReq}>Remove Academic Member from Course</Button>
-            <br/>
-            <p>{msg}</p>
+
         </Form>
 
 

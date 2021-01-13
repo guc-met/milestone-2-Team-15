@@ -39,7 +39,6 @@ const courseCoordinatorSchema = new schema({
   accidentalLeaves: Number,
   faculty: String,
   changereq: Array,
-  department: String,
   linkslotreqs: Array,
 });
 

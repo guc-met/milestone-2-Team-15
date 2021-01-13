@@ -1,0 +1,41 @@
+.hod-Buttons {
+    margin-left: 20%;
+    height: 1000vh;
+    padding: 1%;
+    width: 80%;
+    background-color: whitesmoke;
+  }
+    .col {
+      margin: 10px;
+    }
+    .Location_Col {
+      padding: 10px;
+    }
+    .Location_Button_delete {
+      width: 30%;
+      margin: 10%;
+      border-radius: 3px;
+      background-color: rgb(196, 7, 7);
+    }
+    .Location_Button_Edit {
+      width: 30%;
+      margin: 10%;
+      border-radius: 3px;
+      color: black;
+      background-color: green;
+    }
+    .Location_plus_card {
+      text-align: center;
+      font-size: large;
+      color: brown;
+      height: 100px;
+    }
+    .hod_input {
+      width: 280px;
+    }
+    
+    .hod_Submit {
+      width: 30%;
+      margin-top: auto;
+      padding: 100px;
+    }

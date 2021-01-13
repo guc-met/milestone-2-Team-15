@@ -23,6 +23,8 @@ export default function sideBar(props) {
     <div class="sidenav" style={{width:"200px",top:"70px", height:"95%"}}>
         
         <a href="/Instructor/sendReq">Send Requests</a> <br/>
+        <a href="/Instructor/viewrequest">View Requests</a> <br/>
+    <a href="#">View Schedule</a> <br/>
         <a href="/Instructor/viewCoverage">View My Courses Coverage</a> <br/>
         <a href="/Instructor/viewAssignedSlotsOfCourse">View Asigned Slots of my Courses</a> <br/>
         <a href="/Instructor/viewStaffProfileByDept">View Staff Profiles</a> <br/>  

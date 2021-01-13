@@ -23,7 +23,7 @@ function SendRequestInstructor(props) {
    
       
   return (
-    <div class="HOD-sendreq">
+    <div class="HOD-sendreq" style={{padding:"60px 0px 0px 110px"}}>
       <Dropdown>
         <Dropdown.Toggle
           variant="primary"

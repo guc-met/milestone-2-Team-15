@@ -19,6 +19,7 @@
   "homepage": "https://github.com/guc-met/milestone-1-Team-15#readme",
   "dependencies": {
     "bcrypt": "^5.0.0",
+    "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "jest": "^26.6.3",
@@ -26,6 +27,7 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.11.8",
     "mongoose-auto-increment": "^5.0.1",
-    "nodemon": "^2.0.7"
+    "nodemon": "^2.0.6",
+    "react-bootstrap-sidebar": "0.0.1"
   }
 }

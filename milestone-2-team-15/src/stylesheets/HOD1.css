@@ -25,7 +25,13 @@
     width: 280px;
   }  
 
-  
+.viewreq{
+    margin-left: 8%;
+    height: 1000vh;
+    padding: 1%;
+    width: 100%;
+    background-color: whitesmoke;
+}
 .glow-on-hover {
     width: 220px;
     height: 50px;
@@ -85,5 +91,3 @@
     50% { background-position: 400% 0; }
     100% { background-position: 0 0; }
 }
-
-

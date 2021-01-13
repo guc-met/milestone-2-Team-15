@@ -1,6 +1,4 @@
-import React from "react"
-import "bootstrap/dist/css/bootstrap.min.css"
-//import Back from "../images/back.png"
+import React from "react";
 
 export default function sideBar(props) {
     return(

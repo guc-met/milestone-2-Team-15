@@ -12,6 +12,7 @@ const InstructorModel = require('../models/instructor.js');
 const StaffModel = require('../models/Staff.js');
 const TaModel = require('../models/ta.js');
 const CoorModel = require('../models/courseCoordinator.js');
+const blacklist = require("../models/blacklist")
 
 router.use(async (req, res, next) => {
     //middlewares wihtout next itwont terminate if not res.send
@@ -31,11 +32,72 @@ router.use(async (req, res, next) => {
     } else return res.status(403).send("u arent authorized")
   })
 
+router.route("/ViewStaffType").post(async (req, res) => {
+    let sid = req.body.sid;//5ff70f86c788475336d89b6e
+    let staff = await StaffModel.find({ID:sid});
+    if (staff) {
+        if(staff.type=="ta"|| staff.type=="courseCoordinator"){
+            return res.send("ta")
+        }
+        else{
+            return res.send("inst")
+        }
+    } else return res.status(404).send("staff not found");
+  });
+router.route("/ViewOneStaff").post(async (req, res) => {
+    let sid = req.body.sid;//5ff70f86c788475336d89b6e
+    let staff = await StaffModel.find({ID:sid});
+    if (staff) {
+        if(staff.type=="ta"|| staff.type=="courseCoordinator"){
+            let ta = await TaModel.find({ID:sid})
+            return res.send(ta)
+        }
+        else{
+            let inst = await InstructorModel.find({ID:sid})
+            return res.send(inst)
+        }
+    } else return res.status(404).send("staff not found");
+  });
 
-// deleteCourseInst is working 
+  router.route("/ViewCourses").post(async (req, res) => {
+    let depid = req.body.did;//5ff70f86c788475336d89b6e
+    let faculties = await FacultyModel.find();
+    if (faculties) {
+        let courses = [];
+        for(let i=0; i<faculties.length; i++){
+            const departments = faculties[i].departments;
+            for(let j=0; j<departments.length ; j++){
+                console.log(departments[j]._id)
+                console.log(depid)
+                if(departments[j]._id==depid){
+                    console.log("in");
+                    courses = departments[j].courses;
+                }
+            }
+        }
+      return res.status(200).json(courses);
+    } else return res.status(404).send("staff not found");
+  });
+
+  router.route("/ViewDepIDandFacID").post(async (req, res) => {
+    let headid = req.id;//"ac-100"
+    let head = await HeadOfDepartmentModel.findOne({ID:headid});
+    if (head) {
+        let facdep =[];
+        facdep.push(head.faculty)
+        facdep.push(head.department)
+        
+      return res.status(200).json(facdep);
+    } else return res.status(404).send("staff not found");
+  });
+
+// deleteCourseInst is working backend & frontend 
 router.route("/deleteCourseInst").delete(async (req, res) => {//delete of number 1 in 4.1
-    const headID =  req.id;//req.body.hid;
+    console.log("req body: "+req.body)
+    const headID = req.id;//req.body.hid;
+    console.log("head id: "+headID)
     const facultyid = req.body.facid;
+    console.log("fac id: "+facultyid)
     const courseid = req.body.cid;
     const Instructorid = req.body.id;
     // "hid": "10",
@@ -45,6 +107,7 @@ router.route("/deleteCourseInst").delete(async (req, res) => {//delete of number
     let faculty = await FacultyModel.findOne({ _id: facultyid });
 
     const head = await HeadOfDepartmentModel.findOne({ID: headID});
+    console.log(headID)
     const departmentname = head.department;
     if(!head){
         res.status(404).send("head ID not found");
@@ -61,7 +124,7 @@ router.route("/deleteCourseInst").delete(async (req, res) => {//delete of number
             let updatedcourses = [];
             let updateddepartments = [];
             for(let i =0; i<departments.length; i++){
-                if(departments[i].name==departmentname){
+                if(departments[i]._id==departmentname){
                     let courses = departments[i].courses;
                     for(let j=0; j<courses.length ;j++){
                         if(courses[j]._id==courseid){
@@ -85,7 +148,7 @@ router.route("/deleteCourseInst").delete(async (req, res) => {//delete of number
         }
     }  
   });
-  //assignCourseInst is working 
+  //assignCourseInst is working backend & frontend
   router.route("/assignCourseInst").post(async (req, res) => {// assign of number 1 in 4.1
     const headID = req.id;//"10"
     const facultyid = req.body.facid; //"5fddc76b87abd5472dd8e8af"
@@ -94,9 +157,10 @@ router.route("/deleteCourseInst").delete(async (req, res) => {//delete of number
     let faculty = await FacultyModel.findOne({ _id: facultyid });
     console.log(faculty.name);
     let instructor = await InstructorModel.findOne({ID: Instructorid});
+    console.log(Instructorid)
     console.log(instructor.department);
     let head = await HeadOfDepartmentModel.findOne({ID: headID});
-    console.log(head.department);
+    console.log("dep: "+head.department);
     const departmentname = head.department;
     if(!head){
         res.status(404).send("head ID not found");
@@ -117,11 +181,13 @@ router.route("/deleteCourseInst").delete(async (req, res) => {//delete of number
                 let updatedcourses = [];
                 let updateddepartments = [];
                 for(let i =0; i<departments.length; i++){
-                    if(departments[i].name==departmentname){
+                    console.log("innnn")
+                    if(departments[i]._id==departmentname){
+                        console.log("innnnnnnnn")
                         console.log(departments[i].name+"  in same dep");
                         let courses = departments[i].courses;
                         for(let j=0; j<courses.length ;j++){
-                            console.log(coursename+"   "+courses[j].courseName)
+                            //console.log(coursename+"   "+courses[j].courseName)
                             if(courses[j]._id==courseid){
                                 console.log("same course")
                                 let instructors = courses[j].Instructors;
@@ -139,7 +205,7 @@ router.route("/deleteCourseInst").delete(async (req, res) => {//delete of number
     }  
   });
 
-//updateCourseInst is working
+//updateCourseInst is working backend & frontend 
 router.route("/updateCourseInst").put(async (req, res) => { //update of number 1 in 4.1
     const headID = req.id;
     const facultyid = req.body.facid;
@@ -169,7 +235,7 @@ router.route("/updateCourseInst").put(async (req, res) => { //update of number 1
             let updatedcourses = [];
             let updateddepartments = [];
             for(let i =0; i<departments.length; i++){
-                if(departments[i].name==departmentname){
+                if(departments[i]._id==departmentname){
                     let courses = departments[i].courses;
                     for(let j=0; j<courses.length ;j++){
                         if(courses[j]._id==courseid){
@@ -195,7 +261,7 @@ router.route("/updateCourseInst").put(async (req, res) => { //update of number 1
     } 
   });
 
-//view staff is working
+//view staff is working backend & frontend
 router.route("/viewstaff").post(async (req, res) => {//number 2 in 4.1 first half
     const headid = req.id;
     const facultyid = req.body.facid;
@@ -205,7 +271,7 @@ router.route("/viewstaff").post(async (req, res) => {//number 2 in 4.1 first hal
     let departments= faculty.departments;
     let staff = [];
     for(let i=0; i<departments.length; i++){
-        if(departments[i].name==departmentname){
+        if(departments[i]._id==departmentname){
             console.log(departmentname+"  "+departments[i].name)
             let courses = departments[i].courses;
             for(let j=0; j<courses.length; j++){
@@ -238,7 +304,7 @@ router.route("/viewpercourse").post(async (req, res) => {// number 2 in 4.1 afte
 });
 
 
-//viewstaffdayoff is working 
+//viewstaffdayoff is working backend & frontend
 router.route("/viewstaffdayoff").post(async (req, res) => {//number 3 in 4.1 first half
     const headid = req.id;
     const facultyid = req.body.facid;
@@ -248,16 +314,16 @@ router.route("/viewstaffdayoff").post(async (req, res) => {//number 3 in 4.1 fir
     let departments= faculty.departments;
     let staffdayoff = [];
     for(let i=0; i<departments.length; i++){
-        if(departments[i].name==departmentname){
+        if(departments[i]._id==departmentname){
             let courses = departments[i].courses;
             for(let j=0; j<courses.length; j++){
                 let tas = courses[j].TAs;
                 let instructors = courses[j].Instructors;
                 for(let k=0; k<tas.length; k++){
-                    staffdayoff.push(tas[k].name, tas[k].dayOff);
+                    staffdayoff.push("name: "+ tas[k].name+ "   dayOff: "+ tas[k].dayOff);
                 }
                 for(let k=0; k<instructors.length; k++){
-                    staffdayoff.push(instructors[k].name, instructors[k].dayOff);
+                    staffdayoff.push("name: "+ instructors[k].name+ "   dayOff: "+ instructors[k].dayOff);
                 }
             }
             break;
@@ -266,7 +332,7 @@ router.route("/viewstaffdayoff").post(async (req, res) => {//number 3 in 4.1 fir
     res.send(staffdayoff);
 });
 
-//viewonestaffdayoff is working 
+//viewonestaffdayoff is working backend & frontend
 router.route("/viewonestaffdayoff").post(async (req, res) => {//number 3 in 4.1 2nd half
     const headid = req.id;
     const facultyid = req.body.facid;
@@ -276,9 +342,10 @@ router.route("/viewonestaffdayoff").post(async (req, res) => {//number 3 in 4.1 
     let faculty = await FacultyModel.findOne({ _id: facultyid });
     let departments= faculty.departments;
     let dayoff="";
+    console.log("to here")
     for(let i=0; i<departments.length; i++){
         console.log("in loop ")
-        if(departments[i].name==departmentname){
+        if(departments[i]._id==departmentname){
             console.log(departmentname+"   same department   "+departments[i].name)
             let courses = departments[i].courses;
             for(let j=0; j<courses.length; j++){
@@ -286,9 +353,9 @@ router.route("/viewonestaffdayoff").post(async (req, res) => {//number 3 in 4.1 
                 let tas = courses[j].TAs;
                 let instructors = courses[j].Instructors;
                 for(let k=0; k<tas.length; k++){
-                    if(tas[i].ID==staffid){
+                    if(tas[k].ID==staffid){
                         console.log("found TA")
-                        dayoff=tas[i].dayOff;
+                        dayoff=tas[k].dayOff;
                         break;
                     }
                 }
@@ -296,9 +363,9 @@ router.route("/viewonestaffdayoff").post(async (req, res) => {//number 3 in 4.1 
                     break;
                 }
                 for(let k=0; k<instructors.length; k++){
-                    if(instructors[i].ID==staffid){
+                    if(instructors[k].ID==staffid){
                         console.log("found instructor")
-                        dayoff+=instructors[i].dayOff;
+                        dayoff+=instructors[k].dayOff;
                         break;
                     }
                 }
@@ -321,10 +388,41 @@ router.route("/viewAllreq").post(async (req, res) => {//number 4 in 4.1
     const leavereqs = head.leaves;
     let result = [];
     for(let i=0; i<changereqs.length; i++){
-       result.push("change dayOff: ",changereqs[i]);
+        let m = {
+            "reqid":changereqs[i]._id,
+            "type":"change dayOff",
+            "smail": changereqs[i].smail,
+            "name": changereqs[i].name,
+            "day": changereqs[i].day,
+            "state": changereqs[i].state,
+            "HoDname": changereqs[i].HoDname,
+            "comment": changereqs[i].comment 
+
+        }
+       result.push(m);
     }
     for(let i=0; i<leavereqs.length; i++){
-        result.push("Leave: ",leavereqs[i]);
+        let m = {
+            "type":"Leave",
+            "reqid":leavereqs[i]._id,
+            "smail": leavereqs[i].smail,
+            "rmail": leavereqs[i].rmail,
+            "day": leavereqs[i].day,
+            "month": leavereqs[i].month,
+            "year": leavereqs[i].year,
+            "name": leavereqs[i].name,
+            "replacementName": leavereqs[i].replacementName,
+            "requesterid":leavereqs[i].requesterid,
+            "replacmentid":leavereqs[i].replacmentid,
+            "replacmentAcceptance":leavereqs[i].replacmentAcceptance,
+            "slotnumber": leavereqs[i].slotnumber,
+            "leaveType": leavereqs[i].leaveType,
+            "state": leavereqs[i].state,
+            "HoDname": leavereqs[i].HoDname,
+            "comment": leavereqs[i].comment  
+
+        }
+        result.push(m);
     }
     res.send(result);
 });
@@ -333,6 +431,7 @@ router.route("/viewAllreq").post(async (req, res) => {//number 4 in 4.1
 ///////////////need to know things 1st:
 
 //acceptreq for dayoff is working 
+
 router.route("/acceptreq").post(async (req, res) => {//Accept req number 5 in 4.1 
     const headid = req.id;
     const reqid = req.body.rid;
@@ -710,6 +809,7 @@ router.route("/rejectreq").post(async (req, res) => {//Reject req number 6 in 4.
     }
 });
 
+//working backend & frontend
 //viewCoursesCover working bs kol l courses l coverage bta3et-hom null
 router.route("/viewCoursesCover").post(async (req, res) => {//number 7 in 4.1 
     const headID = req.id;
@@ -721,9 +821,9 @@ router.route("/viewCoursesCover").post(async (req, res) => {//number 7 in 4.1
     let departments = faculty.departments;
     let result =[];
     for(let i=0; i< departments.length ;i++){
-        if(departments[i].name == departmentname){
+        if(departments[i]._id == departmentname){
             for(let j=0; j<(departments[i].courses).length ; j++){
-                result.push("course: ",(departments[i].courses).name, ", coverage: ", (departments[i].courses).coverage);
+                result.push("course: "+(departments[i].courses)[j].courseName+ ", coverage: "+ (departments[i].courses)[j].coverage);
             }
             break;
         }
@@ -733,7 +833,7 @@ router.route("/viewCoursesCover").post(async (req, res) => {//number 7 in 4.1
 
 
 
-
+//working backend & frontend
 //viewTeachAssign working with no errors bs l list fadya so far 
 router.route("/viewTeachAssign").post(async (req, res) => {//number 8 in 4.1 
     const headID = req.id;
@@ -745,12 +845,21 @@ router.route("/viewTeachAssign").post(async (req, res) => {//number 8 in 4.1
     const departments = faculty.departments;
     let result =[];
     for(let i=0; i< departments.length ;i++){
-        if(departments[i].name == departmentname){
+        if(departments[i]._id == departmentname){
             courses = (departments[i].courses);
             for(let j=0; j<courses.length ; j++){
                 slots = courses[j].slots;
                 for(let k=0; k<slots.length; k++){
-                    result.push("course: ",courses[j].courseName, ", slot info: ", slots[k]);  
+                    let m = {
+                        "course": courses[j].courseName,
+                        "slotid":slots[k]._id, 
+                        "kind": slots[k].kind,
+                        "academicMember": slots[k].academicMember,
+                        "timing": slots[k].timing,
+                        "courseCode": slots[k].courseCode,
+                        "location": slots[k].location 
+                    }
+                    result.push(m);  
                 }
             }
             break;

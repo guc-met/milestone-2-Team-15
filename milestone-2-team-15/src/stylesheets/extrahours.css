@@ -1,0 +1,20 @@
+.ExtraHoursCard{
+    width: 20%;
+    margin-left: 45%;
+    margin-top: 15%;
+    padding-top: 0vw;
+    /* width: 70%; */
+   
+    
+    text-align: center;
+    height:fit-content    ;
+    background-color: #f7fafd;
+    box-shadow: 0 0.2777777777777778vw 0.5555555555555556vw 0 rgba(0,0,0,0.3);
+    border-radius: 1.7361111111111112vw;
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+.extraTable{
+    margin-bottom: 0vw;
+    
+}
