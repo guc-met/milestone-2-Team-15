@@ -46,4 +46,12 @@
    line-height: 1.0416666666666665vw !important;
    font-family: Arial, Helvetica, sans-serif  , Georgia, serif !important;
 
+
 }
+.btn-resetLoginButton,.btn-resetLoginButton:hover{
+    width:13% !important;
+    font-size:1.3888888888888888vw !important;
+    line-height: 1.0416666666666665vw !important;
+    font-family: Arial, Helvetica, sans-serif  , Georgia, serif !important;
+ 
+ }

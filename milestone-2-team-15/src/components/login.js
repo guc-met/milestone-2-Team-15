@@ -25,10 +25,12 @@ export default function Login(props) {
         password: Password,
       },
     }).then((res) => {
-      console.log(res.status)
+      // console.log("ana")
+      // console.log(res)
+      // console.log(res.headers.token)
       if (res.data == "please reset ur password" && res.status == 200) {
+        localStorage.setItem("token", res.headers.token)
         setErr("please reset ur password")
-        localStorage.setItem("token", res.data)
       } else {
         if (res.status == 4004) {
           console.log("here")
@@ -37,7 +39,7 @@ export default function Login(props) {
           const result = jwt.verify(res.data, Token_Secret.Token_Secret)
 
           if (result) {
-            localStorage.setItem("token", res.data)
+            localStorage.setItem("token", res.headers.token)
             // console.log(result)
             ///////////////////////////////////////////////////hereeeeeeeeeeeeeeeeee lseesasas
             let type = result.type
@@ -54,7 +56,9 @@ export default function Login(props) {
               case "CourseCoordinator":
                 history.push("/CourseCoordinator")
                 break
-
+                case "hod":
+                  history.push("/hod")
+                  break
               default:
                 break
             }
@@ -64,7 +68,7 @@ export default function Login(props) {
     })
   }
   const handlereset = async () => {
-    if (err == "please reset ur password") history.push("/resetpassword")
+    if (err == "please reset ur password") history.push("/resetpasswordlogin")
   }
   return (
     <div className="login">
@@ -116,7 +120,7 @@ export default function Login(props) {
       <Col className="LoginButtonCol ">
         <Button
           variant="dark "
-          size="LoginButton"
+          size="resetLoginButton"
           type="submit"
           onClick={handlereset}
         >

@@ -16,11 +16,11 @@ import CoverageOfCourses from "./components/viewCovhod.js"
 import ViewTeachAssigns from "./components/viewTeachAssignhod.js"
 import React, { useState, useEffect } from "react";
 import ResetPasswordPage from "./pages/ResetPasswordPage"
+import ResetPassword from "./components/ResetPassword"
 import StaffViewAttendancePage from "./pages/StaffViewAttendancePage"
 import StaffViewmissingDaysPage from "./pages/StaffViewmissingDaysPage"
 import ExtraHoursPage from "./pages/ExtraHoursPage"
 import MissingHoursPage from "./pages/MissingHoursPage"
-
 
 import Signin from "./components/Signin"
 import Signout from "./components/Signout"
@@ -82,8 +82,14 @@ function App() {
         <Route exact path="/extrahours" component={ExtraHoursPage} />
         <Route exact path="/missinghours" component={MissingHoursPage} />
         <Route exact path="/resetpassword" component={ResetPasswordPage} />
+        <Route exact path="/resetpasswordlogin" component={ResetPassword} />
+
         <Route exact path="/HRprofile" component={HRProfilePage} />
-        <Route exact path="/instructorprofile" component={InstructorProfilePage} />
+        <Route
+          exact
+          path="/instructorprofile"
+          component={InstructorProfilePage}
+        />
         <Route exact path="/hodprofile" component={HODProfilePage} />
         <Route exact path="/taprofile" component={TAProfilePage} />
         <Route exact path="/signin" component={Signin} />
