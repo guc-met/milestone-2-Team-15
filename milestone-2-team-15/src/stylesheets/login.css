@@ -1,0 +1,49 @@
+.login{
+    min-width: fit-content;
+}
+.LoginImage{
+    /* width: 100%;
+    height: 100%; */
+    max-width: 31.319444444444443vw;
+    min-width: 31.319444444444443vw;
+}
+.LoginImageRow{
+      margin: auto !important;
+      width: fit-content;
+      margin-bottom: 3% !important ;
+      
+}
+.LoginLabel{ 
+     text-align: center;
+     /* margin: auto !important; */
+     width:100%;
+     font-size:1.25vw;
+     font-family: Arial, Helvetica, sans-serif  , Georgia, serif;
+     font-weight: bold
+}
+.LogintextBoxCol{
+    margin:auto !important;
+    width: 38.645833333333336vw;
+    text-align: center;
+}
+
+.LoginTextBox ,.LoginTextBox:enabled{
+    min-height:  2.7777777777777777vw !important;
+    max-height: 2.7777777777777777vw !important;
+    font-size: 0.9722222222222222vw !important;
+    font-family: Arial, Helvetica, sans-serif  , Georgia, serif !important;
+    width: 38.645833333333336vw;
+
+    
+}
+.LoginButtonCol{
+    text-align: center;
+    padding: 0vw 0vw 0vw 0vw;
+}
+.btn-LoginButton,.btn-LoginButton:hover{
+   width:6.944444444444445vw !important;
+   font-size:1.3888888888888888vw !important;
+   line-height: 1.0416666666666665vw !important;
+   font-family: Arial, Helvetica, sans-serif  , Georgia, serif !important;
+
+}

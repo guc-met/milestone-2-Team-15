@@ -17,18 +17,7 @@ const HoD_model = require("../models/HoD")
 const blacklist = require("../models/blacklist")
 
 require("dotenv").config()
-// router.route("/register").post(async (req, res) => {
-//   const salt = await bycrpt.genSalt(2) //layer of hashing by2mel 2popwer10
-//   const newpass = await bycrpt.hash(req.body.password, salt) //string and salt
-//   const newuser = new staff_model({
-//     email: req.body.email,
-//     password: newpass,
-//     type: req.body.type,
-//   })
-//   console.log(newuser)
-//   await newuser.save()
-//   res.send(newuser)
-// })
+
 router
   .route("/login") // find btrg3 array list falw a7ed arraylist [0] find one btrg3 json
   .post(async (req, res) => {

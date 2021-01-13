@@ -1,4 +1,9 @@
-  
+import HR from "./pages/HR"
+import Location from "./pages/Location"
+import { BrowserRouter, Route, Redirect } from "react-router-dom"
+import { Switch } from "react-router"
+import "./App.css"
+import LoginPage from "./pages/LoginPage"
 import logo from "./logo.svg";
 import HOD from "./pages/HOD.js"
 import AssignInst from "./components/assignInst.js"
@@ -10,13 +15,26 @@ import ViewAllreqshod from "./components/viewReqshod.js"
 import CoverageOfCourses from "./components/viewCovhod.js"
 import ViewTeachAssigns from "./components/viewTeachAssignhod.js"
 import React, { useState, useEffect } from "react";
-import { BrowserRouter, Route } from "react-router-dom";
+import ResetPasswordPage from "./pages/ResetPasswordPage"
+import StaffViewAttendancePage from "./pages/StaffViewAttendancePage"
+import StaffViewmissingDaysPage from "./pages/StaffViewmissingDaysPage"
+import ExtraHoursPage from "./pages/ExtraHoursPage"
+import MissingHoursPage from "./pages/MissingHoursPage"
+
+
+import Signin from "./components/Signin"
+import Signout from "./components/Signout"
+import Logout from "./components/Logout"
+
 //import logo from './logo.svg';
 //import Login from "./components/login"
 import DropDown from "./components/dropDown";
 import Header from "./components/header";
 
-
+import HRProfilePage from "./pages/profile/HRProfilePage"
+import InstructorProfilePage from "./pages/profile/InstructorProfilePage"
+import HODProfilePage from "./pages/profile/HODProfilePage"
+import TAProfilePage from "./pages/profile/TAProfilePage"
 import Sidebarhodhome from "./components/sidebarhodhome";
 import SendRequestHOD from "./components/sendRequestHOD";
 import SendLinkRequest from "./components/sendlinkreq";
@@ -37,10 +55,24 @@ function App() {
     <div>
     <DropDown />
     <BrowserRouter>
-      <Route path="/HOD" component={Sidebarhodhome} />
-      <Route path="/HOD/sendReq" component={SendRequestHOD} />
-      <Route path="/HOD/sendlinkReq" component={SendLinkRequest} />
-      <Route path="/HOD/viewrequest" component={Viewreq} />
+    <Redirect from="/" to="/login" />
+        <Route exact path="/login" component={LoginPage} />
+        <Route exact path="/attendance" component={StaffViewAttendancePage} />
+        <Route exact path="/missingdays" component={StaffViewmissingDaysPage} />
+        <Route exact path="/extrahours" component={ExtraHoursPage} />
+        <Route exact path="/missinghours" component={MissingHoursPage} />
+        <Route exact path="/resetpassword" component={ResetPasswordPage} />
+        <Route exact path="/HRprofile" component={HRProfilePage} />
+        <Route exact path="/instructorprofile" component={InstructorProfilePage} />
+        <Route exact path="/hodprofile" component={HODProfilePage} />
+        <Route exact path="/taprofile" component={TAProfilePage} />
+        <Route exact path="/signin" component={Signin} />
+        <Route exact path="/signout" component={Signout} />
+        <Route exact path="/logout" component={Logout} />
+      <Route path="/hod" component={HOD} />
+      <Route path="/hod/sendReq" component={SendRequestHOD} />
+      <Route path="/hod/sendlinkReq" component={SendLinkRequest} />
+      <Route path="/hod/viewrequest" component={Viewreq} />
       <Route path="/Instructor" component={SidebarInstructorHome} />
       <Route path="/Instructor/sendReq" component={SendRequestInstructor} />
       <Route path="/Instructor/sendlinkReq" component={SendLinkRequest} />
@@ -59,8 +91,6 @@ function App() {
       <Route path="/coordinator/viewrecievedlinkslotreqs" component={Viewlinkreq} />
       <Route path="/coordinator/addslot" component={Addslot} />
       <Route path="/coordinator/deleteslot" component={DeleteSlot} />
-       {/* <Route path="/HOD" component={Sidebarhodhome} /> */}
-       <Route path="/hod" component={HOD} /> 
         {/* delete instructor */}
         <Route path="/hod/deletetest" component={Deletetest} />
         {/* assign Instructor */}
@@ -89,4 +119,4 @@ function App() {
   );
 }
 
-export default App;
+export default App
