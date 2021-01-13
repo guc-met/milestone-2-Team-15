@@ -22,7 +22,7 @@ router
   .route("/login") // find btrg3 array list falw a7ed arraylist [0] find one btrg3 json
   .post(async (req, res) => {
     const result = await staff_model.findOne({ email: req.body.email })
-    //console.log(req.body)
+  //  console.log(result)
     if (!result) {
       console.log("ana hna")
       return res.status(4004).send("user not found")
@@ -35,7 +35,9 @@ router
         let r = await blacklist.findOneAndRemove({ token: token })
         //console.log(r)
         // stored in browser we bybtha howa fe kol req
-        res.header("token", token)
+        res.setHeader("Access-Control-Expose-headers", '*')
+        res.setHeader("Access-Control-Allow-Origin", '*')
+        res.set("token",token)
         return res.status(200).send("please reset ur password")
       } else {
         const correctpass = await bcrypt.compare(
@@ -60,9 +62,9 @@ router.use(async (req, res, next) => {
   const token = req.headers.token
   // console.log(token)
   const found = await blacklist.findOne({ token: token })
-  // console.log(!found)
   if (token) {
     if (!found) {
+      
       console.log(token);
       const result = jwt.verify(token, process.env.Token_Secret)
 
