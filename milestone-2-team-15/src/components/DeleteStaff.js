@@ -10,6 +10,7 @@ import {
   Card,
   Row,
   Col,
+  Alert,
   Dropdown,
 } from "react-bootstrap";
 import * as Icon from "react-bootstrap-icons";
@@ -17,15 +18,11 @@ import * as Icon from "react-bootstrap-icons";
 import { Plus } from "react-bootstrap-icons";
 require("dotenv").config();
 function RegisterStaff(props) {
-  const [type, setType] = useState();
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState(0);
-  const [salary, setSalary] = useState(0);
-  const [location, setLocation] = useState(0);
-  const [staff, setStaff] = useState(0);
-  const [staffArray, setStaffArray] = useState([]);
-  const [flag, setFlag] = useState(false);
+  const [staff, setStaff] = useState([]);
+  const [staffChosen, setStaffChosen] = useState(0);
+  const [response, setResponse] = useState();
 
+  const [show, setShow] = useState(false);
   useEffect(() => {
     async function fetchData() {
       const response = await axios.get(`http://localhost:3000/HR/ViewStaffs`);
@@ -34,24 +31,35 @@ function RegisterStaff(props) {
       const staff = response.data.map((staff, index) => {
         return (
           <Dropdown.Item>
-            <Button onClick={() => handleClick(staff.ID)}>{staff.email}</Button>
+            <Button
+              variant="primary"
+              class="HR__ALL__Buttons"
+              onClick={() => handleClick(staff)}
+            >
+              {staff.email}
+            </Button>
           </Dropdown.Item>
         );
       });
 
       setStaff(staff);
-      setStaffArray(response.data);
     }
     fetchData();
-  }, [flag]);
+  }, [show]);
 
-  const handleClick = async (staffID) => {
-    console.log(staffID);
-
+  const handleClick = (staff) => {
+    console.log(staff);
+    setStaffChosen(staff);
+    setShow(true);
+  };
+  const handleSubmit = async () => {
     const response = await axios.post(`http://localhost:3000/HR/DeleteStaff`, {
-      staffID: staffID,
+      staffID: staffChosen.ID,
     });
-    console.log(response);
+    setShow(false);
+    if (response.status == 200)
+      setResponse(<Alert variant="success">{response.data} </Alert>);
+    else setResponse(<Alert variant="danger">{response.data} </Alert>);
   };
 
   return (
@@ -67,6 +75,28 @@ function RegisterStaff(props) {
 
         <Dropdown.Menu>{staff}</Dropdown.Menu>
       </Dropdown>
+      <Modal show={show} onHide={() => setShow(false)}>
+        <Modal.Header>
+          <Modal.Title> Deleting staff </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          Are you sure you want to delete {staffChosen.email}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="primary" onClick={() => setShow(false)}>
+            Cancel
+          </Button>
+          <Button
+            variant="primary"
+            onClick={() => {
+              handleSubmit();
+            }}
+          >
+            Yes
+          </Button>
+        </Modal.Footer>
+      </Modal>
+      {response}
     </div>
   );
 }

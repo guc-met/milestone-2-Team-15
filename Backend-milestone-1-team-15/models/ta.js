@@ -16,6 +16,7 @@ const taSchema = new schema({
     unique: true,
     required: true,
   },
+
   coordinator: Boolean,
   name: String,
   schedule: Array,

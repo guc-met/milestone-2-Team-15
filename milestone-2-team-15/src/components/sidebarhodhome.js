@@ -1,6 +1,7 @@
-import React from "react"
-import "bootstrap/dist/css/bootstrap.min.css"
-import "../stylesheets/sideBar.css"
+// import React,{useState} from 'react';
+// import { Form, Row, Col, Card, Button } from "react-bootstrap"
+// import "bootstrap/dist/css/bootstrap.min.css"
+// import "../stylesheets/sideBar.css"
 
 export default function sideBar(props) {
     return(
@@ -18,10 +19,14 @@ export default function sideBar(props) {
         <a href="#">Manage Courses</a>
         <a href="#">View Staff</a>
         <a href="#">View DayOff </a>
+        <a href="/HOD/sendReq">Send Requests </a>
+        <a href="/HOD/viewrequest">View Requests</a> <br/>
+        <a href="#">View Schedule</a> <br/>
         
         
-    </div>
+
  
-    </div>
-)
-}
+     </div>
+     </div>
+ )
+ }

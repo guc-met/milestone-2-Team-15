@@ -24,6 +24,21 @@ const HRSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  missingDays: Number,
+  mustAttendHours: Number,
+  attendedHours: Number,
+  signinTime: Number,
+  signoutTime: Number,
+  signIn: Boolean,
+  signOut: Boolean,
+  salary: mongoose.Decimal128,
+  deduction: mongoose.Decimal128,
+  gender: String,
+  leaveBalance: mongoose.Decimal128, //add 2.5 every month
+  changereq: Array,
+  leaves: Array,
+  accidentalLeaves: Number,
+  linkslotreqs: Array,
 });
 
 HRSchema.plugin(autoIncrement.plugin, {

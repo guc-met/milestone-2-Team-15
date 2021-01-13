@@ -6,9 +6,9 @@ import "../stylesheets/sideBar.css"
 export default function sideBar(props) {
     return(
     <div>
-        <div className="red">
+        <div class="red">
         </div>
-        <div className="yellow">
+        <div class="yellow">
         </div>
     <div className="sidenav">
         <a href="#">item1</a>

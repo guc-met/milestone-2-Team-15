@@ -45,7 +45,7 @@ export default function Login(props) {
             let type = result.type
             switch (type) {
               case "instructor":
-                history.push("/instructorprofile")
+                history.push("/instructor")
                 break
               case "HR":
                 history.push("/HR")
@@ -56,7 +56,9 @@ export default function Login(props) {
               case "CourseCoordinator":
                 history.push("/CourseCoordinator")
                 break
-
+                case "hod":
+                  history.push("/hod")
+                  break
               default:
                 break
             }
@@ -66,7 +68,7 @@ export default function Login(props) {
     })
   }
   const handlereset = async () => {
-    if (err == "please reset ur password") history.push("/resetpassword")
+    if (err == "please reset ur password") history.push("/resetpasswordlogin")
   }
   return (
     <div className="login">
@@ -118,8 +120,7 @@ export default function Login(props) {
       <Col className="LoginButtonCol ">
         <Button
           variant="dark "
-          style={{ width: "auto !important" }}
-          size="LoginButton"
+          size="resetLoginButton"
           type="submit"
           onClick={handlereset}
         >
