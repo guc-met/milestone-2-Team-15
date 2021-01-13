@@ -14,23 +14,23 @@ const TaModel = require('../models/ta.js');
 const CoorModel = require('../models/courseCoordinator.js');
 const blacklist = require("../models/blacklist")
 
-// router.use(async (req, res, next) => {
-//     //middlewares wihtout next itwont terminate if not res.send
-//     const token = req.headers.token
-//     // console.log(token)
-//     const found = await blacklist.findOne({ token: token })
-//     console.log(found)
-//     if (!found) {
-//       const result = jwt.verify(token, process.env.Token_Secret)
-//       if (result) {
-//         // console.log(result)
-//         req.id = result.id // zwdna 7aga 3la result
-//         req.type = result.type
-//         next()
-//       }else return res.status(404).send("error")
+router.use(async (req, res, next) => {
+    //middlewares wihtout next itwont terminate if not res.send
+    const token = req.headers.token
+    // console.log(token)
+    const found = await blacklist.findOne({ token: token })
+    console.log(found)
+    if (!found) {
+      const result = jwt.verify(token, process.env.Token_Secret)
+      if (result) {
+        // console.log(result)
+        req.id = result.id // zwdna 7aga 3la result
+        req.type = result.type
+        next()
+      }else return res.status(404).send("error")
        
-//     } else return res.status(403).send("u arent authorized")
-//   })
+    } else return res.status(403).send("u arent authorized")
+  })
 
 router.route("/ViewStaffType").post(async (req, res) => {
     let sid = req.body.sid;//5ff70f86c788475336d89b6e
@@ -80,7 +80,7 @@ router.route("/ViewOneStaff").post(async (req, res) => {
   });
 
   router.route("/ViewDepIDandFacID").post(async (req, res) => {
-    let headid = req.body.hid;//"ac-100"
+    let headid = req.id;//"ac-100"
     let head = await HeadOfDepartmentModel.findOne({ID:headid});
     if (head) {
         let facdep =[];
@@ -94,7 +94,7 @@ router.route("/ViewOneStaff").post(async (req, res) => {
 // deleteCourseInst is working backend & frontend 
 router.route("/deleteCourseInst").delete(async (req, res) => {//delete of number 1 in 4.1
     console.log("req body: "+req.body)
-    const headID = req.body.hid;//req.body.hid;
+    const headID = req.id;//req.body.hid;
     console.log("head id: "+headID)
     const facultyid = req.body.facid;
     console.log("fac id: "+facultyid)
@@ -150,7 +150,7 @@ router.route("/deleteCourseInst").delete(async (req, res) => {//delete of number
   });
   //assignCourseInst is working backend & frontend
   router.route("/assignCourseInst").post(async (req, res) => {// assign of number 1 in 4.1
-    const headID = req.body.hid;//"10"
+    const headID = req.id;//"10"
     const facultyid = req.body.facid; //"5fddc76b87abd5472dd8e8af"
     const courseid = req.body.cid; // "Data Bases I"
     const Instructorid = req.body.id; // "14"
@@ -207,7 +207,7 @@ router.route("/deleteCourseInst").delete(async (req, res) => {//delete of number
 
 //updateCourseInst is working backend & frontend 
 router.route("/updateCourseInst").put(async (req, res) => { //update of number 1 in 4.1
-    const headID = req.body.hid;
+    const headID = req.id;
     const facultyid = req.body.facid;
     const courseid = req.body.cid;
     const Instructorid = req.body.id;
@@ -263,7 +263,7 @@ router.route("/updateCourseInst").put(async (req, res) => { //update of number 1
 
 //view staff is working backend & frontend
 router.route("/viewstaff").post(async (req, res) => {//number 2 in 4.1 first half
-    const headid = req.body.id;
+    const headid = req.id;
     const facultyid = req.body.facid;
     let head = await HeadOfDepartmentModel.findOne({ID: headid});
     const departmentname = head.department;
@@ -306,7 +306,7 @@ router.route("/viewpercourse").post(async (req, res) => {// number 2 in 4.1 afte
 
 //viewstaffdayoff is working backend & frontend
 router.route("/viewstaffdayoff").post(async (req, res) => {//number 3 in 4.1 first half
-    const headid = req.body.id;
+    const headid = req.id;
     const facultyid = req.body.facid;
     let head = await HeadOfDepartmentModel.findOne({ID: headid});
     const departmentname = head.department;
@@ -334,7 +334,7 @@ router.route("/viewstaffdayoff").post(async (req, res) => {//number 3 in 4.1 fir
 
 //viewonestaffdayoff is working backend & frontend
 router.route("/viewonestaffdayoff").post(async (req, res) => {//number 3 in 4.1 2nd half
-    const headid = req.body.id;
+    const headid = req.id;
     const facultyid = req.body.facid;
     const staffid = req.body.sid;
     let head = await HeadOfDepartmentModel.findOne({ID: headid});
@@ -382,7 +382,7 @@ router.route("/viewonestaffdayoff").post(async (req, res) => {//number 3 in 4.1 
 
 //viewAllreq
 router.route("/viewAllreq").post(async (req, res) => {//number 4 in 4.1 
-    const headid = req.body.id;
+    const headid = req.id;
     const head = await HeadOfDepartmentModel.findOne({ID: headid});
     const changereqs = head.changereq;
     const leavereqs = head.leaves;
@@ -433,7 +433,7 @@ router.route("/viewAllreq").post(async (req, res) => {//number 4 in 4.1
 //acceptreq for dayoff is working 
 
 router.route("/acceptreq").post(async (req, res) => {//Accept req number 5 in 4.1 
-    const headid = req.body.id;
+    const headid = req.id;
     const reqid = req.body.rid;
     const reqtype = req.body.rtype;
     // "hid": "10",
@@ -676,7 +676,7 @@ router.route("/acceptreq").post(async (req, res) => {//Accept req number 5 in 4.
 
 //rejectreq is working (garrabtaha 3al TA bs bema2en kollohom nafs l 7aga bs condition mo5talef it should work for all)
 router.route("/rejectreq").post(async (req, res) => {//Reject req number 6 in 4.1 
-    const headid = req.body.id; // 6
+    const headid = req.id; // 6
     const reqid = req.body.rid;// "5fe2ab1d8fa26d38e8bc8ff7"
     const reqtype = req.body.rtype; //leave
     let head = await HeadOfDepartmentModel.findOne({ID: headid});
@@ -812,7 +812,7 @@ router.route("/rejectreq").post(async (req, res) => {//Reject req number 6 in 4.
 //working backend & frontend
 //viewCoursesCover working bs kol l courses l coverage bta3et-hom null
 router.route("/viewCoursesCover").post(async (req, res) => {//number 7 in 4.1 
-    const headID = req.body.id;
+    const headID = req.id;
     const facultyid = req.body.facid;
     let faculty = await FacultyModel.findOne({ _id: facultyid });
     let head = await HeadOfDepartmentModel.findOne({ID: headID});
@@ -836,7 +836,7 @@ router.route("/viewCoursesCover").post(async (req, res) => {//number 7 in 4.1
 //working backend & frontend
 //viewTeachAssign working with no errors bs l list fadya so far 
 router.route("/viewTeachAssign").post(async (req, res) => {//number 8 in 4.1 
-    const headID = req.body.id;
+    const headID = req.id;
     const facultyid = req.body.facid;
     const faculty = await FacultyModel.findOne({ _id: facultyid });
     const head = await HeadOfDepartmentModel.findOne({ID: headID});
