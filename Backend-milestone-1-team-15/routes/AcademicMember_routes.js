@@ -12,37 +12,38 @@ const InstructorModel=require("../models/instructor");
 const bycrpt = require("bcrypt")
 const jwt = require("jsonwebtoken")
 const HeadOfDepartmentModel = require('../models/HoD.js');
-
 const leavee = require("../models/leave");
 const faculty = require("../models/faculty");
 const slotLinkingRequest = require("../models/slotLinkingRequest");
 const changeDayreq = require("../models/changeDayreq");
 const { restart } = require("nodemon");
+const blacklist = require("../models/blacklist")
 
-
-// router.use(async (req, res, next) => {
-//     //middlewares wihtout next itwont terminate if not res.send
-//     const token = req.headers.token
-//     // console.log(token)
-//     const found = await blacklist.findOne({ token: token })
-//     console.log(found)
-//     if (!found) {
-//       const result = jwt.verify(token, process.env.Token_Secret)
-//       if (result) {
-//         // console.log(result)
-//         req.id = result.id // zwdna 7aga 3la result
-//         req.type = result.type
-//         next()
-//       } else return res.status(404).send("error")
-//     } else return res.status(403).send("u arent authorized")
-//   })
+router.use(async (req, res, next) => {
+    //middlewares wihtout next itwont terminate if not res.send
+    const token = req.headers.token
+    // console.log(token)
+    const found = await blacklist.findOne({ token: token })
+    //console.log(found)
+    if (!found) {
+        console.log("hii")
+        console.log(token);
+      const result = jwt.verify(token, process.env.Token_Secret)
+      if (result) {
+        // console.log(result)
+        req.id = result.id // zwdna 7aga 3la result
+        req.type = result.type
+        next()
+      } else return res.send("error")
+    } else return res.status(403).send("u arent authorized")
+  })
  
 
   router.route("/viewschedule").post(async (req, res) => {//annual leaves req
-    const ACid = req.body.id; //id elly 3awez ye3mel view ll req bta3to
+    const ACid = req.id; //id elly 3awez ye3mel view ll req bta3to
     let currentAcademicMember=await StaffModel.findOne({ ID: ACid });
     if(!currentAcademicMember){
-        res.status(404).send("no such academic member");
+        res.send("no such academic member");
         return;
     }
     ACMtype=currentAcademicMember.type;
@@ -63,7 +64,7 @@ const { restart } = require("nodemon");
         currentAcademicMember=await HeadOfDepartmentModel.findOne({ ID: ACid });
         break;
        default:
-           res.status(404).send("no such academic member");
+           res.send("no such academic member");
            return;
              
     }
@@ -83,11 +84,11 @@ const { restart } = require("nodemon");
    res.send(sch);
 });
 router.route("/viewReplacmentRequest").post(async (req, res) => {//annual leaves req
-     const ACid = req.body.id; //id elly 3awez ye3mel view ll req bta3to
+     const ACid = req.id; //id elly 3awez ye3mel view ll req bta3to
      let currentAcademicMember=await StaffModel.findOne({ ID: ACid });
     
      if(!currentAcademicMember){
-        res.status(404).send("no such academic member");
+        res.send("no such academic member");
         return;
      }
      const ACMtype=currentAcademicMember.type;
@@ -111,14 +112,14 @@ router.route("/viewReplacmentRequest").post(async (req, res) => {//annual leaves
             break;
         
         default:
-            res.status(404).send("no such academic member");
+            res.send("no such academic member");
             return;
               
      }
     res.send(returnRequests);
 });
 router.route("/SendReplacmentRequestToReplacment").post(async (req, res) => {//request annual leave
-    const ACid = req.body.id; //elly 3awez ye3mel request
+    const ACid = req.id; //elly 3awez ye3mel request
     const repid=req.body.rid;
     let ACmember= await StaffModel.findOne({ ID:ACid });
     let replacment= await StaffModel.findOne({ ID:repid });
@@ -128,16 +129,16 @@ router.route("/SendReplacmentRequestToReplacment").post(async (req, res) => {//r
     let leave;
   
     if(!ACmember){
-        res.status(404).send("no such academic member");
+        res.send("no such academic member");
         return;
     }
     if(!replacment){
-        res.status(404).send("no such relacment");
+        res.send("no such relacment");
         return;
        
     }
     if(!(replacment.type==="ta") && !(replacment.type==="courseCoordinator") && !(replacment.type==="instructor")){
-        res.status(404).send("replacment can't be done");
+        res.send("replacment can't be done");
         return;
     }
     switch(ACmember.type){
@@ -149,7 +150,7 @@ router.route("/SendReplacmentRequestToReplacment").post(async (req, res) => {//r
             ACmember=await InstructorModel.findOne({ ID:ACid })
            // const hod= await HeadOfDepartmentModel.findOne({ ID:hodid });
             default:
-                res.status(404).send("no such academic member");
+                res.send("no such academic member");
                 return;   
     }    
     
@@ -164,11 +165,11 @@ router.route("/SendReplacmentRequestToReplacment").post(async (req, res) => {//r
             replacment=await InstructorModel.findOne({ ID:repid })
            // const hod= await HeadOfDepartmentModel.findOne({ ID:hodid });
             default:
-                res.status(404).send(" replacment cannot be done");
+                res.send(" replacment cannot be done");
                 return;   
     } 
     if(!(replacment.department===ACmember.department) || !(replacment.faculty===ACmember.faculty) ){
-        res.status(404).send("replacment can't be done they are not the same dep");
+        res.send("replacment can't be done they are not the same dep");
         
         return;
     }
@@ -219,7 +220,7 @@ router.route("/SendReplacmentRequestToReplacment").post(async (req, res) => {//r
 });
 
 router.route("/SendReplacmentRequestToHod").post(async (req, res) => {//request annual leave
-    const ACid = req.body.id; //elly 3awez ye3mel request
+    const ACid = req.id; //elly 3awez ye3mel request
     const hodid=req.body.hid;
     const leaveid=req.body.lid
     let ACmember= await StaffModel.findOne({ ID:ACid });
@@ -227,12 +228,14 @@ router.route("/SendReplacmentRequestToHod").post(async (req, res) => {//request 
     let coor;
     
     let leave;
+    console.log("henna")
+    console.log(ACid);
     if(!ACmember){
-        res.status(404).send("no such academic member");
+        res.send("no such academic member");
         return;
     }
     if(!hod){
-        res.status(404).send("no such hod");
+        res.send("no such hod");
         return;
     }
     
@@ -248,11 +251,11 @@ router.route("/SendReplacmentRequestToHod").post(async (req, res) => {//request 
             ACmember=await InstructorModel.findOne({ ID:ACid })
           break;
             default:
-                res.status(404).send("no such academic member");
+                res.send("no such academic member");
                 return;
     }        
     if(!(hod.department===ACmember.department)){
-        res.status(404).send("the hod department not as same as the academic member ");
+        res.send("the hod department not as same as the academic member ");
         return;
     }
     for(let i=0;i<ACmember.leaves.length;i++){
@@ -268,7 +271,7 @@ router.route("/SendReplacmentRequestToHod").post(async (req, res) => {//request 
                 return;
             }
             else{
-                res.status(404).send("cannot send the request,waiting for replacment respond")
+                res.send("cannot send the request,waiting for replacment respond")
                 return;
             }
             break;
@@ -276,27 +279,28 @@ router.route("/SendReplacmentRequestToHod").post(async (req, res) => {//request 
     }
     
    
-    res.send("Done");
+    res.send("no such leave request");
 });
 
+//
 router.route("/slotLinkingRequest").post(async (req, res) => {
+    
     const coorid=req.body.coid;
-    const ACmember=req.body.id;
+    const ACmember=req.id;
     const slotnumberr=req.body.slotnumber;
     const course_id=req.body.code;
     const slotid=req.body.sid
     let ACMember = await StaffModel.findOne({ID: ACmember});
+    console.log(ACMember);
     let coordinator = await courseCoordinatorModel.findOne({ID: coorid});
     let request;
-    ;
     if(!coordinator || !(coordinator.courses.includes(course_id)) ){
-        res.status(404).send("no such coordinator");
-      
+        res.send("no such coordinator");
         return;
     }
     
     if(!ACMember){
-        res.status(404).send("no such academic member");
+        res.send("no such academic member");
         return;
     }
     switch(ACMember.type){
@@ -311,11 +315,11 @@ router.route("/slotLinkingRequest").post(async (req, res) => {
             ACMember = await HeadOfDepartmentModel.findOne({ID: ACmember});
              
         default:
-            res.status(404).send("no such academic member")
+            res.send("no such academic member")
             return;           
     }
     if(!(ACMember.department===coordinator.department)){
-        res.status(404).send("academic member's and coordinator's departm,ents are not the same");
+        res.send("academic member's and coordinator's departm,ents are not the same");
         return;
     }
 
@@ -344,20 +348,20 @@ res.send("Done");
 });
 
 router.route("/changedayreq").post(async (req, res) => {
-    const acm=req.body.id;
+    const acm=req.id;
     const hod=req.body.hid;
     const dayy=req.body.d;
     const cmnt=req.body.comment;
     let coor;
     let ACM=await StaffModel.findOne({ID: acm});
     if(!ACM){
-        res.status(404).send("no such academic member");
+        res.send("no such academic member");
         return;
     }
     const HOD=await HeadOfDepartmentModel.findOne({ID: hod});
     //console.log(HOD);
     if(!HOD ){
-        res.status(404).send("no such head of department");
+        res.send("no such head of department");
         return;
     }
     let changerequest;
@@ -371,13 +375,13 @@ router.route("/changedayreq").post(async (req, res) => {
             ACM=await TAModel.findOne({ID: acm});
             break;
         default:
-            res.status(404).send("no such head of department");
+            res.send("no such head of department");
             return;    
             
 
     }
     if( !(HOD.department===ACM.department)){
-        res.status(404).send("the hod's dep is not as same as academic member dep");
+        res.send("the hod's dep is not as same as academic member dep");
         return;
     }
      changerequest=new changeDayreq({
@@ -406,7 +410,7 @@ router.route("/changedayreq").post(async (req, res) => {
 });
 
 router.route("/leaveReq").post(async (req, res) => {
-    const acm=req.body.id;
+    const acm=req.id;
     const hod=req.body.hid;
     const cmnt=req.body.comment;
     const type=req.body.t
@@ -415,20 +419,20 @@ router.route("/leaveReq").post(async (req, res) => {
     replacment= await StaffModel.findOne({ ID:repid });
     let ACM=await StaffModel.findOne({ID: acm});
     if(!ACM){
-        res.status(404).send("no such academic member");
+        res.send("no such academic member");
         return;
     }
     let HOD=await HeadOfDepartmentModel.findOne({ID: hod});
     if(!HOD ){
-        res.status(404).send("no such head of department");
+        res.send("no such head of department");
         return;
     }
     if(!replacment ){
-        res.status(404).send("no such replacment");
+        res.send("no such replacment");
         return;
     }
     if(!(replacment.type==="ta") && !(replacment.type==="courseCoordinator" ) && !(replacment.type==="instructor")){
-        res.status(404).send("the replacment is not an academic member");
+        res.send("the replacment is not an academic member");
         return;
     }
     let leave1;
@@ -446,7 +450,7 @@ router.route("/leaveReq").post(async (req, res) => {
             ACM=await InstructorModel.findOne({ID: acm});
             break;
         default:
-            res.status(404).send("not an academic member");
+            res.send("not an academic member");
             return;
     }
     switch(replacment.type){
@@ -460,18 +464,18 @@ router.route("/leaveReq").post(async (req, res) => {
             replacment=await InstructorModel.findOne({ID: repid});
             break;
         default:
-            res.status(404).send("replacment is not an academic member");
+            res.send("replacment is not an academic member");
             return;
     }
     if( !(HOD.department===ACM.department)){
-        res.status(404).send("hod's dep is not as same as the academic member");
+        res.send("hod's dep is not as same as the academic member");
         return;
     }
    
     
     if(!(replacment.department===ACM.department) || !(replacment.faculty===ACM.faculty) || 
     !(HOD.department===ACM.department)){
-        res.status(404).send("replacment is not the same dep");
+        res.send("replacment is not the same dep");
         return;
     }
     const today =new Date();
@@ -524,12 +528,12 @@ router.route("/leaveReq").post(async (req, res) => {
 
 
 router.route("/viewAccepted").post(async (req, res) =>{
-    const acm=req.body.id;
+    const acm=req.id;
     let ACM=await StaffModel.findOne({ ID:acm });
     let ACM1=await StaffModel.findOne({ ID:acm });
     const accepted=[];
     if(!ACM){
-        res.status(404).send("there is no such academic member");  
+        res.send("there is no such academic member");  
         return; 
     }
     switch(ACM.type){
@@ -541,11 +545,11 @@ router.route("/viewAccepted").post(async (req, res) =>{
             ACM=await InstructorModel.findOne({ ID:acm });
             break; 
        default:
-        res.status(404).send("there is no such academic member");  
+        res.send("there is no such academic member");  
         return;    
         }   
             if(!(ACM1.type==="courseCoordinator")  ){
-                accepted.push("accepted link slot requests")
+                accepted.push("link requests")
         for(let i=0;i<ACM.linkslotreqs.length;i++){
             if(ACM.linkslotreqs[i].state===("accepted")){
                 accepted.push(ACM.linkslotreqs[i]);
@@ -553,19 +557,19 @@ router.route("/viewAccepted").post(async (req, res) =>{
         }
     }
     if(!(ACM1.type==="HOD")){
-        accepted.push("accepted leaves requests")
+        accepted.push("leaves requests")
         for(let i=0;i<ACM.leaves.length;i++){
             if(ACM.leaves[i].state===("accepted")){
                 accepted.push(ACM.leaves[i]);
             }
         }
-        accepted.push("accepted change requests")
+        accepted.push("change requests")
         for(let i=0;i<ACM.changereq.length;i++){
             if(ACM.changereq[i].state===("accepted")){
                 accepted.push(ACM.changereq[i]);
             }
         }
-        accepted.push("accepted replacment requests")
+        accepted.push("replacing requests")
         for(let i=0;i<ACM.replacerequests.length;i++){
             if(ACM.replacerequests[i].state===("accepted")){
                 accepted.push(ACM.replacerequests[i]);
@@ -579,12 +583,12 @@ router.route("/viewAccepted").post(async (req, res) =>{
 })
 
 router.route("/viewRejected").post(async (req, res) =>{
-    const acm=req.body.id;
+    const acm=req.id;
     let ACM=await StaffModel.findOne({ ID:acm });
     let ACM1=await StaffModel.findOne({ID:acm})
     const rejected=[];
     if(!ACM){
-        res.status(404).send("there is no such academic member");  
+        res.send("there is no such academic member");  
         return; 
     }
     switch(ACM.type){
@@ -596,11 +600,11 @@ router.route("/viewRejected").post(async (req, res) =>{
             ACM=await InstructorModel.findOne({ ID:acm });
             break; 
         default:
-            res.status(404).send("there is no such academic member");  
+            res.send("there is no such academic member");  
             return;    
     }
     if(!(ACM1.type==="courseCoordinator")  ){
-        rejected.push("rejected link requests")
+        rejected.push("link requests")
         for(let i=0;i<ACM.linkslotreqs.length;i++){
             if(ACM.linkslotreqs[i].state===("rejected")){
                 rejected.push(ACM.linkslotreqs[i]);
@@ -608,19 +612,19 @@ router.route("/viewRejected").post(async (req, res) =>{
         }
     }
     if(!(ACM1.type==="HOD")){
-        rejected.push("rejected leaves requests")
+        rejected.push("leaves requests")
         for(let i=0;i<ACM.leaves.length;i++){
             if(ACM.leaves[i].state===("rejected")){
                 rejected.push(ACM.leaves[i]);
             }
         }
-        rejected.push("rejected change requests requests")
+        rejected.push("change requests")
         for(let i=0;i<ACM.changereq.length;i++){
             if(ACM.changereq[i].state===("rejected")){
                 rejected.push(ACM.changereq[i]);
             }
         }
-        rejected.push("rejected replace requests requests")
+        rejected.push("replacing requests")
         for(let i=0;i<ACM.replacerequests.length;i++){
             if(ACM.replacerequests[i].state===("rejected")){
                 rejected.push(ACM.replacerequests[i]);
@@ -633,12 +637,13 @@ router.route("/viewRejected").post(async (req, res) =>{
 })
 
 router.route("/viewPending").post(async (req, res) =>{
-    const acm=req.body.id;
+    const acm=req.id;
+    console.log(acm);
     let ACM=await StaffModel.findOne({ ID:acm });
     let ACM1=await StaffModel.findOne({ID:acm});
     const pending=[];
     if(!ACM){
-        res.status(404).send("there is no such academic member");  
+        res.send("there is no such academic member");  
         return; 
     }
     switch(ACM.type){
@@ -650,11 +655,11 @@ router.route("/viewPending").post(async (req, res) =>{
             ACM=await InstructorModel.findOne({ ID:acm });
             break; 
         default:
-            res.status(404).send("there is no such academic member");       
+            res.send("there is no such academic member");       
             break;
     }
     if(!(ACM1.type==="courseCoordinator")  ){
-        pending.push("pending linking reqs")
+        pending.push("link requests")
         for(let i=0;i<ACM.linkslotreqs.length;i++){
             if(ACM.linkslotreqs[i].state===("pending")){
                 pending.push(ACM.linkslotreqs[i]);
@@ -662,19 +667,19 @@ router.route("/viewPending").post(async (req, res) =>{
         }
     }
     if(!(ACM1.type==="HOD")){
-        pending.push("pending leaves reqs")
+        pending.push("leaves requests")
         for(let i=0;i<ACM.leaves.length;i++){
             if(ACM.leaves[i].state===("pending")){
                 pending.push(ACM.leaves[i]);
             }
         }
-        pending.push("pending change dayoff reqs")
+        pending.push("change requests")
         for(let i=0;i<ACM.changereq.length;i++){
             if(ACM.changereq[i].state===("pending")){
                 pending.push(ACM.changereq[i]);
             }
         }
-        pending.push("pending replace reqs")
+        pending.push("replacing requests")
         for(let i=0;i<ACM.replacerequests.length;i++){
             if(ACM.replacerequests[i].state===("pending")){
                 pending.push(ACM.replacerequests[i]);
@@ -686,8 +691,9 @@ router.route("/viewPending").post(async (req, res) =>{
 
 })
 
-router.route("/viewAllRequests").post(async (req, res) =>{
-    const acm=req.body.id;
+router.route("/viewAllRequests").get(async (req, res) =>{
+    const acm=req.id;
+    
     let ACM=await StaffModel.findOne({ ID:acm });
     let ACM1=await StaffModel.findOne({ID:acm});
     const reqs=[];
@@ -700,7 +706,7 @@ router.route("/viewAllRequests").post(async (req, res) =>{
             ACM=await InstructorModel.findOne({ ID:acm });
             break; 
         default:
-            res.status(404).send("there is no such academic member");  
+            res.send("there is no such academic member");  
             return;     
     }
     if(!(ACM1.type==="courseCoordinator")  ){
@@ -732,7 +738,7 @@ router.route("/viewAllRequests").post(async (req, res) =>{
 })
 
 router.route("/cancelRequest").post(async (req, res) =>{
-    const acm=req.body.id;
+    const acm=req.id;
     const reqType=req.body.type;
     const reqid=req.body.rid;
     let ACM=await StaffModel.findOne({ ID:acm });
@@ -742,7 +748,7 @@ router.route("/cancelRequest").post(async (req, res) =>{
     let coor;
    // let leavee;
    if(!ACM){
-       restart.status(404).send("no such scademic member");
+       restart.send("no such scademic member");
        return;
    }
     let reqs;
@@ -758,13 +764,13 @@ router.route("/cancelRequest").post(async (req, res) =>{
             model=InstructorModel
             ACM=await InstructorModel.findOne({ ID:acm });
         default:
-            res.status(404).send("no such scademic member");
+            res.send("no such scademic member");
             return;
     }
     switch(reqType){
         case "leave":
             if(ACM1.type==="HOD"){
-                res.status(404).send("hod doesn't have leaves requests")
+                res.send("hod doesn't have leaves requests")
                 return;
             }
             reqs=ACM.leaves;
@@ -780,19 +786,19 @@ router.route("/cancelRequest").post(async (req, res) =>{
                             return;
                         }
                         else{
-                            res.status(404).send("cannot be cancelled it's not pending");
+                            res.send("cannot be cancelled it's not pending");
                             return;
                         }
                         break;
                     }
                 }
                 
-                res.status(404).send("no such request");
+                res.send("no such request");
                 return;
             break;
         case "change":
             if(ACM1.type==="HOD"){
-                res.status(404).send("hod doesn't have change day requests")
+                res.send("hod doesn't have change day requests")
                 return;
             }
             reqs=ACM.changereq;
@@ -810,20 +816,20 @@ router.route("/cancelRequest").post(async (req, res) =>{
                         
                     }
                     else{
-                        res.status(404).send("cannot be cancelled it's not pending");
+                        res.send("cannot be cancelled it's not pending");
                         return;
                     }
                     break;
                 }
             }
             
-            res.status(404).send("no such request");
+            res.send("no such request");
             return;
             break;
         case "linking slot":
             reqs=ACM.linkslotreqs;
             if(ACM1.type==="cousreCoordinate"){
-                res.status(404).send("coursecoordinator doesn't have slot linkin reqs");
+                res.send("coursecoordinator doesn't have slot linkin reqs");
                 return;
             }
                 for(let i=0;i<reqs.length;i++){
@@ -839,17 +845,17 @@ router.route("/cancelRequest").post(async (req, res) =>{
                             
                         }
                         else{
-                            res.status(404).send("cannot be cancelled it's not pending");
+                            res.send("cannot be cancelled it's not pending");
                             return;
                         }
                         break;
                     }
                 }
-                res.status(404).send("no such request");
+                res.send("no such request");
                 return;
                 
             default:
-                res.status(404).send("no such requests")
+                res.send("no such requests")
                 return;    
 
     }
@@ -858,4 +864,3 @@ router.route("/cancelRequest").post(async (req, res) =>{
 
 })
 module.exports = router;
-

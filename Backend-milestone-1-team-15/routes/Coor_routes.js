@@ -12,7 +12,8 @@ const TaModel = require('../models/ta.js');
 const CoorModel = require('../models/courseCoordinator.js');
 const slotModel = require("../models/slot.js");
 const slotlinkModel = require("../models/slotLinkingRequest.js");
-const blacklist = require("../models/blacklist")
+const Staff = require("../models/Staff.js");
+const blacklist = require("../models/blacklist");
 require("dotenv").config()
 
 router.use(async (req, res, next) => {
@@ -37,8 +38,7 @@ router.use(async (req, res, next) => {
 router.route("/viewSlotLinkingReq").post(async (req, res) => {//number 1 in 4.3 
     const coorID = req.id;
     const coor = await CoorModel.findOne({ID: coorID});
-    // console.log(coor)
-    res.send(coor.linkslotreqs);
+   res.send(coor.linkslotreqs);
 });
 
 //acceptSlotLink is working
@@ -53,15 +53,37 @@ router.route("/acceptSlotLink").post(async (req, res) => {// accept of number 2 
     let slotlink =  await slotlinkModel.findOne({_id: slotlinkid});
     let academicid = slotlink.academicID;
     let staff = await StaffModel.findOne({ID: academicid});
+ 
     let slotid = slotlink.slotid;
     let slot = await slotModel.findOne({_id: slotid});
-    const facultyid = req.body.facid;//_id of the faculty 
-    const departmentname = req.body.depid;//_id of the department
-    let faculty = await FacultyModel.findOne({ _id: facultyid });
+    let facultyid ;//_id of the faculty 
+    let departmentname ;//_id of the department
+    
     let found = false;
+    switch(staff.type){
+        case "ta":
+        case "courseCoordinator":
+            const ta=await TaModel.findOne({ID:academicid})
+            facultyid=ta.faculty;
+           departmentname= ta.department;
+            break;
+        case "instructor":
+            const ins=await InstructorModel.findOne({ID:academicid})
+            facultyid=  ins.faculty;
+           departmentname= ins.department;
+            break;
+        default: 
+               res.send("not an academic member");
+               return;
+
+    }
+    
+    let faculty = await FacultyModel.findOne({ _id: facultyid });
+    
     if(slotlink && staff && slot&& faculty){
+        
         let departments= faculty.departments;
-        console.log("deps=  "+departments);
+        
         for(let i=0; i<departments.length; i++){
             if(departments[i]._id==departmentname){
                 for(let j =0; j<(departments[i].courses).length ; j++){
@@ -85,19 +107,18 @@ router.route("/acceptSlotLink").post(async (req, res) => {// accept of number 2 
             }
         }
         //coor.linkslotreqs[]
-        console.log(coord)
+        
         for(let i=0; i<(coord.linkslotreqs).length ;i++){
             if((coord.linkslotreqs)[i]._id ==slotlinkid){
+                console.log("7aram");
                 (coord.linkslotreqs)[i].state = "accepted";
             }
         }
-        console.log(slot);
-        console.log("5arag mn l loop")
+ 
         //needs faculty, department from the user to find the course and update the number of assignedslots and coverage
         faculty.departments = departments;
-        console.log("after fac")
         
-        console.log(slot.timing)
+        
         const dayofslot = (slot.timing).charAt(0);
         const timeofslot = (slot.timing).charAt(1);
         console.log("abl l consitions")
@@ -125,7 +146,8 @@ router.route("/acceptSlotLink").post(async (req, res) => {// accept of number 2 
             found = true;
             Inst.linkslotreqs = linkslotreqsarr;
             await InstructorModel.findOneAndUpdate({email: staff.email}, Inst);
-            slot.acamedicMember = ""+Inst.ID;
+            slot.academicMember = ""+Inst.ID;
+            console.log(slot);
             await slotModel.findOneAndUpdate({_id: slotid}, slot);
             slotlink.state = "accepted";
             await slotlinkModel.findOneAndUpdate({_id: slotlinkid},slotlink);
@@ -159,7 +181,7 @@ router.route("/acceptSlotLink").post(async (req, res) => {// accept of number 2 
             found = true;
             coor.linkslotreqs = linkslotreqsarr;
             await CoorModel.findOneAndUpdate({email: staff.email}, coor);
-            slot.acamedicMember = ""+coor.ID;
+            slot.academicMember = ""+coor.ID;
             await slotModel.findOneAndUpdate({_id: slotid}, slot);
             slotlink.state = "accepted";
             await slotlinkModel.findOneAndUpdate({_id: slotlinkid},slotlink);
@@ -197,7 +219,7 @@ router.route("/acceptSlotLink").post(async (req, res) => {// accept of number 2 
             found = true;
             hod.linkslotreqs = linkslotreqsarr;
             await HeadOfDepartmentModel.findOneAndUpdate({email: staff.email}, hod);
-            slot.acamedicMember = ""+hod.ID;
+            slot.academicMember = ""+hod.ID;
             await slotModel.findOneAndUpdate({_id: slotid}, slot);
             slotlink.state = "accepted";
             await slotlinkModel.findOneAndUpdate({_id: slotlinkid},slotlink);
@@ -230,7 +252,8 @@ router.route("/acceptSlotLink").post(async (req, res) => {// accept of number 2 
             found = true;
             ta.linkslotreqs = linkslotreqsarr;
             await TaModel.findOneAndUpdate({email: staff.email}, ta);
-            slot.acamedicMember = ""+ta.ID;
+            slot.academicMember = ""+ta.ID;
+            console.log(slot);
             await slotModel.findOneAndUpdate({_id: slotid}, slot);
             slotlink.state = "accepted";
             await slotlinkModel.findOneAndUpdate({_id: slotlinkid},slotlink);
@@ -257,7 +280,7 @@ router.route("/rejectSlotLink").post(async (req, res) => {//reject of number 2 i
     
 
     for(let i=0; i<(coord.linkslotreqs).length ;i++){
-        if((coord.linkslotreqs)._id ==slotlinkid){
+        if((coord.linkslotreqs)[i]._id ==slotlinkid){
             (coord.linkslotreqs)[i].state = "rejected";
         }
     }
@@ -363,11 +386,12 @@ router.route("/addslot").post(async (req, res) => {//add of number 3 in 4.3
     let faculty = await FacultyModel.findOne({ _id: facultyid });
     let slot = new slotModel({
         kind: slotkind,
-        acamedicMember: "",
+        academicMember: "",
         timing: slottiming,
         courseCode: slotcourseCode,
         location: slotlocation
     }) 
+    
     let courses = coord.courses;
     let exist = false;
     for(let i=0; i<courses.length; i++){
@@ -453,7 +477,7 @@ router.route("/updateslot").post(async (req, res) => {//update of number 3 in 4.
     }
     
     if(exist){
-        let staffid = slot.acamedicMember;
+        let staffid = slot.academicMember;
         const dayofslot = (slot.timing).charAt(0);
         const timeofslot = (slot.timing).charAt(1);
         if(staffid!=""){
@@ -547,18 +571,19 @@ router.route("/updateslot").post(async (req, res) => {//update of number 3 in 4.
 });
 
 
-router.route("/deleteslot").delete(async (req, res) => {//delete of number 3 in 4.3 
+router.route("/deleteslot").post(async (req, res) => {//delete of number 3 in 4.3 
     // "cid":"100",
     // "sid":"5fe5ed28b621891d10667b8e",
     // "facid":"5fddc76b87abd5472dd8e8af",
     // "depid":"5fdef15dcf543d808a56fc2b"
     let coorID = req.id;
     let coord = await CoorModel.findOne({ID: coorID});
+    
     let slotid = req.body.sid; //_id of slot
-    const facultyid = req.body.facid;
-    const departmentname = req.body.depid;//_id of dep
+    const facultyid =coord.faculty;
+    const departmentname =coord.department;//_id of dep
     let slot = await slotModel.findOneAndDelete({_id: slotid})
-
+    console.log(slot);
     let faculty = await FacultyModel.findOne({ _id: facultyid });
     let slotcourseCode = slot.courseCode;
     let courses = coord.courses;
@@ -571,7 +596,7 @@ router.route("/deleteslot").delete(async (req, res) => {//delete of number 3 in 
     }
     
     if(exist){
-        let staffid = slot.acamedicMember;
+        let staffid = slot.academicMember;
         const dayofslot = (slot.timing).charAt(0);
         const timeofslot = (slot.timing).charAt(1);
         if(staffid!=""){

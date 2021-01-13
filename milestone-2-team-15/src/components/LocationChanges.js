@@ -17,12 +17,13 @@ import { Plus } from "react-bootstrap-icons";
 require("dotenv").config();
 function LocationChanges(props) {
   const [visibility, setVisibility] = useState(true);
-  const [roomKind, setRoomKind] = useState();
+  const [roomKind, setRoomKind] = useState("");
   const [buildingCharacter, setBuildingCharacter] = useState("");
-  const [floorNumber, setFloorNumber] = useState(0);
-  const [roomNumber, setRoomNumber] = useState(0);
-  const [NumberOfAvailablePeople, setNumberOfAvailablePeople] = useState(0);
-  const [NumberOfPersons, setNumberOfPersons] = useState(0);
+  const [floorNumber, setFloorNumber] = useState(-1);
+  const [roomNumber, setRoomNumber] = useState(-1);
+  const [NumberOfAvailablePeople, setNumberOfAvailablePeople] = useState(-1);
+  const [NumberOfPersons, setNumberOfPersons] = useState(-1);
+  const [validated, setValidated] = useState(true);
 
   const handleSubmit = async (event) => {
     console.log(roomKind);
@@ -32,6 +33,7 @@ function LocationChanges(props) {
     console.log(NumberOfAvailablePeople);
     console.log(NumberOfPersons);
     console.log(props.edit);
+    setValidated(false);
     if (props.edit == false) {
       const response = await axios.post(
         `http://localhost:3000/HR/addLocation`,
@@ -46,8 +48,30 @@ function LocationChanges(props) {
       );
       console.log(response);
     } else {
-      console.log("hi");
+      const location = {};
+      if (buildingCharacter != "")
+        location.BuildingCharacter = buildingCharacter;
+      if (roomKind != "") location.roomKind = roomKind;
+      if (floorNumber != -1) location.FloorNumber = floorNumber;
+      if (roomNumber != -1) location.roomNumber = roomNumber;
+      if (NumberOfAvailablePeople != -1)
+        location.NumberOfAvailablePeople = NumberOfAvailablePeople;
+      if (NumberOfPersons != -1) location.NumberOfPersons = NumberOfPersons;
+      const response = await axios.post(
+        `http://localhost:3000/HR/updateLocation`,
+        {
+          id: props.id,
+          location: location,
+        }
+      );
     }
+
+    setRoomKind("");
+    setBuildingCharacter("");
+    setFloorNumber(-1);
+    setRoomNumber(-1);
+    setNumberOfPersons(-1);
+    setNumberOfAvailablePeople(-1);
   };
 
   return (
@@ -57,7 +81,7 @@ function LocationChanges(props) {
         setVisibility(false);
       }}
     >
-      <Form onFinish={handleSubmit}>
+      <Form validated={validated} onFinish={handleSubmit}>
         <Form.Group as={Row}>
           <Form.Label as="legend" column sm={2}>
             roomKind:

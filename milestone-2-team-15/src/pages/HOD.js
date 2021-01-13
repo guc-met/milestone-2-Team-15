@@ -6,8 +6,17 @@ function HOD() {
 
   return (
     <div>
-      <div class="red"></div>
-      <div class="yellow"></div>
+      <div class="red">
+      <a href="#">Manage Courses</a>
+        <a href="#">View Staff</a>
+        <a href="#">View DayOff </a>
+        <a href="/HOD/sendReq">Send Requests </a>
+        <a href="/HOD/viewrequest">View Requests</a> <br/>
+        <a href="#">View Schedule</a> <br/>
+      </div>
+      <div class="yellow">
+      
+      </div>
       <div class="sidenav">
         
         <a href="/hod/deletetest">delete Instructor</a>

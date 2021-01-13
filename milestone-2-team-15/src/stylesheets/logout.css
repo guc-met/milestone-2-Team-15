@@ -1,0 +1,14 @@
+.logout{
+    min-width: fit-content;
+}
+.logoutButtonCol{
+    text-align: center;
+    padding: 0vw 0vw 0vw 0vw;
+}
+.btn-logoutButton,.btn-logoutButton:hover{
+   width:6.944444444444445vw !important;
+   font-size:1.3888888888888888vw !important;
+   line-height: 1.0416666666666665vw !important;
+   font-family: Arial, Helvetica, sans-serif  , Georgia, serif !important;
+
+}

@@ -3,42 +3,30 @@
 // import "bootstrap/dist/css/bootstrap.min.css"
 // import "../stylesheets/sideBar.css"
 
-// import DayOfftest from "./viewdayofftest.js";
-
-
-// let toview="";
-// //toview = (<DayOfftest/>)
-// export default function SideBar(props) {
-//     const [text,setText] = useState(toview);
-//     const handleClickdayoff = function(){
-//         toview = (<DayOfftest/>)
-//         setText(toview);
-//       }
-//     return(
-//     <div>
-//         <div class="red">
-//         <button onClick={handleClickdayoff}> View DayOff </button>
-//         <a href="#">Manage Requests</a> 
-//         <a href="#">View Coverage</a> 
-//         </div>
-
-//         <div class="yellow"> 
-//         <a href="#">View Teaching Assignments </a> 
-//         </div>
-
-//         <div class="sidenav">
-//             <a href="#">Manage Courses</a>
-//             <a href="#">View Staff</a>
-//             <a href="#">View DayOff </a>
-//             <a href="#">View Requests</a>    
-//         </div>
-
-//         <div>
-//             <h1 class="center"> you wanted to view: {text} </h1>
-//         </div>
+export default function sideBar(props) {
+    return(
+    <div>
+        <div className="red">
+        <a href="#">View Requests</a> <br/>
+        <a href="#">Manage Requests</a> <br/>
+        <a href="#">View Coverage</a> <br/>
+        </div>
+        <div className="yellow"> 
+        <a href="#">View Teaching Assignments </a> <br/>
+        
+        </div>
+    <div className="sidenav">
+        <a href="#">Manage Courses</a>
+        <a href="#">View Staff</a>
+        <a href="#">View DayOff </a>
+        <a href="/HOD/sendReq">Send Requests </a>
+        <a href="/HOD/viewrequest">View Requests</a> <br/>
+        <a href="#">View Schedule</a> <br/>
+        
         
 
  
-//     </div>
-// )
-// }
+     </div>
+     </div>
+ )
+ }

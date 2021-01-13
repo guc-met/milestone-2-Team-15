@@ -1,4 +1,4 @@
-const express = require("express");
+const express = require("express")
 
 const Staff_routes = require("./routes/Staff_routes");
 const ac_routes = require("./routes/AcademicMember_routes");
@@ -13,11 +13,13 @@ const app = express();
 app.use(cors());
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
+
+app.use(cors()) 
 app.use(express.json()); //readbody
 app.use("/ac_routes", ac_routes);
 app.use("/HoD", HoD_routes);
 app.use("/courseCoordinator_routes", courseCoordinator_routes);
-// app.use("", Staff_routes);
+app.use("", Staff_routes);
 app.use("/instructor_routes", instructor_routes);
 app.use("/HR", HR_routes);
 
