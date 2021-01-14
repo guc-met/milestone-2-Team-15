@@ -193,7 +193,8 @@ router.route("/SendReplacmentRequestToReplacment").post(async (req, res) => {//r
         comment: ""  ,
         day:today.getDay(),
         month:today.getMonth()+1,
-        year:today.getFullYear()
+        year:today.getFullYear(),
+        realday:today.getDate()
     })
     //hod.leaves.push(leave);
     
@@ -499,7 +500,8 @@ router.route("/leaveReq").post(async (req, res) => {
         comment: cmnt  ,
         day: today.getDay(),
         month:today.getMonth() + 1,
-        year:today.getFullYear()
+        year:today.getFullYear(),
+        realday:today.getDate()
     })
    
     if(coor){

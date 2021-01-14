@@ -27,6 +27,9 @@ const leaveSchema = new schema({
     },
     year:{
         type:Number
+    },
+    realday:{
+        type:Number
     }
 })
 module.exports = mongoose.model('leave',leaveSchema);
