@@ -21,21 +21,28 @@ import * as Icon from "react-bootstrap-icons";
 import { Plus } from "react-bootstrap-icons";
 require("dotenv").config();
 const token =localStorage.getItem("token")
-function SendChangeDayOffRequest(props) {
-  const [hod, sethod] = useState();
-  const [day, setday] = useState();
-  const [cmnt, setcmnt] = useState();
+
+function Updateslot(props) {
+  
+  const [slotid, setslotid] = useState();
+  const [location, setLocation] = useState();
+  const [faculty, setfaculty] = useState();
+  const [dep, setdep] = useState();
   const[msg,setmsg]=useState();
   
   
-  const sendReq = async (event) => {
-   
+  const del = async (event) => {
+    
     console.log("ana da5alt")
-    const response = await axios({method:'post',url:"http://localhost:3000/ac_routes/changedayreq",
+    const response = await axios({method:"post",url:"http://localhost:3000/courseCoordinator_routes/updateslot",
     data: {
-        hid:hod,
-        d:day,
-        comment:cmnt
+        
+        sid:slotid,
+        nsloc:location,
+        facid:faculty,
+        depid:dep
+
+
     },
     headers:{token:token}
 });
@@ -46,47 +53,57 @@ function SendChangeDayOffRequest(props) {
     return(
         <div class="HOD-sendreq">
     <Form.Group class="HOD_input" controlId="formGridroomKind">
-    <Form.Label> HOD ID: </Form.Label>
+    <Form.Label> Slot ID: </Form.Label>
     <Form.Control
       required
       type="text"
       onChange={(event) => {
-        sethod(event.target.value);
+        setslotid(event.target.value);
+      }}
+      placeholder="example :ac-23 .."
+    />
+  </Form.Group> 
+  <Form.Group class="HOD_input" controlId="formGridroomKind">
+    <Form.Label> new location: </Form.Label>
+    <Form.Control
+      required
+      type="text"
+      onChange={(event) => {
+        setLocation(event.target.value);
+      }}
+      placeholder="example :ac-23 .."
+    />
+  </Form.Group> 
+  <Form.Group class="HOD_input" controlId="formGridroomKind">
+    <Form.Label> faculty ID: </Form.Label>
+    <Form.Control
+      required
+      type="text"
+      onChange={(event) => {
+        setfaculty(event.target.value);
       }}
       placeholder="example :ac-23 .."
     />
   </Form.Group>
   <Form.Group class="HOD_input" controlId="formGridroomKind">
-    <Form.Label> day: </Form.Label>
+    <Form.Label> Department ID: </Form.Label>
     <Form.Control
       required
-      type="email"
+      type="text"
       onChange={(event) => {
-        setday(event.target.value);
+        setdep(event.target.value);
       }}
-      placeholder="example :1 .."
+      placeholder="example :ac-23 .."
     />
-  </Form.Group>
-  <Form.Group class="HOD_input" controlId="formGridroomKind">
-    <Form.Label> comment: </Form.Label>
-    <Form.Control
-      required
-      type="email"
-      onChange={(event) => {
-        setcmnt(event.target.value);
-      }}
-      placeholder="example :kefy kedda "
-    />
-  </Form.Group>
- 
+  </Form.Group>  
   <Form.Group class="HOD_input" role="form">
           <Button
             // type="submit"
             class="glow-on-hover"
-            onClick={sendReq}
+            onClick={del}
             
           >
-            send request
+            update Slot
           </Button>
           <h3 > { msg} </h3>
         </Form.Group>
@@ -97,4 +114,4 @@ function SendChangeDayOffRequest(props) {
   
 }
 
-export default SendChangeDayOffRequest ;
+export default Updateslot ;

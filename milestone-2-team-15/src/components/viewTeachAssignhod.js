@@ -8,20 +8,23 @@ export default function ViewTeachassigns(props) {
     const [facID, setFacID] = useState("");
     const [show, setShow] = useState(false);
     const [teachinassign, setTeachinassign] = useState("");
+    const token =localStorage.getItem("token")
 
   useEffect(() => {
     async function fetchData() {
-      
-        const facdep = await axios.post(`http://localhost:3000/HoD/ViewDepIDandFacID`,{
-              hid:"ac-100"
+
+    
+        const facdep = await axios({method:'post', url:`http://localhost:3000/HoD/ViewDepIDandFacID`,
+            headers:{token:token}
         });
-        console.log(facdep.data);
+        console.log("facid"+facdep.data);
         setFacID(facdep.data[0]);
         let facidd= facdep.data[0];
-        const response = await axios.post(`http://localhost:3000/HoD/viewTeachAssign`,{
-          id:"ac-100",
-          facid: facidd
-        });
+        
+        const response = await axios({method:'post', url:`http://localhost:3000/HoD/viewTeachAssign`,
+        data:{facid: facidd},
+        headers:{token:token}
+    });
 
         // "course": courses[j].courseName,
         //                 "slotid":slots[k]._id, 

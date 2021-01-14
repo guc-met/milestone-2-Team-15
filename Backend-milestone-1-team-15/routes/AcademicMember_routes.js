@@ -26,8 +26,7 @@ router.use(async (req, res, next) => {
     const found = await blacklist.findOne({ token: token })
     //console.log(found)
     if (!found) {
-        console.log("hii")
-        console.log(token);
+       
       const result = jwt.verify(token, process.env.Token_Secret)
       if (result) {
         // console.log(result)
@@ -47,7 +46,7 @@ router.use(async (req, res, next) => {
         return;
     }
     ACMtype=currentAcademicMember.type;
-    console.log(currentAcademicMember)
+    
     switch(ACMtype){
        
        case "courseCoordinator":
@@ -122,10 +121,11 @@ router.route("/SendReplacmentRequestToReplacment").post(async (req, res) => {//r
     const ACid = req.id; //elly 3awez ye3mel request
     const repid=req.body.rid;
     let ACmember= await StaffModel.findOne({ ID:ACid });
+    
     let replacment= await StaffModel.findOne({ ID:repid });
     let coursecoor=await courseCoordinatorModel.findOne({ID:ACid});
     let repCoursecoor=await courseCoordinatorModel.findOne({ID:repid});
-    console.log(coursecoor);
+    
     let leave;
   
     if(!ACmember){
@@ -148,6 +148,7 @@ router.route("/SendReplacmentRequestToReplacment").post(async (req, res) => {//r
             break;
         case "instructor":
             ACmember=await InstructorModel.findOne({ ID:ACid })
+            break;
            // const hod= await HeadOfDepartmentModel.findOne({ ID:hodid });
             default:
                 res.send("no such academic member");
@@ -163,6 +164,7 @@ router.route("/SendReplacmentRequestToReplacment").post(async (req, res) => {//r
             break;
         case "instructor":
             replacment=await InstructorModel.findOne({ ID:repid })
+            break;
            // const hod= await HeadOfDepartmentModel.findOne({ ID:hodid });
             default:
                 res.send(" replacment cannot be done");
@@ -178,8 +180,8 @@ router.route("/SendReplacmentRequestToReplacment").post(async (req, res) => {//r
     leave=new leavee({
         smail:ACmember.email,
         rmail:replacment.email,
-        name: "hello",
-        replacementName: "hello",
+        name: ACmember.name,
+        replacementName: replacment.name,
         requesterid:ACmember.ID,
         replacmentid:replacment.ID,
         replacmentAcceptance:"pending",
@@ -187,11 +189,12 @@ router.route("/SendReplacmentRequestToReplacment").post(async (req, res) => {//r
         rid: 3,
         leaveType: "annual",
         state: "pending",
-        HoDname: "hello",
+        HoDname: "",
         comment: ""  ,
         day:today.getDay(),
         month:today.getMonth()+1,
-        year:today.getFullYear()
+        year:today.getFullYear(),
+        realday:today.getDate()
     })
     //hod.leaves.push(leave);
     
@@ -228,8 +231,7 @@ router.route("/SendReplacmentRequestToHod").post(async (req, res) => {//request 
     let coor;
     
     let leave;
-    console.log("henna")
-    console.log(ACid);
+    
     if(!ACmember){
         res.send("no such academic member");
         return;
@@ -260,11 +262,14 @@ router.route("/SendReplacmentRequestToHod").post(async (req, res) => {//request 
     }
     for(let i=0;i<ACmember.leaves.length;i++){
         if(ACmember.leaves[i]._id+""===leaveid){
-            console.log(ACmember.leaves[i]._id+" "+leaveid)
+            
 
             if(ACmember.leaves[i].replacmentAcceptance==="accepted"){
                 if(hod.leaves===null)
                     hod.leaves=[];
+                    ACmember.leaves[i].HoDname=hod.name;
+                    
+                    ACmember.save();
                 hod.leaves.push(ACmember.leaves[i]);
                 hod.save();
                 res.send("done");
@@ -291,7 +296,7 @@ router.route("/slotLinkingRequest").post(async (req, res) => {
     const course_id=req.body.code;
     const slotid=req.body.sid
     let ACMember = await StaffModel.findOne({ID: ACmember});
-    console.log(ACMember);
+    
     let coordinator = await courseCoordinatorModel.findOne({ID: coorid});
     let request;
     if(!coordinator || !(coordinator.courses.includes(course_id)) ){
@@ -406,6 +411,7 @@ router.route("/changedayreq").post(async (req, res) => {
     HOD.changereq.push(changerequest);
     ACM.save();
     HOD.save();
+    
     res.send("done");
 });
 
@@ -494,9 +500,10 @@ router.route("/leaveReq").post(async (req, res) => {
         comment: cmnt  ,
         day: today.getDay(),
         month:today.getMonth() + 1,
-        year:today.getFullYear()
+        year:today.getFullYear(),
+        realday:today.getDate()
     })
-    console.log(coor)
+   
     if(coor){
         if(coor.leaves==null)
             coor.leaves=[];
@@ -638,7 +645,7 @@ router.route("/viewRejected").post(async (req, res) =>{
 
 router.route("/viewPending").post(async (req, res) =>{
     const acm=req.id;
-    console.log(acm);
+   
     let ACM=await StaffModel.findOne({ ID:acm });
     let ACM1=await StaffModel.findOne({ID:acm});
     const pending=[];
@@ -691,7 +698,7 @@ router.route("/viewPending").post(async (req, res) =>{
 
 })
 
-router.route("/viewAllRequests").get(async (req, res) =>{
+router.route("/viewAllRequests").post(async (req, res) =>{
     const acm=req.id;
     
     let ACM=await StaffModel.findOne({ ID:acm });
@@ -763,6 +770,7 @@ router.route("/cancelRequest").post(async (req, res) =>{
         case "instructor":
             model=InstructorModel
             ACM=await InstructorModel.findOne({ ID:acm });
+            break;
         default:
             res.send("no such scademic member");
             return;

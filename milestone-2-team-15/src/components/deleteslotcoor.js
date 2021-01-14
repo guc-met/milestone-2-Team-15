@@ -20,8 +20,10 @@ import * as Icon from "react-bootstrap-icons";
 
 import { Plus } from "react-bootstrap-icons";
 require("dotenv").config();
+const token =localStorage.getItem("token")
+
 function DeleteSlot(props) {
-  const [coorid, setcoorid] = useState();
+  
   const [slotid, setslotid] = useState();
   const[msg,setmsg]=useState();
   
@@ -29,28 +31,20 @@ function DeleteSlot(props) {
   const del = async (event) => {
     
     console.log("ana da5alt")
-    const response = await axios.post("http://localhost:3000/courseCoordinator_routes/deleteslot", {
-        id:coorid,
+    const response = await axios({method:"post",url:"http://localhost:3000/courseCoordinator_routes/deleteslot",
+    data: {
+        
         sid:slotid
 
-    });
+    },
+    headers:{token:token}
+});
     console.log("ana tele3t");
     setmsg(response.data);
     console.log(msg);
   };
     return(
         <div class="HOD-sendreq">
-    <Form.Group class="HOD_input" controlId="formGridroomKind">
-    <Form.Label>coor ID: </Form.Label>
-    <Form.Control
-      required
-      type="text"
-      onChange={(event) => {
-        setcoorid(event.target.value);
-      }}
-      placeholder="example :5fe5ed28b621891d10667b8e"
-    />
-  </Form.Group>
     <Form.Group class="HOD_input" controlId="formGridroomKind">
     <Form.Label> Slot ID: </Form.Label>
     <Form.Control

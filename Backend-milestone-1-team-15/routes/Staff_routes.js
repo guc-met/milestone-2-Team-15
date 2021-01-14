@@ -6,9 +6,9 @@ const jwt = require("jsonwebtoken")
 const app = require("../app")
 const Ta_model = require("../models/ta")
 const HR_model = require("../models/HR")
-const Faculty = require("../models/faculty")
-const FacultyModel = Faculty.faculty
-const department_model = require("../models/department")
+const Faculty = require("../models/faculty");
+const FacultyModel = Faculty.faculty;
+const DepartmentModel = Faculty.departmentSchema;
 
 const courseCoordinator_model = require("../models/courseCoordinator")
 const instructor_model = require("../models/instructor")
@@ -75,9 +75,9 @@ router.use(async (req, res, next) => {
         req.id = result.id // zwdna 7aga 3la result
         req.type = result.type
         next()
-      } else return res.status(404).send("error")
-    } else return res.status(403).send("u arent authorized")
-  } else return res.status(403).send("u arent authorized")
+      } else return res.send("error")
+    } else return res.send("u arent authorized")
+  } else return res.send("u arent authorized")
 })
 
 router
@@ -89,7 +89,7 @@ router
     await x.save()
     //  console.log(await blacklist.find({}))
     if (x) return res.status(200).send("logout successfully")
-    else return res.status(404).send("something went wrong")
+    else return res.send("something went wrong")
   })
 
 router.route("/signin").post(async (req, res) => {
@@ -1029,4 +1029,10 @@ router.route("/editprofile").post(async (req, res) => {
       return res.send("User not Elligible")
   }
 })
+router.route("/ViewFaculties").get(async (req, res) => {
+  let faculties = await FacultyModel.find();
+  if (faculties) {
+    return res.status(200).json(faculties);
+  } else return res.send("staff not found");
+});
 module.exports = router

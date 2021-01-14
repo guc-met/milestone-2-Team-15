@@ -19,7 +19,7 @@ router.use(async (req, res, next) => {
     const token = req.headers.token
     // console.log(token)
     const found = await blacklist.findOne({ token: token })
-    console.log(found)
+    console.log("found:"+found)
     if (!found) {
       const result = jwt.verify(token, process.env.Token_Secret)
       if (result) {
@@ -36,13 +36,14 @@ router.route("/ViewStaffType").post(async (req, res) => {
     let sid = req.body.sid;//5ff70f86c788475336d89b6e
     let staff = await StaffModel.find({ID:sid});
     if (staff) {
+        //console.log("in")
         if(staff.type=="ta"|| staff.type=="courseCoordinator"){
             return res.send("ta")
         }
         else{
             return res.send("inst")
         }
-    } else return res.status(404).send("staff not found");
+    } else return res.send("staff not found");
   });
 router.route("/ViewOneStaff").post(async (req, res) => {
     let sid = req.body.sid;//5ff70f86c788475336d89b6e
@@ -56,7 +57,7 @@ router.route("/ViewOneStaff").post(async (req, res) => {
             let inst = await InstructorModel.find({ID:sid})
             return res.send(inst)
         }
-    } else return res.status(404).send("staff not found");
+    } else return res.send("staff not found");
   });
 
   router.route("/ViewCourses").post(async (req, res) => {
@@ -75,8 +76,8 @@ router.route("/ViewOneStaff").post(async (req, res) => {
                 }
             }
         }
-      return res.status(200).json(courses);
-    } else return res.status(404).send("staff not found");
+      return res.json(courses);
+    } else return res.send("staff not found");
   });
 
   router.route("/ViewDepIDandFacID").post(async (req, res) => {
@@ -87,8 +88,8 @@ router.route("/ViewOneStaff").post(async (req, res) => {
         facdep.push(head.faculty)
         facdep.push(head.department)
         
-      return res.status(200).json(facdep);
-    } else return res.status(404).send("staff not found");
+      return res.send(facdep);
+    } else return res.send("staff not found");
   });
 
 // deleteCourseInst is working backend & frontend 
@@ -110,11 +111,11 @@ router.route("/deleteCourseInst").delete(async (req, res) => {//delete of number
     console.log(headID)
     const departmentname = head.department;
     if(!head){
-        res.status(404).send("head ID not found");
+        res.send("head ID not found");
     }
     else{
         if(!faculty){
-            res.status(404).send("faculty name not found");
+            res.send("faculty name not found");
         }
         else{
             let departments = faculty.departments;
@@ -163,15 +164,15 @@ router.route("/deleteCourseInst").delete(async (req, res) => {//delete of number
     console.log("dep: "+head.department);
     const departmentname = head.department;
     if(!head){
-        res.status(404).send("head ID not found");
+        res.send("head ID not found");
     }
     else{
         if(!instructor){
-            res.status(404).send("instructor not found");
+            res.send("instructor not found");
         }
         else{
             if(!faculty){
-                res.status(404).send("faculty name not found");
+                res.send("faculty name not found");
             }
             else{
                 let departments = faculty.departments;
@@ -222,11 +223,11 @@ router.route("/updateCourseInst").put(async (req, res) => { //update of number 1
     const newinstructor = await InstructorModel.findOne({ID: newInstructorid});
     const departmentname = head.department;
     if(!head){
-        res.status(404).send("head ID not found");
+        res.send("head ID not found");
     }
     else{
         if(!faculty){
-            res.status(404).send("faculty name not found");
+            res.send("faculty name not found");
         }
         else{
             let departments = faculty.departments;
@@ -271,10 +272,13 @@ router.route("/viewstaff").post(async (req, res) => {//number 2 in 4.1 first hal
     let departments= faculty.departments;
     let staff = [];
     for(let i=0; i<departments.length; i++){
+        console.log(departmentname)
         if(departments[i]._id==departmentname){
             console.log(departmentname+"  "+departments[i].name)
+            console.log("department:"+departmentname)
             let courses = departments[i].courses;
             for(let j=0; j<courses.length; j++){
+                console.log("in")
                 let tas = courses[j].TAs;
                 let instructors = courses[j].Instructors;
                 for(let k=0; k<tas.length; k++){
@@ -382,15 +386,17 @@ router.route("/viewonestaffdayoff").post(async (req, res) => {//number 3 in 4.1 
 
 //viewAllreq
 router.route("/viewAllreq").post(async (req, res) => {//number 4 in 4.1 
+    console.log("inviewreqs")
     const headid = req.id;
     const head = await HeadOfDepartmentModel.findOne({ID: headid});
     const changereqs = head.changereq;
     const leavereqs = head.leaves;
     let result = [];
     for(let i=0; i<changereqs.length; i++){
+        console.log("in loop")
         let m = {
             "reqid":changereqs[i]._id,
-            "type":"change dayOff",
+            "type":"Change Dayoff",
             "smail": changereqs[i].smail,
             "name": changereqs[i].name,
             "day": changereqs[i].day,
@@ -403,7 +409,7 @@ router.route("/viewAllreq").post(async (req, res) => {//number 4 in 4.1
     }
     for(let i=0; i<leavereqs.length; i++){
         let m = {
-            "type":"Leave",
+            "type":"leave",
             "reqid":leavereqs[i]._id,
             "smail": leavereqs[i].smail,
             "rmail": leavereqs[i].rmail,
@@ -419,7 +425,8 @@ router.route("/viewAllreq").post(async (req, res) => {//number 4 in 4.1
             "leaveType": leavereqs[i].leaveType,
             "state": leavereqs[i].state,
             "HoDname": leavereqs[i].HoDname,
-            "comment": leavereqs[i].comment  
+            "comment": leavereqs[i].comment,  
+            "realday":leavereqs[i].realday 
 
         }
         result.push(m);
@@ -433,9 +440,16 @@ router.route("/viewAllreq").post(async (req, res) => {//number 4 in 4.1
 //acceptreq for dayoff is working 
 
 router.route("/acceptreq").post(async (req, res) => {//Accept req number 5 in 4.1 
+    console.log("acceptreqs")
     const headid = req.id;
     const reqid = req.body.rid;
     const reqtype = req.body.rtype;
+    const comment = req.body.rcomment;
+    console.log(headid);
+    console.log(reqid);
+    console.log(reqtype);
+    console.log(comment);
+    console.log("in accept ")
     // "hid": "10",
     // "rid":"5fe5cae20ba843189d7299a3",
     // "rtype":"Change Dayoff"
@@ -448,6 +462,9 @@ router.route("/acceptreq").post(async (req, res) => {//Accept req number 5 in 4.
         for(let i=0; i<leavereqs.length; i++){
             console.log("in");
             if(leavereqs[i]._id==reqid){
+                if(comment){
+                    leavereqs[i].comment = comment
+                }
                 const staffmail = leavereqs[i].smail;
                 let staff = await StaffModel.findOne({email: staffmail});
                 if(staff.acceptedannual>=6 && leavereqs[i].leaveType =="accidental"){
@@ -460,6 +477,9 @@ router.route("/acceptreq").post(async (req, res) => {//Accept req number 5 in 4.
                         for(let i=0; i<(Inst.leaves).length ;i++){
                             if((Inst.leaves)[i]._id == reqid){
                                 (Inst.leaves)[i].state = "accepted";
+                                if(comment){
+                                    (Inst.leaves)[i].comment = comment
+                                }
                                 break;
                             }
                         }
@@ -471,6 +491,9 @@ router.route("/acceptreq").post(async (req, res) => {//Accept req number 5 in 4.
                         for(let i=0; i<(coor.leaves).length ;i++){
                             if((coor.leaves)[i]._id == reqid){
                                 (coor.leaves)[i].state = "accepted";
+                                if(comment){
+                                    (coor.leaves)[i].comment = comment
+                                }
                                 break;
                             }
                         }
@@ -480,6 +503,9 @@ router.route("/acceptreq").post(async (req, res) => {//Accept req number 5 in 4.
                         for(let i=0; i<(ta.leaves).length ;i++){
                             if((ta.leaves)[i]._id == reqid){
                                 (ta.leaves)[i].state = "accepted";
+                                if(comment){
+                                    (ta.leaves)[i].comment = comment
+                                }
                                 break;
                             }
                         }
@@ -493,6 +519,9 @@ router.route("/acceptreq").post(async (req, res) => {//Accept req number 5 in 4.
                         for(let i=0; i<(hod.leaves).length ;i++){
                             if((hod.leaves)[i]._id == reqid){
                                 (hod.leaves)[i].state = "accepted";
+                                if(comment){
+                                    (hod.leaves)[i].comment = comment
+                                }
                                 break;
                             }
                         }
@@ -504,6 +533,9 @@ router.route("/acceptreq").post(async (req, res) => {//Accept req number 5 in 4.
                         for(let i=0; i<(ta.leaves).length ;i++){
                             if((ta.leaves)[i]._id == reqid){
                                 (ta.leaves)[i].state = "accepted";
+                                if(comment){
+                                    (ta.leaves)[i].comment = comment
+                                }
                                 break;
                             }
                         }
@@ -529,11 +561,15 @@ router.route("/acceptreq").post(async (req, res) => {//Accept req number 5 in 4.
     }
     else{
         if(reqtype=="Change Dayoff"){
+            console.log("in change dayoff");
             let newdayoff="";
             let daywithnoslots=true;
             for(let i=0; i<changereqs.length; i++){
                 if(changereqs[i]._id==reqid){
                     console.log(changereqs[i]._id)
+                    if(comment){
+                        changereqs[i].comment = comment
+                    }
                     // changereqs[i].state = "rejected";
                     const staffmail = changereqs[i].smail;
                     console.log(staffmail);
@@ -541,11 +577,16 @@ router.route("/acceptreq").post(async (req, res) => {//Accept req number 5 in 4.
                     let staff = await StaffModel.findOne({email: staffmail});
                     if(staff.type=="instructor"){
                         let Inst = await InstructorModel.findOne({email: staffmail});
+                        
                         daywithnoslots = true;
-                        for(let j=0;j<5; j++){
-                            if((Inst.schedule)[changereqs[i].day][j]!=0){
-                                daywithnoslots=false;
-                                break;
+                        if((Inst.schedule).length!=0){
+                            console.log("in not null")
+                            console.log(Inst.schedule)
+                            for(let j=0;j<5; j++){
+                                if((Inst.schedule)[changereqs[i].day][j]!=0){
+                                    daywithnoslots=false;
+                                    break;
+                                }
                             }
                         }
                         
@@ -555,6 +596,9 @@ router.route("/acceptreq").post(async (req, res) => {//Accept req number 5 in 4.
                             for(let i=0; i<(Inst.changereq).length ;i++){
                                 if((Inst.changereq)[i]._id == reqid){
                                     (Inst.changereq)[i].state = "accepted";
+                                    if(comment){
+                                        (Inst.changereq)[i].comment = comment
+                                    }
                                     newdayoff +=(Inst.changereq)[i].day;
                                     break;
                                 }
@@ -567,18 +611,22 @@ router.route("/acceptreq").post(async (req, res) => {//Accept req number 5 in 4.
                     if(staff.type=="courseCoordinator"){
                         let coor = await CoorModel.findOne({email: staffmail});
                         daywithnoslots = true;
+                        if((coor.schedule).length!=0){
                         for(let j=0;j<5; j++){
                             if((coor.schedule)[changereqs[i].day][j]!=0){
                                 daywithnoslots=false;
                                 break;
                             }
-                        }
+                        }}
                         if(daywithnoslots){
                             changereqs[i].state = "accepted";
                             newdayoff = ""
                             for(let i=0; i<(coor.chasngereq).length ;i++){
                                 if((coor.changereq)[i]._id == reqid){
                                     (coor.changereq)[i].state = "accepted";
+                                    if(comment){
+                                        (coor.changereq)[i].comment = comment
+                                    }
                                     newdayoff +=(coor.changereq)[i].day;
                                     break;
                                 }
@@ -587,18 +635,22 @@ router.route("/acceptreq").post(async (req, res) => {//Accept req number 5 in 4.
                         }
                         let ta = await TaModel.findOne({email: staffmail});
                         daywithnoslots = true;
+                        if((ta.schedule).length!=0){
                         for(let j=0;j<5; j++){
                             if((ta.schedule)[changereqs[i].day][j]!=0){
                                 daywithnoslots=false;
                                 break;
                             }
-                        }
+                        }}
                         if(daywithnoslots){
                             changereqs[i].state = "accepted";
                             newdayoff = ""
                             for(let i=0; i<(ta.changereq).length ;i++){
                                 if((ta.changereq)[i]._id == reqid){
                                     (ta.changereq)[i].state = "accepted";
+                                    if(comment){
+                                        (ta.changereq)[i].comment = comment
+                                    }
                                     newdayoff +=(ta.changereq)[i].day;
                                     break;
                                 }
@@ -610,18 +662,22 @@ router.route("/acceptreq").post(async (req, res) => {//Accept req number 5 in 4.
                     if(staff.type=="HoD"){
                         let hod = await HeadOfDepartmentModel.findOne({email: staffmail});
                         daywithnoslots = true;
+                        if((hod.schedule).length!=0){
                         for(let j=0;j<5; j++){
                             if((hod.schedule)[changereqs[i].day][j]!=0){
                                 daywithnoslots=false;
                                 break;
                             }
-                        }
+                        }}
                         if(daywithnoslots){
                             changereqs[i].state = "accepted";
                             newdayoff = ""
                             for(let i=0; i<(hod.changereq).length ;i++){
                                 if((hod.changereq)[i]._id == reqid){
                                     (hod.changereq)[i].state = "accepted";
+                                    if(comment){
+                                        (hod.changereq)[i].comment = comment
+                                    }
                                     newdayoff +=(hod.changereq)[i].day;
                                     break;
                                 }
@@ -633,18 +689,22 @@ router.route("/acceptreq").post(async (req, res) => {//Accept req number 5 in 4.
                     if(staff.type=="ta"){
                         let ta = await TaModel.findOne({email: staffmail});
                         daywithnoslots = true;
+                        if((ta.schedule).length!=0){
                         for(let j=0;j<5; j++){
                             if((ta.schedule)[changereqs[i].day][j]!=0){
                                 daywithnoslots=false;
                                 break;
                             }
-                        }
+                        }}
                         if(daywithnoslots){
                             changereqs[i].state = "accepted";
                             newdayoff = ""
                             for(let i=0; i<(ta.changereq).length ;i++){
                                 if((ta.changereq)[i]._id == reqid){
                                     (ta.changereq)[i].state = "accepted";
+                                    if(comment){
+                                        (ta.changereq)[i].comment = comment
+                                    }
                                     newdayoff +=(ta.changereq)[i].day;
                                     break;
                                 }
@@ -666,7 +726,7 @@ router.route("/acceptreq").post(async (req, res) => {//Accept req number 5 in 4.
              }
         }
         else{
-            res.status(404).send("type name not found");
+            res.send("type name not found");
         }
         
     }
@@ -676,9 +736,11 @@ router.route("/acceptreq").post(async (req, res) => {//Accept req number 5 in 4.
 
 //rejectreq is working (garrabtaha 3al TA bs bema2en kollohom nafs l 7aga bs condition mo5talef it should work for all)
 router.route("/rejectreq").post(async (req, res) => {//Reject req number 6 in 4.1 
+    console.log("rejectreqs")
     const headid = req.id; // 6
     const reqid = req.body.rid;// "5fe2ab1d8fa26d38e8bc8ff7"
     const reqtype = req.body.rtype; //leave
+    const comment = req.body.rcomment;
     let head = await HeadOfDepartmentModel.findOne({ID: headid});
     const headname = head.name;
     let changereqs = head.changereq;
@@ -688,6 +750,9 @@ router.route("/rejectreq").post(async (req, res) => {//Reject req number 6 in 4.
             console.log("in");
             if(leavereqs[i]._id==reqid){
                 leavereqs[i].state = "rejected";
+                if(comment){
+                    leavereqs[i].comment = comment
+                }
                 const staffmail = leavereqs[i].smail;
                 let staff = await StaffModel.findOne({email: staffmail});
                 if(staff.type=="instructor"){
@@ -695,6 +760,11 @@ router.route("/rejectreq").post(async (req, res) => {//Reject req number 6 in 4.
                     for(let i=0; i<(Inst.leaves).length ;i++){
                         if((Inst.leaves)[i]._id == reqid){
                             (Inst.leaves)[i].state = "rejected";
+                            console.log("comment:"+comment);
+                            if(comment){
+                                console.log("comment:"+comment);
+                                (Inst.leaves)[i].comment = comment
+                            }
                             break;
                         }
                     }
@@ -706,6 +776,9 @@ router.route("/rejectreq").post(async (req, res) => {//Reject req number 6 in 4.
                     for(let i=0; i<(coor.leaves).length ;i++){
                         if((coor.leaves)[i]._id == reqid){
                             (coor.leaves)[i].state = "rejected";
+                            if(comment){
+                                (coor.leaves)[i].comment = comment
+                            }
                             break;
                         }
                     }
@@ -713,10 +786,16 @@ router.route("/rejectreq").post(async (req, res) => {//Reject req number 6 in 4.
                     break;
                 }
                 if(staff.type=="HoD"){
+                    console.log("in hod")
                     let hod = await HeadOfDepartmentModel.findOne({email: staffmail});
                     for(let i=0; i<(hod.leaves).length ;i++){
                         if((hod.leaves)[i]._id == reqid){
                             (hod.leaves)[i].state = "rejected";
+                            console.log("comment:"+comment);
+                            if(comment){
+                                console.log("comment:"+comment)
+                                (hod.leaves)[i].comment = comment
+                            }
                             break;
                         }
                     }
@@ -728,6 +807,9 @@ router.route("/rejectreq").post(async (req, res) => {//Reject req number 6 in 4.
                     for(let i=0; i<(ta.leaves).length ;i++){
                         if((ta.leaves)[i]._id == reqid){
                             (ta.leaves)[i].state = "rejected";
+                            if(comment){
+                                (ta.leaves)[i].comment = comment
+                            }
                             break;
                         }
                     }
@@ -750,6 +832,9 @@ router.route("/rejectreq").post(async (req, res) => {//Reject req number 6 in 4.
             for(let i=0; i<changereqs.length; i++){
                 if(changereqs[i]._id==reqid){
                     changereqs[i].state = "rejected";
+                    if(comment){
+                        changereqs[i].comment = comment
+                    }
                     const staffmail = changereqs[i].smail;
                     let staff = await StaffModel.findOne({email: staffmail});
                     if(staff.type=="instructor"){
@@ -757,6 +842,9 @@ router.route("/rejectreq").post(async (req, res) => {//Reject req number 6 in 4.
                         for(let i=0; i<(Inst.changereq).length ;i++){
                             if((Inst.changereq)[i]._id == reqid){
                                 (Inst.changereq)[i].state = "rejected";
+                                if(comment){
+                                    (Inst.changereq)[i].comment = comment
+                                }
                                 break;
                             }
                         }
@@ -768,10 +856,24 @@ router.route("/rejectreq").post(async (req, res) => {//Reject req number 6 in 4.
                         for(let i=0; i<(coor.changereq).length ;i++){
                             if((coor.changereq)[i]._id == reqid){
                                 (coor.changereq)[i].state = "rejected";
+                                if(comment){
+                                    (coor.changereq)[i].comment = comment
+                                }
                                 break;
                             }
                         }
                         await CoorModel.findOneAndUpdate({email: staffmail}, coor);
+                        let ta = await TaModel.findOne({email: staffmail});
+                        for(let i=0; i<(ta.changereq).length ;i++){
+                            if((ta.changereq)[i]._id == reqid){
+                                (ta.changereq)[i].state = "rejected";
+                                if(comment){
+                                    (ta.changereq)[i].comment = comment
+                                }
+                                break;
+                            }
+                        }
+                        await TaModel.findOneAndUpdate({email: staffmail}, ta);
                         break;
                     }
                     if(staff.type=="HoD"){
@@ -779,6 +881,9 @@ router.route("/rejectreq").post(async (req, res) => {//Reject req number 6 in 4.
                         for(let i=0; i<(hod.changereq).length ;i++){
                             if((hod.changereq)[i]._id == reqid){
                                 (hod.changereq)[i].state = "rejected";
+                                if(comment){
+                                    (hod.changereq)[i].comment = comment
+                                }
                                 break;
                             }
                         }
@@ -790,6 +895,9 @@ router.route("/rejectreq").post(async (req, res) => {//Reject req number 6 in 4.
                         for(let i=0; i<(ta.changereq).length ;i++){
                             if((ta.changereq)[i]._id == reqid){
                                 (ta.changereq)[i].state = "rejected";
+                                if(comment){
+                                    (ta.changereq)[i].comment = comment
+                                }
                                 break;
                             }
                         }
@@ -804,7 +912,7 @@ router.route("/rejectreq").post(async (req, res) => {//Reject req number 6 in 4.
              res.send("the change day req is rejected")
         }
         else{
-            res.status(404).send("type name not found");
+            res.send("type name not found");
         }
     }
 });
@@ -837,11 +945,12 @@ router.route("/viewCoursesCover").post(async (req, res) => {//number 7 in 4.1
 //viewTeachAssign working with no errors bs l list fadya so far 
 router.route("/viewTeachAssign").post(async (req, res) => {//number 8 in 4.1 
     const headID = req.id;
+    console.log("headid:"+headID)
     const facultyid = req.body.facid;
     const faculty = await FacultyModel.findOne({ _id: facultyid });
     const head = await HeadOfDepartmentModel.findOne({ID: headID});
     const departmentname = head.department;
-   
+   console.log("depid:"+departmentname);
     const departments = faculty.departments;
     let result =[];
     for(let i=0; i< departments.length ;i++){

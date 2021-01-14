@@ -19,6 +19,7 @@ import * as Icon from "react-bootstrap-icons";
 import { Plus } from "react-bootstrap-icons";
 require("dotenv").config();
 function Deletetest(props) {
+  const token =localStorage.getItem("token");
   const [courses, setcourses] = useState([]);
   const [courseID, setCourseID] = useState("");
   const [coursename, setCoursename] = useState("");
@@ -29,16 +30,17 @@ function Deletetest(props) {
   const [show, setShow] = useState(false);
   useEffect(() => {
     async function fetchData() {
-        const facdep = await axios.post(`http://localhost:3000/HoD/ViewDepIDandFacID`,{
-            hid:"ac-100"
-         });
+        const facdep = await axios({method:'post', url:`http://localhost:3000/HoD/ViewDepIDandFacID`,
+        headers:{token:token}
+        });
          console.log(facdep.data);
       const depid = facdep.data[1];
       setFacID(facdep.data[0]);
       console.log("dep = "+depid)
       console.log("fac ="+facID)
-      const response = await axios.post(`http://localhost:3000/HoD/ViewCourses`,{
-        did:depid
+      const response = await axios({method:'post', url:`http://localhost:3000/HoD/ViewCourses`,
+      data:{did:depid},
+      headers:{token:token}
       });
 
       console.log(response.data);
@@ -70,11 +72,10 @@ function Deletetest(props) {
     // const Instructorid = req.body.id;
     const response = await axios({method:'delete', url:`http://localhost:3000/HoD/deleteCourseInst`,
         data:{
-        hid: "ac-100",
         facid: facID,
         cid: courseID,
         id: instID
-    }}
+    },headers:{token:token}}
     );
     console.log(response)
     setShow(false);

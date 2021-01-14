@@ -54,19 +54,19 @@ export default function Login(props) {
             let type = result.type
             switch (type) {
               case "instructor":
-                history.push("/instructor",res.headers.token)
+                history.push("/instructor")
                 break
               case "HR":
-                history.push("/HR",res.headers.token)
+                history.push("/HR")
                 break
               case "ta":
-                history.push("/TA",res.headers.token)
+                history.push("/ta")
                 break
-              case "CourseCoordinator":
-                history.push("/CourseCoordinator",res.headers.token)
+              case "courseCoordinator":
+                history.push("/coordinator")
                 break
                 case "HoD":
-                  history.push("/hod",res.headers.token)
+                  history.push("/hod")
                   break
               default:
                 break

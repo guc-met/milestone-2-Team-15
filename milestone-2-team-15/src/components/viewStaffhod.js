@@ -32,20 +32,22 @@ function ViewStaff(props) {
   const [Faculty, setFaculty] = useState("")
   const [show, setShow] = useState(false);
   
+  const token =localStorage.getItem("token");
 
   useEffect(() => {
     async function fetchData() {
-        const facdep = await axios.post(`http://localhost:3000/HoD/ViewDepIDandFacID`,{
-            hid:"ac-100"
-         });
+        const facdep = await axios({method:'post', url:`http://localhost:3000/HoD/ViewDepIDandFacID`,
+        headers:{token:token}
+        });
          console.log(facdep.data);
       setFacID(facdep.data[0]);
       let facidd= facdep.data[0];
     
-      const response = await axios.post(`http://localhost:3000/HoD/viewstaff`,{
-        id:"ac-100",
-        facid: facidd
+      const response = await axios({method:'post', url:`http://localhost:3000/HoD/viewstaff`,
+      data:{facid: facidd},
+      headers:{token:token}
       });
+      console.log("response: "+response.data)
 
       const staffs = response.data.map((staff, index) => {
         return (
@@ -70,12 +72,14 @@ function ViewStaff(props) {
     setDayoff(staff.dayOff);
     setDepartment(staff.department);
     setFaculty(staff.Faculty);
-    const responsestaff = await axios.post(`http://localhost:3000/HoD/ViewOneStaff`,{
-        sid:staff.ID,
+    const responsestaff = await axios({method:'post', url:`http://localhost:3000/HoD/ViewOneStaff`,
+    data:{sid:staff.ID},
+    headers:{token:token}
     });
     setstaff(responsestaff.data);
-    const responsestafftype = await axios.post(`http://localhost:3000/HoD/ViewStaffType`,{
-        sid:staff.ID,
+    const responsestafftype = await axios({method:'post', url:`http://localhost:3000/HoD/ViewStaffType`,
+    data:{sid:staff.ID},
+    headers:{token:token}
     });
     setstafftype(responsestafftype.data);
     setShow(true);

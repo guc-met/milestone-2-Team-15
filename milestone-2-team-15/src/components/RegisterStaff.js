@@ -46,10 +46,15 @@ function RegisterStaff(props) {
       setGender("");
       setFaculty("");
       setDepartment("");
+      const token = localStorage.getItem("token");
 
-      const response = await axios.get(
-        `http://localhost:3000/HR/ViewFaculties`
-      );
+      const response = await axios({
+        method: "get",
+        url: `http://localhost:3000/HR/ViewFaculties`,
+        data: {},
+        headers: { token: token },
+      });
+
       console.log(response.data);
 
       const faculties = response.data.map((faculty) => {
@@ -74,25 +79,33 @@ function RegisterStaff(props) {
       });
       console.log(faculties);
       setFaculties(faculties);
-      const response2 = await axios.get(
-        `http://localhost:3000/HR/ViewLocations`
-      );
+      const response2 = await axios({
+        method: "get",
+        url: `http://localhost:3000/HR/ViewLocations`,
+        data: {},
+        headers: { token: token },
+      });
+
       console.log(response2.data);
 
-      const locations = response2.data.map((location) => {
-        return (
-          <Form.Check
-            required
-            onChange={() => {
-              setLocation(location.locationId);
-            }}
-            type="radio"
-            label={location.BuildingCharachter + location.roomNumber}
-            name="location"
-            id={location.locationId}
-          />
-        );
-      });
+      const locations = response2.data
+        .filter((location) => {
+          return location.NumberOfAvailablePeople < location.NumberOfPersons;
+        })
+        .map((location) => {
+          return (
+            <Form.Check
+              required
+              onChange={() => {
+                setLocation(location.locationId);
+              }}
+              type="radio"
+              label={location.BuildingCharachter + location.roomNumber}
+              name="location"
+              id={location.locationId}
+            />
+          );
+        });
       setLocations(locations);
     }
     fetchData();
@@ -110,19 +123,45 @@ function RegisterStaff(props) {
     staff.salary = salary;
     staff.locationID = location;
     staff.email = email;
-    if (dayOff != "") staff.dayOff = dayOff;
+    if (
+      staff.name == "" ||
+      staff.salary == "" ||
+      staff.locationID == "" ||
+      staff.email == ""
+    ) {
+      setResponse(
+        <Alert style={{ marginTop: "10%" }} variant="danger">
+          please renter the fields it looks like you are missing something
+        </Alert>
+      );
+      return;
+    }
+    if (dayOff != "" && type != "HR") staff.dayOff = dayOff;
     if (gender != "") staff.gender = gender;
-    if (department != "") staff.department = department;
-    if (faculty != "") staff.faculty = faculty;
+    if (department != "" && type != "HR") staff.department = department;
+    if (faculty != "" && type != "HR") staff.faculty = faculty;
+    console.log(name);
+    console.log(salary);
+    console.log(location);
+    console.log(email);
 
     console.log(dayOff);
     console.log(gender);
     console.log(department);
     console.log(faculty);
-    const response = await axios.post(`http://localhost:3000/HR/register`, {
-      type: type,
-      staff: staff,
+    console.log(staff);
+    const token = localStorage.getItem("token");
+
+    const response = await axios({
+      method: "post",
+      url: `http://localhost:3000/HR/register`,
+      data: {
+        type: type,
+        staff: staff,
+      },
+      headers: { token: token },
     });
+
     if (response.status == 200)
       setResponse(
         <Alert style={{ marginTop: "10%" }} variant="success">
@@ -132,9 +171,10 @@ function RegisterStaff(props) {
     else
       setResponse(
         <Alert style={{ marginTop: "10%" }} variant="danger">
-          {response.data}
+          {response ? response.data : "Something went wrong"}
         </Alert>
       );
+    setFlag(!flag);
   };
 
   return (
@@ -232,66 +272,68 @@ function RegisterStaff(props) {
           </Form.Label>
           {locations}
         </Form.Group>
+        {type && type != "HR" ? (
+          <Form.Group class="HR_input" controlId="formGridroomKind">
+            <Form.Label>day Off</Form.Label>
+            <Col sm={10}>
+              <Form.Check
+                onChange={() => {
+                  setDayOff(6);
+                }}
+                type="radio"
+                label="Saturday"
+                name="DayOff"
+                id="Saturday"
+              />
+              <Form.Check
+                onChange={() => {
+                  setDayOff(0);
+                }}
+                type="radio"
+                label="Sunday"
+                name="DayOff"
+                id="Sunday"
+              />
+              <Form.Check
+                onChange={() => {
+                  setDayOff(1);
+                }}
+                type="radio"
+                label="Monday"
+                name="DayOff"
+                id="Monday"
+              />
+              <Form.Check
+                onChange={() => {
+                  setDayOff(2);
+                }}
+                type="radio"
+                label="Tuesday"
+                name="DayOff"
+                id="Tuesday"
+              />
+              <Form.Check
+                onChange={() => {
+                  setDayOff(3);
+                }}
+                type="radio"
+                label="Wednesday"
+                name="DayOff"
+                id="Wednesday"
+              />
+              <Form.Check
+                onChange={() => {
+                  setDayOff(4);
+                }}
+                type="radio"
+                label="Thursday"
+                name="DayOff"
+                id="Thursday"
+              />
+            </Col>
+          </Form.Group>
+        ) : null}
 
-        <Form.Group class="HR_input" controlId="formGridroomKind">
-          <Form.Label>day Off</Form.Label>
-          <Col sm={10}>
-            <Form.Check
-              onChange={() => {
-                setDayOff(6);
-              }}
-              type="radio"
-              label="Saturday"
-              name="DayOff"
-              id="Saturday"
-            />
-            <Form.Check
-              onChange={() => {
-                setDayOff(0);
-              }}
-              type="radio"
-              label="Sunday"
-              name="DayOff"
-              id="Sunday"
-            />
-            <Form.Check
-              onChange={() => {
-                setDayOff(1);
-              }}
-              type="radio"
-              label="Monday"
-              name="DayOff"
-              id="Monday"
-            />
-            <Form.Check
-              onChange={() => {
-                setDayOff(2);
-              }}
-              type="radio"
-              label="Tuesday"
-              name="DayOff"
-              id="Tuesday"
-            />
-            <Form.Check
-              onChange={() => {
-                setDayOff(3);
-              }}
-              type="radio"
-              label="Wednesday"
-              name="DayOff"
-              id="Wednesday"
-            />
-            <Form.Check
-              onChange={() => {
-                setDayOff(4);
-              }}
-              type="radio"
-              label="Thursday"
-              name="DayOff"
-              id="Thursday"
-            />
-          </Col>
-        </Form.Group>
         <Form.Group class="HR_input" controlId="formGridroomKind">
           <Form.Label>gender</Form.Label>
           <Form.Check
@@ -313,11 +355,15 @@ function RegisterStaff(props) {
             id="Female"
           />
         </Form.Group>
-        <Form.Group class="HR_input" controlId="formGridroomKind">
-          <Select defaultValue="choose Department" style={{ width: 200 }}>
-            {faculties}
-          </Select>
-        </Form.Group>
+
+        {type && type != "HR" ? (
+          <Form.Group class="HR_input" controlId="formGridroomKind">
+            <Select defaultValue="choose Department" style={{ width: 200 }}>
+              {faculties}
+            </Select>
+          </Form.Group>
+        ) : null}
+
         <Form.Group class="HR_input" role="form">
           <Button type="submit" style={{ float: "right" }} variant="primary">
             Submit
