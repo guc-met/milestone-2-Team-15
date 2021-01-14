@@ -425,7 +425,8 @@ router.route("/viewAllreq").post(async (req, res) => {//number 4 in 4.1
             "leaveType": leavereqs[i].leaveType,
             "state": leavereqs[i].state,
             "HoDname": leavereqs[i].HoDname,
-            "comment": leavereqs[i].comment  
+            "comment": leavereqs[i].comment,  
+            "realday":leavereqs[i].realday 
 
         }
         result.push(m);
@@ -759,7 +760,9 @@ router.route("/rejectreq").post(async (req, res) => {//Reject req number 6 in 4.
                     for(let i=0; i<(Inst.leaves).length ;i++){
                         if((Inst.leaves)[i]._id == reqid){
                             (Inst.leaves)[i].state = "rejected";
+                            console.log("comment:"+comment);
                             if(comment){
+                                console.log("comment:"+comment);
                                 (Inst.leaves)[i].comment = comment
                             }
                             break;
@@ -783,11 +786,14 @@ router.route("/rejectreq").post(async (req, res) => {//Reject req number 6 in 4.
                     break;
                 }
                 if(staff.type=="HoD"){
+                    console.log("in hod")
                     let hod = await HeadOfDepartmentModel.findOne({email: staffmail});
                     for(let i=0; i<(hod.leaves).length ;i++){
                         if((hod.leaves)[i]._id == reqid){
                             (hod.leaves)[i].state = "rejected";
+                            console.log("comment:"+comment);
                             if(comment){
+                                console.log("comment:"+comment)
                                 (hod.leaves)[i].comment = comment
                             }
                             break;

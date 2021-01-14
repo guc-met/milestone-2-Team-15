@@ -22,10 +22,11 @@ export default function InstructorProfile(props) {
     const [changereqs, setChangereqs]= useState("");
     const [leavereqs, setLeavereqs]= useState("");
     const [allreqs, setAllreqs] = useState("");
-    const [comment, setComment]= useState("");
+    //const [comment, setComment]= useState("");
     const [response, setResponse] = useState();
     const change="";
     const leave="";
+    let comment="";
   useEffect(() => {
     async function fetchData() {
 
@@ -84,11 +85,12 @@ export default function InstructorProfile(props) {
             </Row> 
             <Row class="rowleqaa">
               <Form.Group class="hod_input" controlId="formGridroomKind">
-              <Form.Label> Enter a comment (optoinal):</Form.Label>
+              <Form.Label class="tagreeb"> Enter a comment (optoinal):</Form.Label>
               <Form.Control
                   type="text"
                   onChange={(event) => {
-                    setComment(event.target.value);
+                    //setComment(event.target.value);
+                    comment = event.target.value;
                   }}
                   placeholder="comment"
               />
@@ -159,7 +161,10 @@ export default function InstructorProfile(props) {
                           <Form.Label className="InstructorProfileLabel">replacement acceptance id if available: {req.replacmentAcceptance}</Form.Label>
                       </Col>
                       <Col>
-                          <Form.Label className="InstructorProfileLabel">day of leave: {req.day}</Form.Label>
+                          <Form.Label className="InstructorProfileLabel">day in the week of leave: {req.day}</Form.Label>
+                      </Col>
+                      <Col>
+                          <Form.Label className="InstructorProfileLabel">day in month of leave: {req.realday}</Form.Label>
                       </Col>
                       <Col>
                           <Form.Label className="InstructorProfileLabel">month of leave: {req.month}</Form.Label>
@@ -182,11 +187,13 @@ export default function InstructorProfile(props) {
                 </Row> 
                 <Row class="rowleqaa">
                       <Form.Group class="hod_input" controlId="formGridroomKind">
-                      <Form.Label> Enter a comment (optoinal):</Form.Label>
+                      <Form.Label class="tagreeb"> Enter a comment (optoinal):</Form.Label>
                       <Form.Control
                           type="text"
                           onChange={(event) => {
-                            setComment(event.target.value);
+                            // console.log("bla:"+event.target.value)
+                            // setComment(event.target.value);
+                            comment = event.target.value;
                           }}
                           placeholder="comment"
                       />
@@ -235,6 +242,7 @@ export default function InstructorProfile(props) {
   }
 
   const handlereject = async(headid , reqid, reqtype) => {
+    console.log("blaaaa:"+comment)
     const response = await axios({method:'post', url:`http://localhost:3000/HoD/rejectreq`,
     data:{rid: reqid,
       rtype: reqtype,
