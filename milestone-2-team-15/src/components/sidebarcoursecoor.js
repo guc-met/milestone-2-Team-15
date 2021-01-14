@@ -8,6 +8,7 @@ export default function sideBar(props) {
         <div class="red">
         <a href="/coordinator/viewrecievedlinkslotreqs">View Recieved Linking Slot Requests</a> <br/>
         <a href="/coordinator/deleteslot">Delete slot</a> <br/>
+        
         </div>
         <div class="yellow"> 
         
@@ -17,6 +18,7 @@ export default function sideBar(props) {
     <a href="/coordinator/sendReq">Send Requests</a> <br/>
     <a href="/coordinator/viewrequest">View Requests</a> <br/>
     <a href="/coordinator/addslot">Add slot</a> <br/>
+    <a href="/coordinator/updateslot">Update slot</a> <br/>
     
     <a href="#">View Schedule</a> <br/>
     

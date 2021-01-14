@@ -34,9 +34,15 @@ function Location() {
 
   useEffect(() => {
     async function fetchData() {
-      const response = await axios.get(
-        `http://localhost:3000/HR/ViewLocations`
-      );
+      const token = localStorage.getItem("token");
+      console.log(token);
+      const response = await axios({
+        method: "get",
+        url: `http://localhost:3000/HR/ViewLocations`,
+        data: {},
+        headers: { token: token },
+      });
+
       console.log(response.data);
 
       const hi = response.data.map((location) => {
@@ -61,7 +67,22 @@ function Location() {
                 </ListGroup.Item>
               </ListGroup>
               <Card.Body style={{ textAlign: "center" }}>
-                <Button variant="dark" class="Location__Button__delete">
+                <Button
+                  onClick={() => {
+                    if (location.NumberOfAvailablePeople != 0) {
+                      setResponse(
+                        <Alert variant="danger">
+                          You have to transfer all staff befor deleting this
+                          location
+                        </Alert>
+                      );
+                    } else {
+                      handledelete(location.locationId);
+                    }
+                  }}
+                  variant="dark"
+                  class="Location__Button__delete"
+                >
                   <Icon.Trash />
                 </Button>
 
@@ -99,6 +120,23 @@ function Location() {
     }
     fetchData();
   }, [flag]);
+
+  const handledelete = async (locationId) => {
+    const token = localStorage.getItem("token");
+
+    const response = await axios({
+      method: "post",
+      url: `http://localhost:3000/HR/DeleteLocation`,
+      data: {
+        id: locationId,
+      },
+      headers: { token: token },
+    });
+    setFlag(!flag);
+    if (response.status == 200)
+      setResponse(<Alert variant="success">{response.data} </Alert>);
+    else setResponse(<Alert variant="danger">{response.data} </Alert>);
+  };
   const handleSubmit = async (event) => {
     const form = event.currentTarget;
 
@@ -116,17 +154,22 @@ function Location() {
     console.log(edit);
 
     if (edit == false) {
-      const response = await axios.post(
-        `http://localhost:3000/HR/addLocation`,
-        {
+      const token = localStorage.getItem("token");
+      console.log(token);
+      const response = await axios({
+        method: "post",
+        url: `http://localhost:3000/HR/addLocation`,
+        data: {
           roomKind: roomKind,
           BuildingCharachter: buildingCharacter,
           FloorNumber: floorNumber,
           roomNumber: roomNumber,
           NumberOfAvailablePeople: NumberOfAvailablePeople,
           NumberOfPersons: NumberOfPersons,
-        }
-      );
+        },
+        headers: { token: token },
+      });
+
       if (response.status == 200)
         setResponse(<Alert variant="success">{response.data} </Alert>);
       else setResponse(<Alert variant="danger">{response.data} </Alert>);
@@ -140,13 +183,18 @@ function Location() {
       if (NumberOfAvailablePeople != -1)
         location.NumberOfAvailablePeople = NumberOfAvailablePeople;
       if (NumberOfPersons != -1) location.NumberOfPersons = NumberOfPersons;
-      const response = await axios.post(
-        `http://localhost:3000/HR/updateLocation`,
-        {
+      const token = localStorage.getItem("token");
+
+      const response = await axios({
+        method: "post",
+        url: `http://localhost:3000/HR/updateLocation`,
+        data: {
           id: id,
           location: location,
-        }
-      );
+        },
+        headers: { token: token },
+      });
+
       console.log(response.data);
       if (response.status == 200)
         setResponse(<Alert variant="success">{response.data} </Alert>);

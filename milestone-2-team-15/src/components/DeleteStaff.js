@@ -25,8 +25,13 @@ function RegisterStaff(props) {
   const [show, setShow] = useState(false);
   useEffect(() => {
     async function fetchData() {
-      const response = await axios.get(`http://localhost:3000/HR/ViewStaffs`);
-      console.log(response.data);
+      const token = localStorage.getItem("token");
+      const response = await axios({
+        method: "get",
+        url: `http://localhost:3000/HR/ViewStaffs`,
+        data: {},
+        headers: { token: token },
+      });
 
       const staff = response.data.map((staff, index) => {
         return (
@@ -53,9 +58,14 @@ function RegisterStaff(props) {
     setShow(true);
   };
   const handleSubmit = async () => {
-    const response = await axios.post(`http://localhost:3000/HR/DeleteStaff`, {
-      staffID: staffChosen.ID,
+    const token = localStorage.getItem("token");
+    const response = await axios({
+      method: "post",
+      url: `http://localhost:3000/HR/DeleteStaff`,
+      data: { staffID: staffChosen.ID },
+      headers: { token: token },
     });
+
     setShow(false);
     if (response.status == 200)
       setResponse(<Alert variant="success">{response.data} </Alert>);

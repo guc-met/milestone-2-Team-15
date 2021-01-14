@@ -14,9 +14,14 @@ function StaffMissingHours() {
   const [staffs, setStaffs] = useState();
   useEffect(() => {
     async function fetchData() {
-      const response = await axios.get(
-        `http://localhost:3000/HR/ViewStaffWithMissingHours`
-      );
+      const token = localStorage.getItem("token");
+      const response = await axios({
+        method: "get",
+        url: `http://localhost:3000/HR/ViewStaffWithMissingHours`,
+        data: {},
+        headers: { token: token },
+      });
+
       console.log(response.data);
 
       const hi = response.data.map((staff) => {

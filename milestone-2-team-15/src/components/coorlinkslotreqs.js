@@ -17,6 +17,8 @@ import * as Icon from "react-bootstrap-icons";
 import { Plus } from "react-bootstrap-icons";
 
 require("dotenv").config();
+const token =localStorage.getItem("token")
+
  function Viewlinkreq() {
     
     const history = useHistory();
@@ -28,22 +30,27 @@ require("dotenv").config();
     async function acceptreq(reqid) {
         console.log("ana da5alt")
         
-        response = await axios.post("http://localhost:3000/courseCoordinator_routes/acceptSlotLink", {
-             id:"111",
+        response = await axios({method:"post",url:"http://localhost:3000/courseCoordinator_routes/acceptSlotLink", 
+        data:{
              slinkid:reqid,
     
-        });
+        },
+        headers:{token:token}
+    });
 
         
     }
     async function rejectreq(reqid) {
         console.log("ana da5alt")
         
-         response = await axios.post("http://localhost:3000/courseCoordinator_routes/rejectSlotLink", {
+         response = await axios({method:"post",url:"http://localhost:3000/courseCoordinator_routes/rejectSlotLink",
+         data: {
              id:"111",
              slinkid:reqid,
     
-        });
+        },
+        headers:{tokrn:token}
+    });
         
     }
         
@@ -51,8 +58,9 @@ require("dotenv").config();
         
         async function view() {
            
-         response = await axios.post( "http://localhost:3000/courseCoordinator_routes/viewSlotLinkingReq",{
-             id:"111"
+         response = await axios({method:"post",url: "http://localhost:3000/courseCoordinator_routes/viewSlotLinkingReq",
+         headers:{token:token}
+            
          });
     
        console.log(response);
