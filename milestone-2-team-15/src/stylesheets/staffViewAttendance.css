@@ -1,69 +1,68 @@
-.ViewStaffAttendanceCard{
-    padding-top: 0vw;
-    /* width: 70%; */
-   
-    
-    text-align: center;
-    height:fit-content;
-    max-height:38.88888888888889vw    ;
-    background-color: #f7fafd;
-    box-shadow: 0 0.2777777777777778vw 0.5555555555555556vw 0 rgba(0,0,0,0.3);
-    border-radius: 1.7361111111111112vw;
-    overflow-x: hidden;
-    overflow-y: scroll;
-}
-.ViewStaffAttendanceDiv{
-      width: 70%;
-      margin-left: 25%;
-      margin-top: 5%;
-      text-align: right;
+.ViewStaffAttendanceCard {
+  padding-top: 0vw;
+  /* width: 70%; */
 
+  text-align: center;
+  height: fit-content;
+  max-height: 38.88888888888889vw;
+  background-color: #f7fafd;
+  box-shadow: 0 0.2777777777777778vw 0.5555555555555556vw 0 rgba(0, 0, 0, 0.3);
+  border-radius: 1.7361111111111112vw;
+  overflow-x: hidden;
+  overflow-y: scroll;
 }
-.ViewStaffAttenndanceDropDownStyle{
-    box-shadow: 0 0.2777777777777778vw 0.5555555555555556vw 0 rgba(0,0,0,0.3) !important;
-    border-radius: 1.7361111111111112vw !important;
-    color: white !important;
-    background-color: #343a40 !important;
-    border-color: #343a40 !important;
-    height:2.7777777777777777vw;
-    line-height: 0.4861111111111111vw;
-    font-size: 0.9722222222222222vw;
-    margin-bottom: 0.5%; 
-    margin-right: 0.2%
-    
+.ViewStaffAttendanceDiv {
+  width: 70%;
+  margin-left: 25%;
+  margin-top: 0.9%;
+  text-align: right;
 }
-.lala{
-    padding-top: 0vw;
-    height: 7.638888888888889vw;
-    overflow: hidden scroll;
+.ViewStaffAttenndanceDropDownStyle {
+  box-shadow: 0 0.2777777777777778vw 0.5555555555555556vw 0 rgba(0, 0, 0, 0.3) !important;
+  border-radius: 1.7361111111111112vw !important;
+  color: white !important;
+  background-color: #343a40 !important;
+  border-color: #343a40 !important;
+  height: 2.7777777777777777vw;
+  line-height: 0.4861111111111111vw;
+  font-size: 0.9722222222222222vw;
+  margin-bottom: 0.5%;
+  margin-right: 0.2%;
 }
-.btn-viewStaffAttendancemenubutton,.btn-viewStaffAttendancemenubutton:hover,.btn-viewStaffAttendancemenubutton:active,.viewStaffAttendancemenuitem:active{
-    display: block;
-   
-    padding: .25rem 1.5rem;
-    clear: both;
-    font-weight: 400;
-    color: #212529 !important;
-    text-align: inherit;
-    white-space: nowrap;
-    background-color: white;
-    border: 0vw white!important;
-    border-radius: 0vw;
-    text-decoration: none!important;
+.lala {
+  padding-top: 0vw;
+  height: 7.638888888888889vw;
+  overflow: hidden scroll;
+}
+.btn-viewStaffAttendancemenubutton,
+.btn-viewStaffAttendancemenubutton:hover,
+.btn-viewStaffAttendancemenubutton:active,
+.viewStaffAttendancemenuitem:active {
+  display: block;
 
+  padding: 0.25rem 1.5rem;
+  clear: both;
+  font-weight: 400;
+  color: #212529 !important;
+  text-align: inherit;
+  white-space: nowrap;
+  background-color: white;
+  border: 0vw white !important;
+  border-radius: 0vw;
+  text-decoration: none !important;
 }
 
-.ViewStaffAttendancLabel{ 
-    text-align: center;
-    width:100%;
-    font-size:1.25vw;
-    font-family: Arial, Helvetica, sans-serif  , Georgia, serif;
-    font-weight: bold
- }
-.rview{
-    width: -webkit-fill-available;
-    margin-left: 15px;
-    font-size:1.25vw;
-    font-family: Arial, Helvetica, sans-serif  , Georgia, serif;
-    font-weight: bold
+.ViewStaffAttendancLabel {
+  text-align: center;
+  width: 100%;
+  font-size: 1.25vw;
+  font-family: Arial, Helvetica, sans-serif, Georgia, serif;
+  font-weight: bold;
+}
+.rview {
+  width: -webkit-fill-available;
+  margin-left: 15px;
+  font-size: 1.25vw;
+  font-family: Arial, Helvetica, sans-serif, Georgia, serif;
+  font-weight: bold;
 }

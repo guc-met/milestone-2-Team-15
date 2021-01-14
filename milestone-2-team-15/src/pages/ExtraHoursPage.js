@@ -5,8 +5,6 @@ import ExtraHours from "../components/ExtraHours"
 export default function ExtraHoursPage(props) {
   return (
     <div>
-      <Header />
-      <Sidebarhodhome />
       <ExtraHours />
     </div>
   )

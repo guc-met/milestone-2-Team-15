@@ -14,7 +14,11 @@ export default function Login(props) {
   const [Email, setEmail] = useState("")
   const [Password, setPassword] = useState("")
   const [err, setErr] = useState("")
+  const [errEmail, setErrEmail] = useState("")
+  const [errPassword, setErrPassword] = useState("")
+
   const [re, setRe] = useState("")
+  
   const handleLogin = async () => {
     await axios({
       method: "post",
@@ -26,16 +30,21 @@ export default function Login(props) {
       },
     }).then((res) => {
       // console.log("ana")
-      // console.log(res)
+      console.log(res.data)
       // console.log(res.headers.token)
       if (res.data == "please reset ur password" && res.status == 200) {
         localStorage.setItem("token", res.headers.token)
         setErr("please reset ur password")
+       
       } else {
-        if (res.status == 4004) {
+        if (res.data == "user not found") {
           console.log("here")
-          setErr("wrong Email")
-        } else {
+          setErrEmail("wrong Email")
+
+        }else if(res.data=="wrong password") {
+          setErrPassword("Wrong Password")
+        }
+        else {
           const result = jwt.verify(res.headers.token, Token_Secret.Token_Secret)
 
           if (result) {
@@ -45,19 +54,19 @@ export default function Login(props) {
             let type = result.type
             switch (type) {
               case "instructor":
-                history.push("/instructor")
+                history.push("/instructor",res.headers.token)
                 break
               case "HR":
-                history.push("/HR")
+                history.push("/HR",res.headers.token)
                 break
               case "ta":
-                history.push("/TA")
+                history.push("/TA",res.headers.token)
                 break
               case "CourseCoordinator":
-                history.push("/CourseCoordinator")
+                history.push("/CourseCoordinator",res.headers.token)
                 break
                 case "HoD":
-                  history.push("/hod")
+                  history.push("/hod",res.headers.token)
                   break
               default:
                 break
@@ -86,9 +95,12 @@ export default function Login(props) {
             value={Email}
             onChange={(e) => {
               setEmail(e.target.value)
+              setErrEmail()
             }}
           />
+        <Form.Control.Feedback type="invalid">{errEmail}</Form.Control.Feedback>
         </Col>
+
       </Form.Group>
 
       <Form.Group as={Row} controlId="formBasicPassword">
@@ -101,9 +113,12 @@ export default function Login(props) {
             value={Password}
             onChange={(e) => {
               setPassword(e.target.value)
+              setErrPassword()
             }}
           />
+        <Form.Control.Feedback type="invalid">{errPassword}</Form.Control.Feedback>
         </Col>
+
       </Form.Group>
 
       <Col className="LoginButtonCol ">

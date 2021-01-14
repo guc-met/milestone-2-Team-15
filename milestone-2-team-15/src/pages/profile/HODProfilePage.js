@@ -93,7 +93,7 @@ export default function HODProfilePage(props) {
   })
   return (
     <div>
-      <Header />
+      
       <HODProfile
          ID={ID}
          Name={Name}
@@ -103,7 +103,7 @@ export default function HODProfilePage(props) {
          Faculty={Faculty}
          Department={Department}
       />
-      <Sidebarhodhome />
+     
     </div>
   )
 }

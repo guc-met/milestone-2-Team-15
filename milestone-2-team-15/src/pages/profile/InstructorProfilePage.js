@@ -41,9 +41,11 @@ export default function InstructorProfilePage(props) {
       setDayOff(res.data.staffreally.dayOff)
       setFaculty(res.data.staffreally.faculty)
       setDepartment(res.data.staffreally.department)
-      setSalary(res.data.staffreally.salary.$numberDecimal)
+     // setSalary(res.data.staffreally.salary.$numberDecimal)
       let ss = res.data.staffreally.salary.$numberDecimal
       let nn = ss
+      console.log("ss"+ss)
+
       await axios({
         method: "post",
         url: "http://localhost:3000/missinghours",
@@ -87,13 +89,14 @@ export default function InstructorProfilePage(props) {
 
         nn = nn - deducted
       })
+      console.log("nnn"+nn)
       setSalary(nn)
     })
   })
 
   return (
     <div>
-      <Header />
+     
       <InstructorProfile
         ID={ID}
         Name={Name}
@@ -103,7 +106,7 @@ export default function InstructorProfilePage(props) {
         Faculty={Faculty}
         Department={Department}
       />
-      <Sidebar />
+  
     </div>
   )
 }

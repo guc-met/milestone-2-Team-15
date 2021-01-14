@@ -25,7 +25,7 @@ router
     console.log(result)
     if (!result) {
       console.log("ana hna")
-      return res.status(404).send("user not found")
+      return res.send("user not found")
     } else {
       if (result.firstPassEntered == false) {
         const token = jwt.sign(
@@ -57,7 +57,7 @@ router
           res.set("token",token)
           // return res.header("token", token).send(token)
           return res.status(200).send("welcome")
-        } else return res.status(401).send("wrong password")
+        } else return res.send("wrong password")
       }
     }
   })
@@ -68,7 +68,7 @@ router.use(async (req, res, next) => {
   const found = await blacklist.findOne({ token: token })
   if (token) {
     if (!found) {
-      console.log(token)
+   //   console.log(token)
       const result = jwt.verify(token, process.env.Token_Secret)
 
       if (result) {
@@ -116,7 +116,7 @@ router.route("/signin").post(async (req, res) => {
         which = await instructor_model.findOne({ ID: ID })
         whichmodel = instructor_model
         break
-      case "HOD":
+      case "HoD":
         which = await HoD_model.findOne({ ID: ID })
         whichmodel = HoD_model
         break
@@ -237,7 +237,7 @@ router.route("/signout").post(async (req, res) => {
         which = await instructor_model.findOne({ ID: ID })
         whichmodel = instructor_model
         break
-      case "HOD":
+      case "HoD":
         which = await HoD_model.findOne({ ID: ID })
         whichmodel = HoD_model
         break
@@ -425,7 +425,7 @@ router.route("/profile").get(async (req, res) => {
         // })
 
         break
-      case "HOD":
+      case "HoD":
         which = await HoD_model.findOne({ ID: ID })
         whichmodel = HoD_model
         // facullty = await faculty_model.findOne({ _id: which.faculty })
@@ -436,7 +436,7 @@ router.route("/profile").get(async (req, res) => {
       default:
         break
     }
-    // console.log(faculty)
+    console.log(which)
     res.status(200)
     return res.json({
       staff: result,
@@ -518,16 +518,31 @@ router.route("/attendance/:month").post(async (req, res) => {
   const result = await staff_model.findOne({ ID: ID })
   if (result) {
     let month = req.query.month
+ // console.log(result.months[1].attendance)
+ let monattend=[]
+if(month==12){
+   monattend = result.months[month].attendance.filter((record) => {
+    if (
+      (record.month == req.query.month-11 && record.realday <= 10)||
+       (record.month == req.query.month && record.realday >= 11)
+     
+    ){
+      return record}
+  })
 
-    const monattend = result.months[month].attendance.filter((record) => {
+
+}
+else{
+     monattend = result.months[month].attendance.filter((record) => {
       if (
         (record.month == req.query.month && record.realday >= 11) ||
         (record.month == req.query.month + 1 && record.realday <= 10)
       )
         return record
     })
+  }
+ // console.log(monattend)
     res.status(200)
-    console.log(monattend)
     return res.send(monattend)
   } else return res.status(403).send("something went wrong")
 })
@@ -556,7 +571,7 @@ router.route("/missingdays").post(async (req, res) => {
         which = await instructor_model.findOne({ ID: ID })
         whichmodel = instructor_model
         break
-      case "HOD":
+      case "HoD":
         which = await HoD_model.findOne({ ID: ID })
         whichmodel = HoD_model
         break
@@ -609,7 +624,7 @@ router.route("/missingdays").post(async (req, res) => {
     if (today.getDate() <= 10) {
       // iam in new shahr
       // console.log("hnaa")
-      const currmonthleaves = which.leaves.map((eachleave) => {
+      const currmonthleaves = which.leaves.filter((eachleave) => {
         if (
           eachleave.month == month &&
           eachleave.year == year &&
@@ -617,7 +632,7 @@ router.route("/missingdays").post(async (req, res) => {
         )
           return eachleave
       })
-      const pastmonthleaves = which.leaves.map((eachleave) => {
+      const pastmonthleaves = which.leaves.filter((eachleave) => {
         if (
           eachleave.month == month - 1 &&
           (eachleave.year == year - 1 || eachleave.year == year) &&
@@ -794,7 +809,7 @@ router.route("/missingdays").post(async (req, res) => {
     )
     res.status(200)
     return res.send(missed)
-  } else return res.status(403).send("something went wrong")
+  } else return res.send("something went wrong")
 })
 router.route("/missinghours").post(async (req, res) => {
   const type = req.type
@@ -802,8 +817,8 @@ router.route("/missinghours").post(async (req, res) => {
   const result = await staff_model.findOne({ ID: ID })
   if (result) {
     res.status(200)
-    return res.send(result.missinghours + "")
-  } else return res.status(403).send("something went wrong")
+    return res.send(result.missinghours)
+  } else return res.send("something went wrong")
 })
 router.route("/extrahours").post(async (req, res) => {
   const type = req.type

@@ -1,10 +1,13 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
+import DropDown from "../components/dropDown"
+
 function HOD() {
   const history = useHistory();
 
 
-  return (
+  return (<div>
+   
     <div>
       <div class="red">
       <a href="#">Manage Courses</a>
@@ -30,6 +33,8 @@ function HOD() {
 
         
       </div>
+    </div>
+    <DropDown/>
     </div>
   );
 }
