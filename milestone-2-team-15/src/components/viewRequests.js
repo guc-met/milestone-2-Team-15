@@ -16,6 +16,7 @@ import {
 import * as Icon from "react-bootstrap-icons";
 import { Plus } from "react-bootstrap-icons";
 require("dotenv").config();
+const token =localStorage.getItem("token")
  function Viewreq() {
     
     const history = useHistory();
@@ -24,27 +25,38 @@ require("dotenv").config();
     
    useEffect (() => {
     async function cancelreq(reqid,reqtype) {
-        const response = await axios.post( "http://localhost:3000/ac_routes/cancelRequest",{
+        const response = await axios({method:"post",url: "http://localhost:3000/ac_routes/cancelRequest",
+        data:{
              type:reqtype,
              rid:reqid
  
-         });
+         },
+         headers:{token:token}
+        });
          console.log(response);
          
      }
         let response=[]
         async function view() {
             if(checkedAll){
-         response = await axios.post( "http://localhost:3000/ac_routes/viewAllRequests");
+         response= await axios( {method:"post",url:"http://localhost:3000/ac_routes/viewAllRequests",
+         headers:{token:token}
+    });
     }
        else  if(checkedAccepted){
-         response = await axios.post( "http://localhost:3000/ac_routes/viewAccepted");
+         response = await axios( {method:"post",url:"http://localhost:3000/ac_routes/viewAccepted",
+         headers:{token:token}
+       });
     }
       else  if(checkedRejected){
-         response = await axios.post( "http://localhost:3000/ac_routes/viewRejected");
+         response = await axios( {method:"post",url:"http://localhost:3000/ac_routes/viewRejected",
+         headers:{token:token}
+      });
     }
        else if(checkedPending){
-         response = await axios.post( "http://localhost:3000/ac_routes/viewPending");
+         response = await axios( {method:"post",url:"http://localhost:3000/ac_routes/viewPending",
+         headers:{token:token}
+        });
     }
     
         if(response.length==0){

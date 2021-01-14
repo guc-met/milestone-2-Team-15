@@ -18,39 +18,32 @@ import * as Icon from "react-bootstrap-icons";
 
 import { Plus } from "react-bootstrap-icons";
 require("dotenv").config();
+const token =localStorage.getItem("token")
 function SendrepreqtoHOD(props) {
   const [hodid, sethodid] = useState();
-  const [id, setid] = useState();
   const [leaveid, setleaveid] = useState();
   const [msg,setmsg]=useState("");
   
   const sendReq = async (event) => {
   
     console.log("ana da5alt")
-    const response = await axios.post("http://localhost:3000/ac_routes/SendReplacmentRequestToHod", {
+    const response = await axios({method:"post",url:"http://localhost:3000/ac_routes/SendReplacmentRequestToHod", 
+    data:{
          hid:hodid,
-         id:id,
          lid:leaveid
 
         
-    });
+    },
+    headers:{token:token}
+});
     console.log("ana tele3t");
     setmsg(response.data);
     console.log(msg);
   };
     return(
         <div class="HOD-sendreq">
-    <Form.Group class="HOD_input" controlId="formGridroomKind">
-    <Form.Label> ID: </Form.Label>
-    <Form.Control
-      required
-      type="text"
-      onChange={(event) => {
-        setid(event.target.value);
-      }}
-      placeholder="example :ac-23 .."
-    />
-  </Form.Group>
+    
+   
     <Form.Group class="HOD_input" controlId="formGridroomKind">
     <Form.Label>HOD ID: </Form.Label>
     <Form.Control

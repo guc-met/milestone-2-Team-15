@@ -34,7 +34,7 @@ function SendRequestInstructor(props) {
         </Dropdown.Toggle>
 
         <Dropdown.Menu>
-            <Button class="animated-button1" onClick={() => history.push("sendlinkReq")}>Linking Request</Button>
+            <Button  onClick={() => history.push("sendlinkReq")}>Linking Request</Button>
         <br/>
         <Button  onClick={() => history.push("changedayoff")}>change day off request</Button>
         <br/>

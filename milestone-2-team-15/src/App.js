@@ -67,6 +67,7 @@ import staffMissingHours from "./components/StaffMissingHours";
 import UpdateSalary from "./components/UpdateSalary";
 import Faculties from "./components/Faculties";
 import AddSignin from "./components/AddSigninSignOut";
+import Updateslot from "./components/coorupdateslot";
 function App() {
 
   
@@ -117,6 +118,7 @@ function App() {
       <Route path="/coordinator/viewrecievedlinkslotreqs" component={Viewlinkreq} />
       <Route path="/coordinator/addslot" component={Addslot} />
       <Route path="/coordinator/deleteslot" component={DeleteSlot} />
+      <Route path="/coordinator/updateslot" component={Updateslot} />
         {/* delete instructor */}
         <Route path="/hod/deletetest" component={Deletetest} />
         {/* assign Instructor */}

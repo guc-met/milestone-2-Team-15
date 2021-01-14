@@ -36,6 +36,7 @@ function RegisterStaff(props) {
   const [response, setResponse] = useState();
 
   useEffect(() => {
+    
     async function fetchData() {
       setType("");
       setName("");
@@ -46,12 +47,12 @@ function RegisterStaff(props) {
       setGender("");
       setFaculty("");
       setDepartment("");
-
+      console.log("hi")
       const response = await axios.get(
         `http://localhost:3000/HR/ViewFaculties`
       );
-      console.log(response.data);
-
+      
+        
       const faculties = response.data.map((faculty) => {
         const departments = faculty.departments.map((department) => {
           const value = {};
@@ -72,12 +73,13 @@ function RegisterStaff(props) {
         });
         return <OptGroup label={faculty.name}> {departments}</OptGroup>;
       });
-      console.log(faculties);
+      console.log(faculties)
       setFaculties(faculties);
+
       const response2 = await axios.get(
         `http://localhost:3000/HR/ViewLocations`
       );
-      console.log(response2.data);
+      
 
       const locations = response2.data.map((location) => {
         return (
@@ -115,10 +117,8 @@ function RegisterStaff(props) {
     if (department != "") staff.department = department;
     if (faculty != "") staff.faculty = faculty;
 
-    console.log(dayOff);
-    console.log(gender);
-    console.log(department);
-    console.log(faculty);
+
+    
     const response = await axios.post(`http://localhost:3000/HR/register`, {
       type: type,
       staff: staff,

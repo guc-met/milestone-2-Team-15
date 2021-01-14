@@ -51,10 +51,10 @@ export default function Login(props) {
                 history.push("/HR")
                 break
               case "ta":
-                history.push("/TA")
+                history.push("/ta")
                 break
-              case "CourseCoordinator":
-                history.push("/CourseCoordinator")
+              case "courseCoordinator":
+                history.push("/coordinator")
                 break
                 case "HoD":
                   history.push("/hod")
