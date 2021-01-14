@@ -19,7 +19,7 @@ export default function StaffeditProfile(props) {
           type="submit"
           onClick={ ()=>{history.push(link)}}
         >
-          Profile
+          Edit
         </Button>
       </Col>
     </div>

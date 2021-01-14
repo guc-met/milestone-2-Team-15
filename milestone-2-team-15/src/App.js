@@ -33,6 +33,8 @@ import Header from "./components/header";
 
 import HRProfilePage from "./pages/profile/HRProfilePage"
 import InstructorProfilePage from "./pages/profile/InstructorProfilePage"
+import CoordinatorProfilePage from "./pages/profile/CoordinatorProfilePage"
+
 import HODProfilePage from "./pages/profile/HODProfilePage"
 import TAProfilePage from "./pages/profile/TAProfilePage"
 import Sidebarhodhome from "./components/sidebarhodhome";
@@ -129,6 +131,8 @@ function App() {
       <Route path="/Instructor/viewrequest" component={Viewreq} />
       <Route path="/coordinator" component={Sidebardcoor} />
 
+   
+      
       <Route exact path="/coordinator/signout" component={Signout} />
       <Route exact path="/coordinator/signin" component={Signin} />
       <Route exact path="/coordinator/resetpassword" component={ResetPasswordPage} />
@@ -136,7 +140,12 @@ function App() {
       <Route exact path="/coordinator/extrahours" component={ExtraHoursPage} />
       <Route exact path="/coordinator/missinghours" component={MissingHoursPage} />
       <Route exact path="/coordinator/missingdays" component={StaffViewmissingDaysPage} />
-      <Route exact path="/coordinator/taprofile" component={TAProfilePage} />
+      <Route
+          exact
+          path="/Instructor/coordinatorprofile"
+          component={CoordinatorProfilePage}
+        />
+
 
       <Route path="/coordinator/sendReq" component={SendRequestCoor}/>
       <Route path="/coordinator/changedayoff" component={SendChangeDayOffRequest}/>
