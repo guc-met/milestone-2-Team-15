@@ -40,7 +40,8 @@ import SendRequestHOD from "./components/sendRequestHOD";
 import SendLinkRequest from "./components/sendlinkreq";
 import SidebarInstructorHome from "./components/sidebarInstructorHome";
 import SendRequestInstructor from "./components/sendRequestInstructor";
-import SendChangeDayOffRequest from "./components/changedayoffreq"
+import SendChangeDayOffRequest from "./components/changedayoffreq";
+import Sidebartta from "./components/sidebarta"
 import Sidebardcoor from "./components/sidebarcoursecoor";
 import SendRequestCoor from "./components/sendRequestCoor";
 import Sendrepreqtorep from "./components/ReplacmentRqToRep"
@@ -91,6 +92,14 @@ function App() {
           path="/instructorprofile"
           component={InstructorProfilePage}
         />
+        <Route path="/ta" component={Sidebartta} />
+        <Route path="/ta/sendReq" component={SendRequestInstructor} />
+        <Route path="/ta/sendlinkReq" component={SendLinkRequest} />
+        <Route path="/ta/changedayoff" component={SendChangeDayOffRequest} />
+        <Route path="/ta/replacementrequest" component={Sendrepreqtorep} />
+        <Route path="/ta/replacementrequestHOD" component={SendrepreqtoHOD} />
+        <Route path="/ta/leaverequest" component={SendLeaveReq} />
+      <Route path="/ta/viewrequest" component={Viewreq} />
         <Route exact path="/hodprofile" component={HODProfilePage} />
         <Route exact path="/taprofile" component={TAProfilePage} />
         <Route exact path="/signin" component={Signin} />
