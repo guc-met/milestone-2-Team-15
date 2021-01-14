@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react"
 import { Row, Col, Card, Form } from "react-bootstrap"
 import "../../stylesheets/TAProfile.css"
 import "bootstrap/dist/css/bootstrap.min.css"
+import StaffeditProfile from "../StaffeditProfile"
 export default function TAProfile(props) {
   const [ID, setId] = useState("")
   const [Name, setName] = useState("")
@@ -27,6 +28,8 @@ export default function TAProfile(props) {
   })
 
   return (
+    <div className= "ViewStaffAttendanceDiv">
+      <StaffeditProfile type= "ta"/>
     <Card body className="TAProfileCardd">
       <Row>
         <Col>
@@ -65,5 +68,6 @@ export default function TAProfile(props) {
         </Col>
       </Row>
     </Card>
+    </div>
   )
 }

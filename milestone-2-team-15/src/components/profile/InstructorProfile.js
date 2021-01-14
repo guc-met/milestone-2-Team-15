@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react"
 import { Row, Col, Card, Form } from "react-bootstrap"
 import "../../stylesheets/InstructorProfile.css"
 import "bootstrap/dist/css/bootstrap.min.css"
+import StaffeditProfile from "../StaffeditProfile"
 export default function InstructorProfile(props) {
   const [ID, setId] = useState("")
   const [Name, setName] = useState("")
@@ -24,6 +25,8 @@ export default function InstructorProfile(props) {
   })
 
   return (
+    <div className= "ViewStaffAttendanceDiv">
+      <StaffeditProfile type= "Instructor"/>
     <Card body className="InstructorProfileCardd">
       <Row>
         <Col>
@@ -65,5 +68,6 @@ export default function InstructorProfile(props) {
         </Col>
       </Row>
     </Card>
+    </div>
   )
 }
