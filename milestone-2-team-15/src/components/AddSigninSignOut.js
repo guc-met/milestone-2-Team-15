@@ -23,11 +23,17 @@ function AddSign(props) {
   const [staffArray, setStaffArray] = useState([]);
   const [response, setResponse] = useState();
   const [validated, setValidated] = useState(true);
-
   const [form] = Form.useForm();
   useEffect(() => {
     async function fetchData() {
-      const response = await axios.get(`http://localhost:3000/HR/ViewStaffs`);
+      const token = localStorage.getItem("token");
+      const response = await axios({
+        method: "get",
+        url: `http://localhost:3000/HR/ViewStaffs`,
+        data: {},
+        headers: { token: token },
+      });
+
       console.log(response.data);
 
       const staff = response.data.map((staff) => {
@@ -55,33 +61,53 @@ function AddSign(props) {
     var hour = moment(values.Time).get("hours");
     console.log(month, day, year, minute, second, hour);
     if (values.Sign == "a") {
-      const response = await axios.post(`http://localhost:3000/HR/AddSignin`, {
-        id: values.Staff,
+      const token = localStorage.getItem("token");
+      try {
+        const response = await axios({
+          method: "post",
+          url: `http://localhost:3000/HR/AddSignin`,
+          data: {
+            id: values.Staff,
 
-        Date: {
-          year: year,
-          month: month - 1,
-          realday: day,
-          minute: minute,
-          secound: second,
-          hour: hour,
-        },
-      });
-      console.log(response);
+            Date: {
+              year: year,
+              month: month - 1,
+              realday: day,
+              minute: minute,
+              secound: second,
+              hour: hour,
+            },
+          },
+          headers: { token: token },
+        });
+        setResponse(<Alert variant="success">{response.data} </Alert>);
+      } catch (err) {
+        setResponse(<Alert variant="danger">{err.message} </Alert>);
+      }
     } else {
-      const response = await axios.post(`http://localhost:3000/HR/AddSignOut`, {
-        id: values.Staff,
+      const token = localStorage.getItem("token");
+      try {
+        const response = await axios({
+          method: "post",
+          url: `http://localhost:3000/HR/AddSignOut`,
+          data: {
+            id: values.Staff,
 
-        Date: {
-          year: year,
-          month: month - 1,
-          date: day,
-          minute: minute,
-          secound: second,
-          hour: hour,
-        },
-      });
-      console.log(response);
+            Date: {
+              year: year,
+              month: month - 1,
+              date: day,
+              minute: minute,
+              secound: second,
+              hour: hour,
+            },
+          },
+          headers: { token: token },
+        });
+        setResponse(<Alert variant="success">{response.data} </Alert>);
+      } catch (err) {
+        setResponse(<Alert variant="danger">{err.message} </Alert>);
+      }
     }
   };
   return (
@@ -108,6 +134,7 @@ function AddSign(props) {
           </Button>
         </Form.Item>
       </Form>
+      {response}
     </div>
   );
 }
