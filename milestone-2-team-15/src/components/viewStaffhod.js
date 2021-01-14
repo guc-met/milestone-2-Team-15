@@ -47,6 +47,7 @@ function ViewStaff(props) {
       data:{facid: facidd},
       headers:{token:token}
       });
+      console.log("response: "+response.data)
 
       const staffs = response.data.map((staff, index) => {
         return (
