@@ -19,7 +19,7 @@ function Location() {
   useEffect(() => {
     async function fetchData() {
       const response = await axios.get(
-        `http://localhost:3000/HR/ViewLocations`
+        `${process.env.REACT_APP_URL}/HR/ViewLocations`
       );
       console.log(response.data);
 

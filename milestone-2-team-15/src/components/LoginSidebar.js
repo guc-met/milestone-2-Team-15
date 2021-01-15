@@ -1,7 +1,7 @@
-import React from "react"
-import "bootstrap/dist/css/bootstrap.min.css"
-import "../stylesheets/LoginSidebar.css"
-import { Row ,Col} from "react-bootstrap"
+import React from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "../stylesheets/LoginSidebar.css";
+import { Row, Col } from "react-bootstrap";
 export default function LoginSideBar(props) {
   return (
     <Col className="LoginSidebarCol">
@@ -9,5 +9,5 @@ export default function LoginSideBar(props) {
       <Row className="red"></Row>
       <Row className="yellow"></Row>
     </Col>
-  )
+  );
 }

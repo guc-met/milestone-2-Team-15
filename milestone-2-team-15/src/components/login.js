@@ -1,28 +1,28 @@
-import React, { useState } from "react"
-import { Form, Row, Col, Button } from "react-bootstrap"
-import Logo from "../images/Guc.png"
-import "../stylesheets/login.css"
-import "bootstrap/dist/css/bootstrap.min.css"
-import axios from "axios"
-import backendlink from "../backendlink"
-import { useHistory } from "react-router-dom"
-import Token_Secret from "../dev"
-const jwt = require("jsonwebtoken")
-require("dotenv").config()
+import React, { useState } from "react";
+import { Form, Row, Col, Button } from "react-bootstrap";
+import Logo from "../images/Guc.png";
+import "../stylesheets/login.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+import axios from "axios";
+import backendlink from "../backendlink";
+import { useHistory } from "react-router-dom";
+import Token_Secret from "../dev";
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
 export default function Login(props) {
-  const history = useHistory()
-  const [Email, setEmail] = useState("")
-  const [Password, setPassword] = useState("")
-  const [err, setErr] = useState("")
-  const [errEmail, setErrEmail] = useState("")
-  const [errPassword, setErrPassword] = useState("")
+  const history = useHistory();
+  const [Email, setEmail] = useState("");
+  const [Password, setPassword] = useState("");
+  const [err, setErr] = useState("");
+  const [errEmail, setErrEmail] = useState("");
+  const [errPassword, setErrPassword] = useState("");
 
-  const [re, setRe] = useState("")
-  
+  const [re, setRe] = useState("");
+
   const handleLogin = async () => {
     await axios({
       method: "post",
-      url: "http://localhost:3000/login",
+      url: `${process.env.REACT_APP_URL}/login`,
 
       data: {
         email: Email,
@@ -30,55 +30,55 @@ export default function Login(props) {
       },
     }).then((res) => {
       // console.log("ana")
-      console.log(res.data)
+      console.log(res.data);
       // console.log(res.headers.token)
       if (res.data == "please reset ur password" && res.status == 200) {
-        localStorage.setItem("token", res.headers.token)
-        setErr("please reset ur password")
-       
+        localStorage.setItem("token", res.headers.token);
+        setErr("please reset ur password");
       } else {
         if (res.data == "user not found") {
-          console.log("here")
-          setErrEmail("wrong Email")
-
-        }else if(res.data=="wrong password") {
-          setErrPassword("Wrong Password")
-        }
-        else {
-          const result = jwt.verify(res.headers.token, Token_Secret.Token_Secret)
+          console.log("here");
+          setErrEmail("wrong Email");
+        } else if (res.data == "wrong password") {
+          setErrPassword("Wrong Password");
+        } else {
+          const result = jwt.verify(
+            res.headers.token,
+            Token_Secret.Token_Secret
+          );
 
           if (result) {
-            localStorage.setItem("token", res.headers.token)
+            localStorage.setItem("token", res.headers.token);
             // console.log(result)
             ///////////////////////////////////////////////////hereeeeeeeeeeeeeeeeee lseesasas
-            let type = result.type
+            let type = result.type;
             switch (type) {
               case "instructor":
-                history.push("/instructor")
-                break
+                history.push("/instructor");
+                break;
               case "HR":
-                history.push("/HR")
-                break
+                history.push("/HR");
+                break;
               case "ta":
-                history.push("/ta")
-                break
+                history.push("/ta");
+                break;
               case "courseCoordinator":
-                history.push("/coordinator")
-                break
-                case "HoD":
-                  history.push("/hod")
-                  break
+                history.push("/coordinator");
+                break;
+              case "HoD":
+                history.push("/hod");
+                break;
               default:
-                break
+                break;
             }
           }
         }
       }
-    })
-  }
+    });
+  };
   const handlereset = async () => {
-    if (err == "please reset ur password") history.push("/resetpasswordlogin")
-  }
+    if (err == "please reset ur password") history.push("/resetpasswordlogin");
+  };
   return (
     <div className="login">
       <Row className="LoginImageRow">
@@ -94,13 +94,14 @@ export default function Login(props) {
             className="LoginTextBox"
             value={Email}
             onChange={(e) => {
-              setEmail(e.target.value)
-              setErrEmail()
+              setEmail(e.target.value);
+              setErrEmail();
             }}
           />
-        <Form.Control.Feedback type="invalid">{errEmail}</Form.Control.Feedback>
+          <Form.Control.Feedback type="invalid">
+            {errEmail}
+          </Form.Control.Feedback>
         </Col>
-
       </Form.Group>
 
       <Form.Group as={Row} controlId="formBasicPassword">
@@ -112,13 +113,14 @@ export default function Login(props) {
             className="LoginTextBox"
             value={Password}
             onChange={(e) => {
-              setPassword(e.target.value)
-              setErrPassword()
+              setPassword(e.target.value);
+              setErrPassword();
             }}
           />
-        <Form.Control.Feedback type="invalid">{errPassword}</Form.Control.Feedback>
+          <Form.Control.Feedback type="invalid">
+            {errPassword}
+          </Form.Control.Feedback>
         </Col>
-
       </Form.Group>
 
       <Col className="LoginButtonCol ">
@@ -143,5 +145,5 @@ export default function Login(props) {
         </Button>
       </Col>
     </div>
-  )
+  );
 }

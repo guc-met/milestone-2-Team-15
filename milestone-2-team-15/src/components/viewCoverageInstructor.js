@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
@@ -19,31 +18,31 @@ import * as Icon from "react-bootstrap-icons";
 import { Plus } from "react-bootstrap-icons";
 require("dotenv").config();
 function ViewCoverageInstructor(props) {
+  const history = useHistory();
 
-    const history = useHistory();
-   
-    const [facname, setFacname] = useState();
-    const [msg, setmsg]= useState([]);
-    let response=[]
+  const [facname, setFacname] = useState();
+  const [msg, setmsg] = useState([]);
+  let response = [];
 
-   const view = async (event) => {
-          response = await axios.post( "http://localhost:3000/instructor_routes/viewCourseCoverage",
-          {
-            id:"12",
-            facName:facname
-          });
+  const view = async (event) => {
+    response = await axios.post(
+      `${process.env.REACT_APP_URL}/instructor_routes/viewCourseCoverage`,
+      {
+        id: "12",
+        facName: facname,
+      }
+    );
 
-    if(response.length==0){
+    if (response.length == 0) {
       return;
     }
 
-      const arr=[];
-     for(let i=0;i<response.data.length;i++){
-         
-            const request=response.data[i];
+    const arr = [];
+    for (let i = 0; i < response.data.length; i++) {
+      const request = response.data[i];
 
-            //console.log(request);
-           /* 
+      //console.log(request);
+      /* 
             let kind= "";
 
             let academicMember = "";
@@ -68,42 +67,42 @@ function ViewCoverageInstructor(props) {
               location = request.location;
             }*/
 
-            let lol ="";
-            if (typeof(request)==='string'){
-              lol=request;
-            }else{
-              lol=request ? request.$numberDecimal: null
-            }
-            
-            if(request){
-              arr.push(
-                <div>
-                   {lol}
-                  </div>  
-                )
-              }
-            }
+      let lol = "";
+      if (typeof request === "string") {
+        lol = request;
+      } else {
+        lol = request ? request.$numberDecimal : null;
+      }
+
+      if (request) {
+        arr.push(<div>{lol}</div>);
+      }
+    }
     setmsg(arr);
     //setChosenFac("Media Engineeeering and Technology");
-    }
-      
+  };
+
   return (
-
-        <div >
-        <Form style={{padding:"60px 0px 0px 250px"}}>
-        <label for="facName">Faculty Name</label> <br/>
-        <input type="text" class="facNameInput" id="facNameInputID" aria-describedby="facNameHlp" placeholder="Enter your faculty name"
-        onChange={(event) => {setFacname(event.target.value)}}/>
-            
-            <br/>
-            <br/>
-            <Button onClick={view}>View Coverage </Button>
-            <h5>{msg}</h5>
-        </Form>
-
-
+    <div class="Hr-Buttons">
+      <Form>
+        <label for="facName">Faculty Name</label> <br />
+        <input
+          type="text"
+          class="facNameInput"
+          id="facNameInputID"
+          aria-describedby="facNameHlp"
+          placeholder="Enter your faculty name"
+          onChange={(event) => {
+            setFacname(event.target.value);
+          }}
+        />
+        <br />
+        <br />
+        <Button onClick={view}>View Coverage </Button>
+        <h5>{msg}</h5>
+      </Form>
     </div>
   );
 }
 
-export default ViewCoverageInstructor ;
+export default ViewCoverageInstructor;

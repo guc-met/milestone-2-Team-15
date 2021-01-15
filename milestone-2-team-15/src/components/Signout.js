@@ -1,39 +1,39 @@
-import React, { useState, useEffect } from "react"
-import { Form, Row, Col, Button } from "react-bootstrap"
-import "../stylesheets/signout.css"
-import "bootstrap/dist/css/bootstrap.min.css"
-import axios from "axios"
-import backendlink from "../backendlink"
-import { useHistory } from "react-router-dom"
+import React, { useState, useEffect } from "react";
+import { Form, Row, Col, Button } from "react-bootstrap";
+import "../stylesheets/signout.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+import axios from "axios";
+import backendlink from "../backendlink";
+import { useHistory } from "react-router-dom";
 export default function Signout(props) {
-  const history = useHistory()
-  const [signoutmessage, setSignoutmessage] = useState("")
-  const [signouterrnmessage, setSignouterrnmessage] = useState("")
+  const history = useHistory();
+  const [signoutmessage, setSignoutmessage] = useState("");
+  const [signouterrnmessage, setSignouterrnmessage] = useState("");
 
-  const token = localStorage.getItem("token")
+  const token = localStorage.getItem("token");
   const handlesignout = async () => {
     await axios({
       method: "post",
-      url: "http://localhost:3000/signout",
+      url: `${process.env.REACT_APP_URL}/signout`,
       headers: {
         token: token,
       },
     }).then((res) => {
       if (res.data === "something went wrong" && res.status === 403) {
-        setSignouterrnmessage("something went wrong")
-        setSignoutmessage("")
+        setSignouterrnmessage("something went wrong");
+        setSignoutmessage("");
       } else if (res.data === "sign out correctly including sign in") {
-        setSignouterrnmessage("")
-        setSignoutmessage("sign out done")
+        setSignouterrnmessage("");
+        setSignoutmessage("sign out done");
       } else if (res.data === "sign out correctly without sign in") {
-        setSignouterrnmessage("")
-        setSignoutmessage("sign out done")
+        setSignouterrnmessage("");
+        setSignoutmessage("sign out done");
       } else if (res.data === "friday" && res.status === 403) {
-        setSignouterrnmessage("you can't sign out it's friday")
-        setSignoutmessage("")
+        setSignouterrnmessage("you can't sign out it's friday");
+        setSignoutmessage("");
       }
-    })
-  }
+    });
+  };
   return (
     <div className="signout">
       <Col className="signoutButtonCol ">
@@ -53,5 +53,5 @@ export default function Signout(props) {
         </Form.Control.Feedback>
       </Col>
     </div>
-  )
+  );
 }

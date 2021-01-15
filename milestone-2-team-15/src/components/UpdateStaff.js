@@ -50,7 +50,7 @@ function RegisterStaff(props) {
       const token = localStorage.getItem("token");
       const response3 = await axios({
         method: "get",
-        url: `http://localhost:3000/HR/ViewStaffs`,
+        url: `${process.env.REACT_APP_URL}/HR/ViewStaffs`,
         data: {},
         headers: { token: token },
       });
@@ -65,7 +65,7 @@ function RegisterStaff(props) {
 
       const response = await axios({
         method: "get",
-        url: `http://localhost:3000/HR/ViewFaculties`,
+        url: `${process.env.REACT_APP_URL}/HR/ViewFaculties`,
         data: {},
         headers: { token: token },
       });
@@ -97,7 +97,7 @@ function RegisterStaff(props) {
 
       const response2 = await axios({
         method: "get",
-        url: `http://localhost:3000/HR/ViewLocations`,
+        url: `${process.env.REACT_APP_URL}/HR/ViewLocations`,
         data: {},
         headers: { token: token },
       });
@@ -159,7 +159,7 @@ function RegisterStaff(props) {
 
     const response = await axios({
       method: "post",
-      url: `http://localhost:3000/HR/UpdateStaff`,
+      url: `${process.env.REACT_APP_URL}/HR/UpdateStaff`,
       data: {
         staffId: staffChosen.ID,
         staff: staff,

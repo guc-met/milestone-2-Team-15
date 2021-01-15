@@ -1,8 +1,7 @@
-import React from "react"
-import "bootstrap/dist/css/bootstrap.min.css"
-import "../stylesheets/sideBar.css"
-import DropDown from "./dropDown"
-
+import React from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "../stylesheets/sideBar.css";
+import DropDown from "./dropDown";
 
 //import DropDownInstructorHome from "./dropDownInstructorHome"
 
@@ -19,20 +18,20 @@ import DropDown from "./dropDown"
 </div>*/
 
 export default function sideBar(props) {
-    return( <div>
+  return (
     <div>
-    {/*<div class="sidenav" style={{width:"200px",top:"70px", height:"100%",background:"url('https://upload.wikimedia.org/wikipedia/en/b/ba/Flag_of_Germany.svg')", backgroundSize:"cover"}}>*/}
-    <div class="sidenav" style={{width:"200px",top:"70px", height:"95%"}}>
-        
-        <a href="/ta/sendReq">Send Requests</a> <br/>
-        <a href="/ta/viewrequest">View Requests</a> <br/>
-        <a href="#">View Schedule</a> <br/>
-        
-        
+      <div>
+        {/*<div class="sidenav" style={{width:"200px",top:"70px", height:"100%",background:"url('https://upload.wikimedia.org/wikipedia/en/b/ba/Flag_of_Germany.svg')", backgroundSize:"cover"}}>*/}
+        <div class="sidenav">
+          <br />
+          <br />
+          <br />
+          <a href="/ta/sendReq">Send Requests</a> <br />
+          <a href="/ta/viewrequest">View Requests</a> <br />
+          <a href="#">View Schedule</a> <br />
+        </div>
+      </div>
+      <DropDown type="coordinator" />
     </div>
- 
-    </div>
-     <DropDown type="coordinator"/>
-     </div>
-)
+  );
 }

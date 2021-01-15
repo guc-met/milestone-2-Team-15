@@ -31,12 +31,12 @@ import Logout from "./components/Logout";
 import DropDown from "./components/dropDown";
 import Header from "./components/header";
 
-import HRProfilePage from "./pages/profile/HRProfilePage"
-import InstructorProfilePage from "./pages/profile/InstructorProfilePage"
-import CoordinatorProfilePage from "./pages/profile/CoordinatorProfilePage"
+import HRProfilePage from "./pages/profile/HRProfilePage";
+import InstructorProfilePage from "./pages/profile/InstructorProfilePage";
+import CoordinatorProfilePage from "./pages/profile/CoordinatorProfilePage";
 
-import HODProfilePage from "./pages/profile/HODProfilePage"
-import TAProfilePage from "./pages/profile/TAProfilePage"
+import HODProfilePage from "./pages/profile/HODProfilePage";
+import TAProfilePage from "./pages/profile/TAProfilePage";
 import Sidebarhodhome from "./components/sidebarhodhome";
 import SendRequestHOD from "./components/sendRequestHOD";
 import SendLinkRequest from "./components/sendlinkreq";
@@ -74,9 +74,7 @@ import Updateslot from "./components/coorupdateslot";
 function App() {
   return (
     <div>
-      
       <BrowserRouter>
-
         {/* <Redirect from="/" to="/login" /> */}
         <Route exact path="/" component={LoginPage} />
         {/* <Route exact path="/attendance" component={StaffViewAttendancePage} />
@@ -87,8 +85,8 @@ function App() {
         <Route exact path="/resetpasswordlogin" component={ResetPassword} />
         <Route exact path="/logout" component={Logout} />
 
-
         <Route path="/ta" component={Sidebartta} />
+        <Route path="/hod" component={HOD} />
         <Route path="/ta/sendReq" component={SendRequestInstructor} />
         <Route path="/ta/sendlinkReq" component={SendLinkRequest} />
         <Route path="/ta/changedayoff" component={SendChangeDayOffRequest} />
@@ -96,10 +94,7 @@ function App() {
         <Route path="/ta/replacementrequestHOD" component={SendrepreqtoHOD} />
         <Route path="/ta/leaverequest" component={SendLeaveReq} />
         <Route path="/ta/viewrequest" component={Viewreq} />
-       
-        
 
-        <Route path="/hod" component={HOD} />
         <Route path="/hod/sendReq" component={SendRequestHOD} />
         <Route path="/hod/sendlinkReq" component={SendLinkRequest} />
         <Route path="/hod/viewrequest" component={Viewreq} />
@@ -208,71 +203,121 @@ function App() {
           component={AssignCoordinator}
         />
 
+        <Route exact path="/ta/signin" component={Signin} />
+        <Route exact path="/ta/signout" component={Signout} />
+        <Route
+          exact
+          path="/ta/attendance"
+          component={StaffViewAttendancePage}
+        />
+        <Route exact path="/ta/resetpassword" component={ResetPasswordPage} />
+        <Route
+          exact
+          path="/ta/missingdays"
+          component={StaffViewmissingDaysPage}
+        />
+        <Route exact path="/ta/extrahours" component={ExtraHoursPage} />
+        <Route exact path="/ta/missinghours" component={MissingHoursPage} />
+        <Route exact path="/ta/taprofile" component={TAProfilePage} />
 
+        <Route exact path="/hod/signin" component={Signin} />
+        <Route exact path="/hod/signout" component={Signout} />
+        <Route exact path="/hod/resetpassword" component={ResetPasswordPage} />
+        <Route
+          exact
+          path="/hod/attendance"
+          component={StaffViewAttendancePage}
+        />
+        <Route exact path="/hod/extrahours" component={ExtraHoursPage} />
+        <Route exact path="/hod/missinghours" component={MissingHoursPage} />
+        <Route
+          exact
+          path="/hod/missingdays"
+          component={StaffViewmissingDaysPage}
+        />
+        <Route exact path="/hod/hodprofile" component={HODProfilePage} />
 
-
-<Route exact path="/ta/signin" component={Signin} />
-<Route exact path="/ta/signout" component={Signout} />
-<Route exact path="/ta/attendance" component={StaffViewAttendancePage} />
-<Route exact path="/ta/resetpassword" component={ResetPasswordPage} />
-<Route exact path="/ta/missingdays" component={StaffViewmissingDaysPage} />
-<Route exact path="/ta/extrahours" component={ExtraHoursPage} />
-<Route exact path="/ta/missinghours" component={MissingHoursPage} />
-<Route exact path="/ta/taprofile" component={TAProfilePage} />
-
-
-
-<Route exact path="/hod/signin" component={Signin} />
-<Route exact path="/hod/signout" component={Signout} />
-<Route exact path="/hod/resetpassword" component={ResetPasswordPage} />
-<Route exact path="/hod/attendance" component={StaffViewAttendancePage} />
-<Route exact path="/hod/extrahours" component={ExtraHoursPage} />
-<Route exact path="/hod/missinghours" component={MissingHoursPage} />
-<Route exact path="/hod/missingdays" component={StaffViewmissingDaysPage} />
-<Route exact path="/hod/hodprofile" component={HODProfilePage} />
-
- <Route exact path="/Instructor/signout" component={Signout} />
-      <Route exact path="/Instructor/signin" component={Signin} />
-      <Route exact path="/Instructor/resetpassword" component={ResetPasswordPage} />
-      <Route exact path="/Instructor/attendance" component={StaffViewAttendancePage} />
-      <Route exact path="/Instructor/extrahours" component={ExtraHoursPage} />
-      <Route exact path="/Instructor/missinghours" component={MissingHoursPage} />
-      <Route exact path="/Instructor/missingdays" component={StaffViewmissingDaysPage} />
-      <Route
+        <Route exact path="/Instructor/signout" component={Signout} />
+        <Route exact path="/Instructor/signin" component={Signin} />
+        <Route
+          exact
+          path="/Instructor/resetpassword"
+          component={ResetPasswordPage}
+        />
+        <Route
+          exact
+          path="/Instructor/attendance"
+          component={StaffViewAttendancePage}
+        />
+        <Route exact path="/Instructor/extrahours" component={ExtraHoursPage} />
+        <Route
+          exact
+          path="/Instructor/missinghours"
+          component={MissingHoursPage}
+        />
+        <Route
+          exact
+          path="/Instructor/missingdays"
+          component={StaffViewmissingDaysPage}
+        />
+        <Route
           exact
           path="/Instructor/Instructorprofile"
           component={InstructorProfilePage}
         />
-        
 
-<Route exact path="/coordinator/signout" component={Signout} />
-<Route exact path="/coordinator/signin" component={Signin} />
-<Route exact path="/coordinator/resetpassword" component={ResetPasswordPage} />
-<Route exact path="/coordinator/attendance" component={StaffViewAttendancePage} />
-<Route exact path="/coordinator/extrahours" component={ExtraHoursPage} />
-<Route exact path="/coordinator/missinghours" component={MissingHoursPage} />
-<Route exact path="/coordinator/missingdays" component={StaffViewmissingDaysPage} />
-<Route
-    exact
-    path="/Instructor/coordinatorprofile"
-    component={CoordinatorProfilePage}
-  />
-  
+        <Route exact path="/coordinator/signout" component={Signout} />
+        <Route exact path="/coordinator/signin" component={Signin} />
+        <Route
+          exact
+          path="/coordinator/resetpassword"
+          component={ResetPasswordPage}
+        />
+        <Route
+          exact
+          path="/coordinator/attendance"
+          component={StaffViewAttendancePage}
+        />
+        <Route
+          exact
+          path="/coordinator/extrahours"
+          component={ExtraHoursPage}
+        />
+        <Route
+          exact
+          path="/coordinator/missinghours"
+          component={MissingHoursPage}
+        />
+        <Route
+          exact
+          path="/coordinator/missingdays"
+          component={StaffViewmissingDaysPage}
+        />
+        <Route
+          exact
+          path="/Instructor/coordinatorprofile"
+          component={CoordinatorProfilePage}
+        />
 
-<Route exact path="/HR/signout" component={Signout} />
-<Route exact path="/HR/signin" component={Signin} />
-<Route exact path="/HR/resetpassword" component={ResetPasswordPage} />
-<Route exact path="/HR/attendance" component={StaffViewAttendancePage} />
-<Route exact path="/HR/extrahours" component={ExtraHoursPage} />
-<Route exact path="/HR/missinghours" component={MissingHoursPage} />
-<Route exact path="/HR/missingdays" component={StaffViewmissingDaysPage} />
-<Route exact path="/HR/HRprofile" component={HRProfilePage} />
+        <Route exact path="/HR/signout" component={Signout} />
+        <Route exact path="/HR/signin" component={Signin} />
+        <Route exact path="/HR/resetpassword" component={ResetPasswordPage} />
+        <Route
+          exact
+          path="/HR/attendance"
+          component={StaffViewAttendancePage}
+        />
+        <Route exact path="/HR/extrahours" component={ExtraHoursPage} />
+        <Route exact path="/HR/missinghours" component={MissingHoursPage} />
+        <Route
+          exact
+          path="/HR/missingdays"
+          component={StaffViewmissingDaysPage}
+        />
+        <Route exact path="/HR/HRprofile" component={HRProfilePage} />
       </BrowserRouter>
     </div>
- 
-
-);
-
+  );
 }
 
 export default App;

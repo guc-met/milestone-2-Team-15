@@ -13,22 +13,21 @@
   border: rgb(5, 255, 255);
 } */
 
-
 .HOD-sendreq {
-    margin-left: 12.5%;
-    height: 1000vh;
-    padding: 1%;
-    width: 80%;
-    background-color: whitesmoke;
-  }
+  margin-top: 100px;
+  margin-left: 20%;
+  height: 1000vh;
+  padding: 1%;
+  width: 80%;
+}
 .HR_input {
-    width: 280px;
-  }  
+  width: 280px;
+}
 
-.viewreq{
-    margin-left: 12.5%;
-    height: 1000vh;
-    padding: 1%;
-    width: 100%;
-    background-color: whitesmoke;
+.viewreq {
+  margin-left: 12.5%;
+  height: 1000vh;
+  padding: 1%;
+  width: 100%;
+  background-color: whitesmoke;
 }

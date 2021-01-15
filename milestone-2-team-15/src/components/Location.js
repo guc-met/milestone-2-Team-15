@@ -38,7 +38,7 @@ function Location() {
       console.log(token);
       const response = await axios({
         method: "get",
-        url: `http://localhost:3000/HR/ViewLocations`,
+        url: `${process.env.REACT_APP_URL}/HR/ViewLocations`,
         data: {},
         headers: { token: token },
       });
@@ -126,7 +126,7 @@ function Location() {
 
     const response = await axios({
       method: "post",
-      url: `http://localhost:3000/HR/DeleteLocation`,
+      url: `${process.env.REACT_APP_URL}/HR/DeleteLocation`,
       data: {
         id: locationId,
       },
@@ -158,7 +158,7 @@ function Location() {
       console.log(token);
       const response = await axios({
         method: "post",
-        url: `http://localhost:3000/HR/addLocation`,
+        url: `${process.env.REACT_APP_URL}/HR/addLocation`,
         data: {
           roomKind: roomKind,
           BuildingCharachter: buildingCharacter,
@@ -187,7 +187,7 @@ function Location() {
 
       const response = await axios({
         method: "post",
-        url: `http://localhost:3000/HR/updateLocation`,
+        url: `${process.env.REACT_APP_URL}/HR/updateLocation`,
         data: {
           id: id,
           location: location,

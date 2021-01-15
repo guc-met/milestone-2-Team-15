@@ -29,20 +29,24 @@ function Updateinst(props) {
 
   const [show, setShow] = useState(false);
 
-  const token =localStorage.getItem("token");
+  const token = localStorage.getItem("token");
   useEffect(() => {
     async function fetchData() {
-        const facdep = await axios({method:'post', url:`http://localhost:3000/HoD/ViewDepIDandFacID`,
-        headers:{token:token}
-        });
-         console.log(facdep.data);
+      const facdep = await axios({
+        method: "post",
+        url: `${process.env.REACT_APP_URL}/HoD/ViewDepIDandFacID`,
+        headers: { token: token },
+      });
+      console.log(facdep.data);
       const depid = facdep.data[1];
       setFacID(facdep.data[0]);
-      console.log("dep = "+depid)
-      console.log("fac ="+facID)
-      const response = await axios({method:'post', url:`http://localhost:3000/HoD/ViewCourses`,
-      data:{did:depid},
-      headers:{token:token}
+      console.log("dep = " + depid);
+      console.log("fac =" + facID);
+      const response = await axios({
+        method: "post",
+        url: `${process.env.REACT_APP_URL}/HoD/ViewCourses`,
+        data: { did: depid },
+        headers: { token: token },
       });
 
       console.log(response.data);
@@ -50,7 +54,9 @@ function Updateinst(props) {
       const courses = response.data.map((course, index) => {
         return (
           <Dropdown.Item>
-            <Button onClick={() => handleClick(course._id, course.courseName)}>{course.courseName}</Button>
+            <Button onClick={() => handleClick(course._id, course.courseName)}>
+              {course.courseName}
+            </Button>
           </Dropdown.Item>
         );
       });
@@ -59,9 +65,9 @@ function Updateinst(props) {
     }
     fetchData();
   }, [show]);
-  console.log("fac ="+facID)
+  console.log("fac =" + facID);
 
-  const handleClick = (courseID , coursename) => {
+  const handleClick = (courseID, coursename) => {
     console.log(courseID);
     setCourseID(courseID);
     setCoursename(coursename);
@@ -73,16 +79,15 @@ function Updateinst(props) {
     // const courseid = req.body.cid;
     // const Instructorid = req.body.id;
     // const newInstructorid = req.body.nid;
-    const response = await axios({method:'put', url:`http://localhost:3000/HoD/updateCourseInst`,
-    data:{facid: facID,
-      cid: courseID,
-      id: instID,
-      nid: ninstID},
-    headers:{token:token}
+    const response = await axios({
+      method: "put",
+      url: `${process.env.REACT_APP_URL}/HoD/updateCourseInst`,
+      data: { facid: facID, cid: courseID, id: instID, nid: ninstID },
+      headers: { token: token },
     });
     setShow(false);
     // if (response.status == 200)
-      setResponse(<Alert variant="success">{response.data} </Alert>);
+    setResponse(<Alert variant="success">{response.data} </Alert>);
     // else setResponse(<Alert variant="danger">{response.data} </Alert>);
   };
 
@@ -94,39 +99,42 @@ function Updateinst(props) {
           id="dropdown-basic"
           class="hod-Button"
         >
-          All Courses to be viewd 
+          All Courses to be viewd
         </Dropdown.Toggle>
 
         <Dropdown.Menu>{courses}</Dropdown.Menu>
       </Dropdown>
       <Modal show={show} onHide={() => setShow(false)}>
         <Modal.Header>
-          <Modal.Title> updating Instructor in {coursename} course </Modal.Title>
+          <Modal.Title>
+            {" "}
+            updating Instructor in {coursename} course{" "}
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-            <Form.Group class="hod_input" controlId="formGridroomKind">
+          <Form.Group class="hod_input" controlId="formGridroomKind">
             <Form.Label> Please enter the old nstructor ID: </Form.Label>
             <Form.Control
-                required
-                type="text"
-                onChange={(event) => {
+              required
+              type="text"
+              onChange={(event) => {
                 setInstID(event.target.value);
-                }}
-                placeholder="ac-10"
+              }}
+              placeholder="ac-10"
             />
-            </Form.Group>
+          </Form.Group>
 
-            <Form.Group class="hod_input" controlId="formGridroomKind">
+          <Form.Group class="hod_input" controlId="formGridroomKind">
             <Form.Label> Please enter the new nstructor ID: </Form.Label>
             <Form.Control
-                required
-                type="text"
-                onChange={(event) => {
+              required
+              type="text"
+              onChange={(event) => {
                 setNinstID(event.target.value);
-                }}
-                placeholder="ac-10"
+              }}
+              placeholder="ac-10"
             />
-            </Form.Group>  
+          </Form.Group>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={() => setShow(false)}>

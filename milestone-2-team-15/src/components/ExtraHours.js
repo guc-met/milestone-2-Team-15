@@ -1,22 +1,22 @@
-import React, { useEffect, useState } from "react"
-import { Table } from "react-bootstrap"
-import "../stylesheets/extrahours.css"
-import axios from "axios"
+import React, { useEffect, useState } from "react";
+import { Table } from "react-bootstrap";
+import "../stylesheets/extrahours.css";
+import axios from "axios";
 export default function ExtraHours(props) {
-  const token = localStorage.getItem("token")
-  const [Extra, setExtra] = useState()
+  const token = localStorage.getItem("token");
+  const [Extra, setExtra] = useState();
   useEffect(async () => {
     await axios({
       method: "post",
-      url: "http://localhost:3000/extrahours",
-      headers:{
-        token :token
-      }
+      url: `${process.env.REACT_APP_URL}/extrahours`,
+      headers: {
+        token: token,
+      },
     }).then((res) => {
-      console.log(res)
-      setExtra(res.data)
-    })
-  })
+      console.log(res);
+      setExtra(res.data);
+    });
+  });
   return (
     <div className="ExtraHoursCard">
       <Table
@@ -35,10 +35,10 @@ export default function ExtraHours(props) {
 
         <tbody>
           <tr>
-            <td style={{ fontSize:"1.3888888888888888vw"}}>{Extra} </td>
+            <td style={{ fontSize: "1.3888888888888888vw" }}>{Extra} </td>
           </tr>
         </tbody>
       </Table>
     </div>
-  )
+  );
 }

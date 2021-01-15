@@ -18,65 +18,78 @@ import * as Icon from "react-bootstrap-icons";
 import { Plus } from "react-bootstrap-icons";
 require("dotenv").config();
 function AssignCoordinator(props) {
-
-
   const history = useHistory();
-  
-  const [newID,setNewID] = useState();
-  const [courseid,setCourseid] = useState();
+
+  const [newID, setNewID] = useState();
+  const [courseid, setCourseid] = useState();
   const [fac, setFac] = useState();
-  const [msg,setmsg]=useState("");
-  
-  
+  const [msg, setmsg] = useState("");
+
   const sendReq = async (event) => {
-  
-    
-    const response = axios.post("http://localhost:3000/instructor_routes/assignCoordinator", {
-      id:newID,
-      courseID:courseid,
-      InstructorID:"16",
-      facName:fac   
- });
- setmsg((await response).data);
-  }
+    const response = axios.post(
+      `${process.env.REACT_APP_URL}/instructor_routes/assignCoordinator`,
+      {
+        id: newID,
+        courseID: courseid,
+        InstructorID: "16",
+        facName: fac,
+      }
+    );
+    setmsg((await response).data);
+  };
 
   return (
-
-        <div >
-        <Form style={{padding:"60px 0px 0px 250px"}}>
-            <label for="TAid">Enter TA ID</label> <br/>
-            <input type="text" class="TAid" id="TAid" aria-describedby="TAidHelp" placeholder="Enter ID"
-             onChange={(event) => {setNewID(event.target.value);}}
-            />
-
-            <br/>
-            <br/>
-
-            <Form>
-                <label for="facID">Faculty Name of That Course</label> <br/>
-                <input type="text" class="facID" id="facIDInputID" aria-describedby="facIDHelp" placeholder="Enter your faculty name"
-                 onChange={(event) => {setFac(event.target.value);}}
-                />
-                
-            </Form>
-            <br/>
-            <Form>
-                <label for="courseID">Enter the ID of The Course of The Slot</label> <br/>
-                <input type="text" class="courseID" id="courseIDid" aria-describedby="courseCodeHelp" placeholder="Enter Course Code"
-                 onChange={(event) => {setCourseid(event.target.value);}}
-                />
-
-            </Form>
-            <br/>
-            <br/>
-            <Button onClick={sendReq}>Assign Coorditor</Button>
-            <br/>
-            <p>{msg}</p>
+    <div class="Hr-Buttons">
+      <Form>
+        <label for="TAid">Enter TA ID</label> <br />
+        <input
+          type="text"
+          class="TAid"
+          id="TAid"
+          aria-describedby="TAidHelp"
+          placeholder="Enter ID"
+          onChange={(event) => {
+            setNewID(event.target.value);
+          }}
+        />
+        <br />
+        <br />
+        <Form>
+          <label for="facID">Faculty Name of That Course</label> <br />
+          <input
+            type="text"
+            class="facID"
+            id="facIDInputID"
+            aria-describedby="facIDHelp"
+            placeholder="Enter your faculty name"
+            onChange={(event) => {
+              setFac(event.target.value);
+            }}
+          />
         </Form>
-
-
+        <br />
+        <Form>
+          <label for="courseID">Enter the ID of The Course of The Slot</label>{" "}
+          <br />
+          <input
+            type="text"
+            class="courseID"
+            id="courseIDid"
+            aria-describedby="courseCodeHelp"
+            placeholder="Enter Course Code"
+            onChange={(event) => {
+              setCourseid(event.target.value);
+            }}
+          />
+        </Form>
+        <br />
+        <br />
+        <Button onClick={sendReq}>Assign Coorditor</Button>
+        <br />
+        <p>{msg}</p>
+      </Form>
     </div>
   );
 }
 
-export default AssignCoordinator ;
+export default AssignCoordinator;
