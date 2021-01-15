@@ -29,7 +29,7 @@ export default function sideBar(props) {
           <br />
           <a href="/Instructor/sendReq">Send Requests</a> <br />
           <a href="/Instructor/viewrequest">View Requests</a> <br />
-          <a href="#">View Schedule</a> <br />
+          <a href="/Instructor/viewSchedule">View Schedule</a> <br />
           <a href="/Instructor/viewCoverage">View My Courses Coverage</a> <br />
           <a href="/Instructor/viewAssignedSlotsOfCourse">
             View Asigned Slots of my Courses

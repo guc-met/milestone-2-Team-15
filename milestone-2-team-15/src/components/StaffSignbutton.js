@@ -7,7 +7,9 @@ import backendlink from "../backendlink"
 import { useHistory } from "react-router-dom"
 export default function StaffSignbutton(props) {
   const history = useHistory()
-  const link="/"+props.type+"/signin"
+  const link= `/${props.type}/signin`
+
+  const link1="/"+props.type+"/signin"
   const [logoutmessage, setLogoutmessage] = useState("")
   const [MissingDaysErr, setMissingDaysErr] = useState("")
   const token = localStorage.getItem("token")

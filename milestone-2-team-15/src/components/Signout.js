@@ -19,7 +19,7 @@ export default function Signout(props) {
         token: token,
       },
     }).then((res) => {
-      if (res.data === "something went wrong" && res.status === 403) {
+      if (res.data === "something went wrong" ) {
         setSignouterrnmessage("something went wrong");
         setSignoutmessage("");
       } else if (res.data === "sign out correctly including sign in") {
@@ -28,7 +28,7 @@ export default function Signout(props) {
       } else if (res.data === "sign out correctly without sign in") {
         setSignouterrnmessage("");
         setSignoutmessage("sign out done");
-      } else if (res.data === "friday" && res.status === 403) {
+      } else if (res.data === "friday" && res.status === 200) {
         setSignouterrnmessage("you can't sign out it's friday");
         setSignoutmessage("");
       }

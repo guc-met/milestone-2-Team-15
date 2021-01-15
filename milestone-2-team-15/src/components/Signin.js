@@ -18,10 +18,11 @@ export default function Signin(props) {
         token: token,
       },
     }).then((res) => {
-      if (res.data === "something went wrong" && res.status === 403) {
+      console.log(res.data)
+      if (res.data === "something went wrong" ) {
         setSigninerrnmessage("something went wrong");
         setSigninmessage("");
-      } else if (res.data === "you cant sign in friday" && res.status === 403) {
+      } else if (res.data === "you cant sign in friday" && res.status === 200) {
         setSigninerrnmessage("you can't sign in it's friday");
         setSigninmessage("");
       } else if (res.data === "sign in done" && res.status === 200) {

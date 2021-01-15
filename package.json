@@ -1,0 +1,19 @@
+{
+  "name": "milestone-2-team-15",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/guc-met/milestone-2-Team-15.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/guc-met/milestone-2-Team-15/issues"
+  },
+  "homepage": "https://github.com/guc-met/milestone-2-Team-15#readme"
+}

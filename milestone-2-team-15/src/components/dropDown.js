@@ -37,7 +37,7 @@ export default function dropDown(props) {
       variant="dark"
     >
       <Navbar.Brand href={link}>
-        <img src={logoo} height="40" width="60" w alt="" />
+        <img src={logoo} height="30" width="60" w alt="" />
       </Navbar.Brand>
       <Navbar.Toggle aria-controls="responsive-navbar-nav" />
       <Navbar.Collapse id="responsive-navbar-nav">
@@ -66,9 +66,9 @@ export default function dropDown(props) {
           {/* <FormControl type="text" placeholder="Search" className="mr-sm-2" /> */}
           <StaffViewMissingDaysButton type={props.type} />
         </Nav>
-        <Form inline>
+        {/* <Form inline> */}
           <Logout />
-        </Form>
+        {/* </Form> */}
       </Navbar.Collapse>
     </Navbar>
   );

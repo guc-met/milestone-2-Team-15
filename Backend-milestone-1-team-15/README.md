@@ -584,7 +584,9 @@ Request body: {"isTA":true, "delid":"ac-123", "courseCode":\_id of course taken 
 Functionality: Assigns a TA to be a coordinator in an instructor's course(s)
 Route: /instructor_routes/assignCoordinator
 Request type: PUT
-Request body: {"facID":\_id of faculty taken from the database, "TAid":"ac-123", "courseID": \_id of course taken from the database, "id": instructor ID taken from the header}
+Request body: {"facID": name of faculty
+
+\_id of faculty taken from the database, "TAid":"ac-123", "courseID": \_id of course taken from the database, "id": instructor ID taken from the header}
 
 ////////////////stafff
 

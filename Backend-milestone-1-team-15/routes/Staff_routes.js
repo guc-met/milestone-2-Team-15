@@ -9,6 +9,8 @@ const HR_model = require("../models/HR");
 const Faculty = require("../models/faculty");
 const FacultyModel = Faculty.faculty;
 const DepartmentModel = Faculty.departmentSchema;
+const LocationModel = require("../models/location");
+const Joi = require("joi");
 
 const courseCoordinator_model = require("../models/courseCoordinator");
 const instructor_model = require("../models/instructor");
@@ -21,11 +23,11 @@ require("dotenv").config();
 router
   .route("/login") // find btrg3 array list falw a7ed arraylist [0] find one btrg3 json
   .post(async (req, res) => {
-    const result = await staff_model.findOne({ email: req.body.email });
-    console.log(result);
+    const result = await staff_model.findOne({ email: req.body.email })
+   // console.log(result)
     if (!result) {
-      console.log("ana hna");
-      return res.send("user not found");
+     // console.log("ana hna")
+      return res.send("user not found")
     } else {
       if (result.firstPassEntered == false) {
         const token = jwt.sign(
@@ -215,9 +217,9 @@ router.route("/signin").post(async (req, res) => {
         );
         return res.status(200).send("sign in successfully in dayoff");
       }
-      return res.status(403).send("you cant sign in friday");
+      return res.status(200).send("you cant sign in friday");
     }
-  } else return res.status(403).send("something went wrong");
+  } else return res.send("something went wrong");
 });
 router.route("/signout").post(async (req, res) => {
   const type = req.type;
@@ -381,11 +383,12 @@ router.route("/signout").post(async (req, res) => {
         {
           months: result.months,
         }
-      );
-      return res.status(200).send("sign out correctly without sign in");
-    } else return res.status(403).send("friday");
-  } else return res.status(403).send("something went wrong");
-});
+      )
+      return res.status(200).send("sign out correctly without sign in")
+    } else return res.status(200).send("friday")
+  } else return res.send("something went wrong")
+})
+
 router.route("/profile").get(async (req, res) => {
   const type = req.type;
   const ID = req.id;
@@ -400,27 +403,29 @@ router.route("/profile").get(async (req, res) => {
     "Saturday",
   ];
   if (result) {
-    let which;
-    let whichmodel;
-    let faculty;
-    let department;
+    let which
+    let whichmodel
+    let facult=""
+    let department=""
     switch (type) {
       case "HR":
         which = await HR_model.findOne({ ID: ID });
         whichmodel = HR_model;
         break;
       case "ta":
-        which = await Ta_model.findOne({ ID: ID });
-        whichmodel = Ta_model;
-        // facullty = await faculty_model.findOne({ _id: which.faculty })
+        which = await Ta_model.findOne({ ID: ID })
+        whichmodel = Ta_model
+        
+        facullty = await FacultyModel.findOne({_id:whichmodel.faculty});
         // department = await department_model.findOne({
         //   _id: which.department,
         // })
         break;
       case "courseCoordinator":
-        which = await courseCoordinator_model.findOne({ ID: ID });
-        whichmodel = courseCoordinator_model;
-        // facullty = await faculty_model.findOne({ _id: which.faculty })
+        which = await courseCoordinator_model.findOne({ ID: ID })
+        whichmodel = courseCoordinator_model
+        //facullty = await FacultyModel.findOne({_id:whichmodel.faculty});
+
         // department = await department_model.findOne({
         //   _id: which.department,
         // })
@@ -429,7 +434,8 @@ router.route("/profile").get(async (req, res) => {
         which = await instructor_model.findOne({ ID: ID });
         whichmodel = instructor_model;
         //console.log(which.faculty)
-        // facullty = await FacultyModel.findOne({ _id: which.faculty })
+       // facullty = await FacultyModel.findOne({_id:whichmodel.faculty});
+
         // department = await department_model.findOne({
         //   _id: which.department,
         // })
@@ -446,16 +452,15 @@ router.route("/profile").get(async (req, res) => {
       default:
         break;
     }
-    console.log(which);
-    res.status(200);
+    //console.log(which)
+    res.status(200)
     return res.json({
       staff: result,
       staffreally: which,
-      Faculty: faculty,
-      Department: department,
-    });
-  } else return res.status(403).send("something went wrong");
-});
+   
+    })
+  } else return res.status(403).send("something went wrong")
+})
 // router.route("/editprofile").post(async (req, res) => {
 //   const type = req.type
 //   const ID = req.id
@@ -824,10 +829,10 @@ router.route("/missinghours").post(async (req, res) => {
   const ID = req.id;
   const result = await staff_model.findOne({ ID: ID });
   if (result) {
-    res.status(200);
-    return res.send(result.missinghours);
-  } else return res.send("something went wrong");
-});
+    
+    return res.status(200).send(result.missinghours+"")
+  } else return res.send("something went wrong")
+})
 router.route("/extrahours").post(async (req, res) => {
   const type = req.type;
   const ID = req.id;
@@ -839,47 +844,25 @@ router.route("/extrahours").post(async (req, res) => {
   } else return res.status(403).send("something went wrong");
 });
 
-router.route("/editprofile").post(async (req, res) => {
-  const staffId = req.id;
-  const staff = req.type;
 
+router.route("/editstaff").post(async (req, res) => {
+  const staffId = req.id;
+  const staff = req.body.staff;
+  //console.log(staff);
   const staffSchema = Joi.object({
-    email: Joi.string(),
-    password: Joi.string(),
-    firstPassEntered: Joi.number().integer().min(0).max(1),
-    missingdays: Joi.array(),
-    missinghours: Joi.number(),
-    extrahours: Joi.number(),
-    acceptedleaves: Joi.array(),
-    acceptedannual: Joi.number(),
-    courses: Joi.array(),
     locationID: Joi.number(),
 
     coordinator: Joi.number().integer().min(0).max(1),
-    //name: Joi.string(),
-    schedule: Joi.array(),
+    name: Joi.string(),
 
-    //faculty: Joi.string(),
+    faculty: Joi.string(),
     dayOff: Joi.number(),
     missingDays: Joi.array(),
-    mustAttendHours: Joi.number(),
-    attendedHours: Joi.number(),
-    signinTime: Joi.number(),
-    signoutTime: Joi.number(),
-    signIn: Joi.number().integer().min(0).max(1),
-    signOut: Joi.number().integer().min(0).max(1),
-    // salary: Joi.number(),
-    deduction: Joi.number(),
+
+    salary: Joi.number(),
+
     gender: Joi.string(),
-    leaveBalance: Joi.number(), //add 2.5 every month
-    //department: Joi.string(),
-    changereq: Joi.array(),
-    leaves: Joi.array(),
-    //faculty: Joi.string(),
-    accidentalLeaves: Joi.number(),
-    replacerequests: Joi.array(),
-    changereq: Joi.array(),
-    linkslotreqs: Joi.array(),
+    department: Joi.string(),
   });
 
   try {
@@ -890,9 +873,10 @@ router.route("/editprofile").post(async (req, res) => {
       "staff id "
     );
   } catch (err) {
+    //console.log(err.message);
     return res.status(403).json(err.message);
   }
-  const result = await StaffModel.findOne({ ID: staffId }); ////////////////////////
+  const result = await staff_model.findOne({ ID: staffId }); ////////////////////////
 
   if (!result) {
     return res.status(404).json("Staff not Found");
@@ -907,59 +891,52 @@ router.route("/editprofile").post(async (req, res) => {
       return res.status(404).json("Location Not Found");
     }
     if (newLocation.NumberOfAvailablePeople == newLocation.NumberOfPersons) {
-      return res.status(400).json("location is full");
+      return res.status(403).json("location is full");
     }
     locationChanging = true;
-    newLocation.NumberOfAvailablePeople =
-      newLocation.NumberOfAvailablePeople + 1;
+    console.log(locationChanging);
     await LocationModel.findOneAndUpdate(
       { locationId: staff.locationID },
-      newLocation
+      { NumberOfAvailablePeople: newLocation.NumberOfAvailablePeople + 1 }
     );
   }
   switch (result.type) {
     case "instructor":
-      if (locationChanging) {
-        const person = await instructorModel.findOne({ ID: staffId });
+      if (staff.locationID != null) {
+        const person = await instructor_model.findOne({ ID: staffId });
         let oldLocation = await LocationModel.findOne({
           locationId: person.locationID,
         });
 
-        oldLocation.NumberOfAvailablePeople =
-          oldLocation.NumberOfAvailablePeople - 1;
-        delete oldLocation._id;
         console.log(oldLocation);
         let oldLocationUpdated = await LocationModel.findOneAndUpdate(
           {
-            locationId: staff.locationID,
+            locationId: person.locationID,
           },
-          oldLocation
+          { NumberOfAvailablePeople: oldLocation.NumberOfAvailablePeople - 1 }
         );
+        console.log(oldLocationUpdated + "hiiiiiiiiiiiiiiiiiiiiiiiiiiii");
       }
-      result2 = await instructorModel.findOneAndUpdate({ ID: staffId }, staff);
+      result2 = await instructor_model.findOneAndUpdate({ ID: staffId }, staff);
 
       if (result2) return res.status(200).json("Updated Successfully");
       else return res.status(404).json("instructor not Found");
 
     case "courseCoordinator":
-      if (locationChanging) {
-        const person = await courseCoordinatorModel.findOne({ ID: staffId });
+      if (staff.locationID != null) {
+        const person = await courseCoordinator_model.findOne({ ID: staffId });
         let oldLocation = await LocationModel.findOne({
           locationId: person.locationID,
         });
 
-        oldLocation.NumberOfAvailablePeople =
-          oldLocation.NumberOfAvailablePeople - 1;
-        delete oldLocation._id;
-        console.log(oldLocation);
         let oldLocationUpdated = await LocationModel.findOneAndUpdate(
           {
-            locationId: staff.locationID,
+            locationId: person.locationID,
           },
-          oldLocation
+          { NumberOfAvailablePeople: oldLocation.NumberOfAvailablePeople - 1 }
         );
       }
-      result2 = await courseCoordinatorModel.findOneAndUpdate(
+      result2 = await courseCoordinator_model.findOneAndUpdate(
         { ID: staffId },
         staff
       );
@@ -967,69 +944,57 @@ router.route("/editprofile").post(async (req, res) => {
       else return res.status(404).json("Course Coordinator not Found");
 
     case "HoD":
-      if (locationChanging) {
-        const person = await HoDModel.findOne({ ID: staffId });
+      if (staff.locationID != null) {
+        const person = await HoD_model.findOne({ ID: staffId });
         let oldLocation = await LocationModel.findOne({
           locationId: person.locationID,
         });
 
-        oldLocation.NumberOfAvailablePeople =
-          oldLocation.NumberOfAvailablePeople - 1;
-        delete oldLocation._id;
-        console.log(oldLocation);
         let oldLocationUpdated = await LocationModel.findOneAndUpdate(
           {
-            locationId: staff.locationID,
+            locationId: person.locationID,
           },
-          oldLocation
+          { NumberOfAvailablePeople: oldLocation.NumberOfAvailablePeople - 1 }
         );
       }
-      result2 = await HoDModel.findOneAndUpdate({ ID: staffId }, staff);
+      result2 = await HoD_model.findOneAndUpdate({ ID: staffId }, staff);
       if (result2) return res.status(200).json("Updated Successfully");
       else return res.status(404).json("Head of Department not Found");
     case "ta":
-      if (locationChanging) {
-        const person = await taModel.findOne({ ID: staffId });
+      if (staff.locationID != null) {
+        const person = await Ta_model.findOne({ ID: staffId });
         let oldLocation = await LocationModel.findOne({
           locationId: person.locationID,
         });
 
-        oldLocation.NumberOfAvailablePeople =
-          oldLocation.NumberOfAvailablePeople - 1;
-        delete oldLocation._id;
-        console.log(oldLocation);
         let oldLocationUpdated = await LocationModel.findOneAndUpdate(
           {
-            locationId: staff.locationID,
+            locationId: person.locationID,
           },
-          oldLocation
+          { NumberOfAvailablePeople: oldLocation.NumberOfAvailablePeople - 1 }
         );
       }
-      result2 = await taModel.findOneAndUpdate({ ID: staffId }, staff);
+      result2 = await Ta_model.findOneAndUpdate({ ID: staffId }, staff);
       if (result2) return res.status(200).json("Updated Successfully");
       else return res.status(404).json("Teaching Assistant not Found");
 
     case "HR":
-      if (locationChanging) {
-        const person = await HRModel.findOne({ ID: staffId });
+      if (staff.locationID != null) {
+        const person = await HR_model.findOne({ ID: staffId });
         let oldLocation = await LocationModel.findOne({
           locationId: person.locationID,
         });
 
-        oldLocation.NumberOfAvailablePeople =
-          oldLocation.NumberOfAvailablePeople - 1;
-        delete oldLocation._id;
-        console.log(oldLocation);
         let oldLocationUpdated = await LocationModel.findOneAndUpdate(
           {
-            locationId: staff.locationID,
+            locationId: person.locationID,
           },
-          oldLocation
+          { NumberOfAvailablePeople: oldLocation.NumberOfAvailablePeople - 1 }
         );
       }
       if (staff.dayOff != null)
         return res.status(404).json("cannot change dayoff for HR");
-      result2 = await HRModel.findOneAndUpdate({ ID: staffId }, staff);
+      result2 = await HR_model.findOneAndUpdate({ ID: staffId }, staff);
       if (result2) return res.status(200).json("Updated Successfully");
       else return res.status(404).json("HR not Found");
 
@@ -1038,9 +1003,16 @@ router.route("/editprofile").post(async (req, res) => {
   }
 });
 router.route("/ViewFaculties").get(async (req, res) => {
-  let faculties = await FacultyModel.find();
+  let faculties = await FacultyModel.find(console);
   if (faculties) {
     return res.status(200).json(faculties);
-  } else return res.send("staff not found");
+  } else return res.status(404).send("staff not found");
+});
+router.route("/ViewLocations").get(async (req, res) => {
+  let locations = await LocationModel.find();
+  // console.log(locations);
+  if (locations) {
+    return res.status(200).json(locations);
+  } else return res.status(404).send("location not found");
 });
 module.exports = router;
