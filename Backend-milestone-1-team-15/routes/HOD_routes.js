@@ -15,22 +15,23 @@ const CoorModel = require('../models/courseCoordinator.js');
 const blacklist = require("../models/blacklist")
 
 router.use(async (req, res, next) => {
-    //middlewares wihtout next itwont terminate if not res.send
-    const token = req.headers.token
-    // console.log(token)
-    const found = await blacklist.findOne({ token: token })
-    console.log("found:"+found)
+  //middlewares wihtout next itwont terminate if not res.send
+  const token = req.headers.token;
+  // console.log(token)
+  const found = await blacklist.findOne({ token: token });
+  if (token) {
     if (!found) {
-      const result = jwt.verify(token, process.env.Token_Secret)
+      //   console.log(token)
+      const result = jwt.verify(token, process.env.Token_Secret);
+
       if (result) {
-        // console.log(result)
-        req.id = result.id // zwdna 7aga 3la result
-        req.type = result.type
-        next()
-      }else return res.send("error")
-       
-    } else return res.send("u arent authorized")
-  })
+        req.id = result.id; // zwdna 7aga 3la result
+        req.type = result.type;
+        next();
+      } else return res.send("error");
+    } else return res.send("u arent authorized");
+  } else return res.send("u arent authorized");
+});
 
 router.route("/ViewStaffType").post(async (req, res) => {
     let sid = req.body.sid;//5ff70f86c788475336d89b6e
