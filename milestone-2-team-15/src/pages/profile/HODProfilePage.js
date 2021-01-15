@@ -48,7 +48,7 @@ export default function HODProfilePage(props) {
       let nn = ss
       const response2 = await axios({
         method: "get",
-        url: `http://localhost:3000/ViewLocations`,
+        url: `${process.env.REACT_APP_URL}/ViewLocations`,
         data: {},
         headers: { token: token },
       });

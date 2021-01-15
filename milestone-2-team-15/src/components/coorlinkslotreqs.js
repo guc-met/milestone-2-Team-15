@@ -43,7 +43,7 @@ function Viewlinkreq() {
 
       response = await axios({
         method: "post",
-        url: "http://localhost:3000/courseCoordinator_routes/rejectSlotLink",
+        url: `${process.env.REACT_APP_URL}/courseCoordinator_routes/rejectSlotLink`,
         data: {
           id: "111",
           slinkid: reqid,
