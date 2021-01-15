@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react"
 import { Row, Col, Card, Form } from "react-bootstrap"
-import "../../stylesheets/InstructorProfile.css"
+import "../../stylesheets/TAProfile.css"
 import "bootstrap/dist/css/bootstrap.min.css"
 import StaffeditProfile from "../StaffeditProfile"
-export default function InstructorProfile(props) {
+export default function CoordinatorProfile(props) {
   const [ID, setId] = useState("")
   const [Name, setName] = useState("")
   const [Email, setEmail] = useState("")
@@ -11,6 +11,7 @@ export default function InstructorProfile(props) {
   const [Salary, setSalary] = useState("")
   const [NewSalary, setNewSalary] = useState()
   const [NewREAlSalary, setNewREALSalary] = useState()
+
   const [DayOff, setDayoff] = useState("")
   const [Department, setDepartment] = useState("")
   const [Faculty, setFaculty] = useState("")
@@ -19,6 +20,8 @@ export default function InstructorProfile(props) {
     setName(props.Name)
     setEmail(props.Email)
     setSalary(props.Salary)
+    setNewSalary(props.NewSalary)
+    setNewREALSalary(props.NewREAlSalary)
     setDayoff(props.DayOff)
     setDepartment(props.Department)
     setFaculty(props.Faculty)
@@ -26,45 +29,42 @@ export default function InstructorProfile(props) {
 
   return (
     <div className= "ViewStaffAttendanceDiv">
-      <StaffeditProfile type= "Instructor"/>
-    <Card body className="InstructorProfileCardd">
+      <StaffeditProfile type= "ta"/>
+    <Card body className="TAProfileCardd">
       <Row>
         <Col>
-          <Form.Label className="InstructorProfileLabel">ID : {ID}</Form.Label>
+          <Form.Label className="TAProfileLabel">ID : {ID}</Form.Label>
         </Col>
         <Col>
-          <Form.Label className="InstructorProfileLabel">
-            Name : {Name}
-          </Form.Label>
+          <Form.Label className="TAProfileLabel">Name : {Name}</Form.Label>
         </Col>
         <Col>
-          <Form.Label className="InstructorProfileLabel">
-            Salary : {Salary}
-          </Form.Label>
+          {" "}
+          <Form.Label className="TAProfileLabel">Salary : {Salary} </Form.Label>
         </Col>
       </Row>
+
       <Row>
         <Col>
-          <Form.Label className="InstructorProfileLabel">
+          <Form.Label className="TAProfileLabel">
             Faculty : {Faculty}
           </Form.Label>
         </Col>
         <Col>
-          <Form.Label className="InstructorProfileLabel">
+          <Form.Label className="TAProfileLabel">
             Department : {Department}
           </Form.Label>
         </Col>
       </Row>
+
       <Row>
         <Col xs={8}>
-          <Form.Label className="InstructorProfileLabel">
-            Email : {Email}
-          </Form.Label>
+          {" "}
+          <Form.Label className="TAProfileLabel">Email : {Email}</Form.Label>
         </Col>
         <Col xs={4}>
-          <Form.Label className="InstructorProfileLabel">
-            DayOff : {DayOff}
-          </Form.Label>
+          {" "}
+          <Form.Label className="TAProfileLabel">DayOff : {DayOff}</Form.Label>
         </Col>
       </Row>
     </Card>

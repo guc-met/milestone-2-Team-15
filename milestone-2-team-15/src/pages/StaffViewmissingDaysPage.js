@@ -7,11 +7,9 @@ import Sidebarhodhome from "../components/sidebarhodhome"
 export default function StaffViewAttendancePage(props) {
   return (
     <div>
-      <Header />
       <div className="ViewStaffmissingDaysCard">
         <StaffViewmissingDays  />
       </div>
-      <Sidebarhodhome />
     </div>
   )
 }

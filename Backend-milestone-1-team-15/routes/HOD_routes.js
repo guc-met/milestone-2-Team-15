@@ -43,7 +43,7 @@ router.route("/ViewStaffType").post(async (req, res) => {
         else{
             return res.send("inst")
         }
-    } else return res.status(404).send("staff not found");
+    } else return res.send("staff not found");
   });
 router.route("/ViewOneStaff").post(async (req, res) => {
     let sid = req.body.sid;//5ff70f86c788475336d89b6e
@@ -57,7 +57,7 @@ router.route("/ViewOneStaff").post(async (req, res) => {
             let inst = await InstructorModel.find({ID:sid})
             return res.send(inst)
         }
-    } else return res.status(404).send("staff not found");
+    } else return res.send("staff not found");
   });
 
   router.route("/ViewCourses").post(async (req, res) => {
@@ -76,8 +76,8 @@ router.route("/ViewOneStaff").post(async (req, res) => {
                 }
             }
         }
-      return res.status(200).json(courses);
-    } else return res.status(404).send("staff not found");
+      return res.json(courses);
+    } else return res.send("staff not found");
   });
 
   router.route("/ViewDepIDandFacID").post(async (req, res) => {
@@ -88,8 +88,8 @@ router.route("/ViewOneStaff").post(async (req, res) => {
         facdep.push(head.faculty)
         facdep.push(head.department)
         
-      return res.status(200).json(facdep);
-    } else return res.status(404).send("staff not found");
+      return res.send(facdep);
+    } else return res.send("staff not found");
   });
 
 // deleteCourseInst is working backend & frontend 
@@ -111,11 +111,11 @@ router.route("/deleteCourseInst").delete(async (req, res) => {//delete of number
     console.log(headID)
     const departmentname = head.department;
     if(!head){
-        res.status(404).send("head ID not found");
+        res.send("head ID not found");
     }
     else{
         if(!faculty){
-            res.status(404).send("faculty name not found");
+            res.send("faculty name not found");
         }
         else{
             let departments = faculty.departments;
@@ -164,15 +164,15 @@ router.route("/deleteCourseInst").delete(async (req, res) => {//delete of number
     console.log("dep: "+head.department);
     const departmentname = head.department;
     if(!head){
-        res.status(404).send("head ID not found");
+        res.send("head ID not found");
     }
     else{
         if(!instructor){
-            res.status(404).send("instructor not found");
+            res.send("instructor not found");
         }
         else{
             if(!faculty){
-                res.status(404).send("faculty name not found");
+                res.send("faculty name not found");
             }
             else{
                 let departments = faculty.departments;
@@ -223,11 +223,11 @@ router.route("/updateCourseInst").put(async (req, res) => { //update of number 1
     const newinstructor = await InstructorModel.findOne({ID: newInstructorid});
     const departmentname = head.department;
     if(!head){
-        res.status(404).send("head ID not found");
+        res.send("head ID not found");
     }
     else{
         if(!faculty){
-            res.status(404).send("faculty name not found");
+            res.send("faculty name not found");
         }
         else{
             let departments = faculty.departments;
@@ -726,7 +726,7 @@ router.route("/acceptreq").post(async (req, res) => {//Accept req number 5 in 4.
              }
         }
         else{
-            res.status(404).send("type name not found");
+            res.send("type name not found");
         }
         
     }
@@ -912,7 +912,7 @@ router.route("/rejectreq").post(async (req, res) => {//Reject req number 6 in 4.
              res.send("the change day req is rejected")
         }
         else{
-            res.status(404).send("type name not found");
+            res.send("type name not found");
         }
     }
 });

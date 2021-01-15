@@ -24,7 +24,7 @@ export default function Logout(props) {
       } else {
         setLogouterrnmessage("")
         setLogoutmessage(res.data)
-        history.push("/login")
+        history.push("/")
       }
     })
   }
@@ -35,7 +35,7 @@ export default function Logout(props) {
     <div className="logout">
       <Col className="logoutButtonCol ">
         <Button
-          variant="dark "
+          variant="dark"
           size="logoutButton"
           type="submit"
           onClick={handlelogout}

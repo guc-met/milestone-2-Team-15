@@ -1,9 +1,9 @@
 import React from "react"
 import "bootstrap/dist/css/bootstrap.min.css"
 import "../stylesheets/sideBar.css"
-
+import DropDown from "./dropDown"
 export default function sideBar(props) {
-    return(
+    return(<div>
     <div>
         <div class="red">
         <a href="/coordinator/viewrecievedlinkslotreqs">View Recieved Linking Slot Requests</a> <br/>
@@ -26,6 +26,8 @@ export default function sideBar(props) {
         
     </div>
  
+    </div>
+    <DropDown type="coordinator"/>
     </div>
 )
 }

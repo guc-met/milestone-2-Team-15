@@ -1,6 +1,8 @@
 import React from "react"
 import "bootstrap/dist/css/bootstrap.min.css"
 import "../stylesheets/sideBar.css"
+import DropDown from "./dropDown"
+
 
 //import DropDownInstructorHome from "./dropDownInstructorHome"
 
@@ -17,7 +19,7 @@ import "../stylesheets/sideBar.css"
 </div>*/
 
 export default function sideBar(props) {
-    return( 
+    return( <div>
     <div>
     {/*<div class="sidenav" style={{width:"200px",top:"70px", height:"100%",background:"url('https://upload.wikimedia.org/wikipedia/en/b/ba/Flag_of_Germany.svg')", backgroundSize:"cover"}}>*/}
     <div class="sidenav" style={{width:"200px",top:"70px", height:"95%"}}>
@@ -30,5 +32,7 @@ export default function sideBar(props) {
     </div>
  
     </div>
+     <DropDown type="coordinator"/>
+     </div>
 )
 }

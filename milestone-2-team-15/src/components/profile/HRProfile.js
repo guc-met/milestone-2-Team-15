@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react"
 import { Row, Col, Card, Form } from "react-bootstrap"
 import "../../stylesheets/HRProfile.css"
 import "bootstrap/dist/css/bootstrap.min.css"
+import StaffeditProfile from "../StaffeditProfile"
 export default function HRProfile(props) {
   const [ID, setId] = useState("")
   const [Name, setName] = useState("")
@@ -17,7 +18,8 @@ export default function HRProfile(props) {
   })
 
   return (
-   
+   <div className="ViewStaffAttendanceDiv">
+     <StaffeditProfile type="HR"/>
     <Card body className="HRProfileCardd">
       <Row >
         <Col>
@@ -43,6 +45,7 @@ export default function HRProfile(props) {
       </Row>
       
     </Card>
+    </div>
     
   )
 }

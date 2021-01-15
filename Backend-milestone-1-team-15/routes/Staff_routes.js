@@ -1,135 +1,139 @@
-const express = require("express")
-const staff_model = require("../models/Staff")
-const router = express.Router()
-const bcrypt = require("bcrypt")
-const jwt = require("jsonwebtoken")
-const app = require("../app")
-const Ta_model = require("../models/ta")
-const HR_model = require("../models/HR")
-const Faculty = require("../models/faculty")
-const FacultyModel = Faculty.faculty
-const department_model = require("../models/department")
+const express = require("express");
+const staff_model = require("../models/Staff");
+const router = express.Router();
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const app = require("../app");
+const Ta_model = require("../models/ta");
+const HR_model = require("../models/HR");
+const Faculty = require("../models/faculty");
+const FacultyModel = Faculty.faculty;
+const DepartmentModel = Faculty.departmentSchema;
 
-const courseCoordinator_model = require("../models/courseCoordinator")
-const instructor_model = require("../models/instructor")
-const attendance_model = require("../models/attendance").model
-const HoD_model = require("../models/HoD")
-const blacklist = require("../models/blacklist")
+const courseCoordinator_model = require("../models/courseCoordinator");
+const instructor_model = require("../models/instructor");
+const attendance_model = require("../models/attendance").model;
+const HoD_model = require("../models/HoD");
+const blacklist = require("../models/blacklist");
 
-require("dotenv").config()
+require("dotenv").config();
 
 router
   .route("/login") // find btrg3 array list falw a7ed arraylist [0] find one btrg3 json
   .post(async (req, res) => {
-    const result = await staff_model.findOne({ email: req.body.email })
-    console.log(result)
+    const result = await staff_model.findOne({ email: req.body.email });
+    console.log(result);
     if (!result) {
-      console.log("ana hna")
-      return res.status(404).send("user not found")
+      console.log("ana hna");
+      return res.send("user not found");
     } else {
       if (result.firstPassEntered == false) {
         const token = jwt.sign(
           { id: result.ID, type: result.type },
           process.env.Token_Secret
-        )
-        let r = await blacklist.findOneAndRemove({ token: token })
+        );
+        let r = await blacklist.findOneAndRemove({ token: token });
         //console.log(r)
         // stored in browser we bybtha howa fe kol req
-        res.setHeader("Access-Control-Expose-headers", '*')
-        res.setHeader("Access-Control-Allow-Origin", '*')
-        res.set("token",token)
-        return res.status(200).send("please reset ur password")
+        res.setHeader("Access-Control-Expose-headers", "*");
+        res.setHeader("Access-Control-Allow-Origin", "*");
+        res.set("token", token);
+        return res.status(200).send("please reset ur password");
       } else {
         const correctpass = await bcrypt.compare(
           req.body.password,
           result.password
-        ) //byshyl salt we byst5dmo fe hashing old password
+        ); //byshyl salt we byst5dmo fe hashing old password
         if (correctpass) {
           const token = jwt.sign(
             { id: result.ID, type: result.type },
             process.env.Token_Secret
-          )
-          let r = await blacklist.findOneAndRemove({ token: token })
+          );
+          let r = await blacklist.findOneAndRemove({ token: token });
           //console.log(r)
           // stored in browser we bybtha howa fe kol req
-          res.setHeader("Access-Control-Expose-headers", '*')
-          res.setHeader("Access-Control-Allow-Origin", '*')
-          res.set("token",token)
+          res.setHeader("Access-Control-Expose-headers", "*");
+          res.setHeader("Access-Control-Allow-Origin", "*");
+          res.set("token", token);
           // return res.header("token", token).send(token)
-          return res.status(200).send("welcome")
-        } else return res.status(401).send("wrong password")
+          return res.status(200).send("welcome");
+        } else return res.send("wrong password");
       }
     }
-  })
+  });
 router.use(async (req, res, next) => {
   //middlewares wihtout next itwont terminate if not res.send
-  const token = req.headers.token
+  const token = req.headers.token;
   // console.log(token)
-  const found = await blacklist.findOne({ token: token })
+  const found = await blacklist.findOne({ token: token });
   if (token) {
     if (!found) {
-      console.log(token)
-      const result = jwt.verify(token, process.env.Token_Secret)
+      //   console.log(token)
+      const result = jwt.verify(token, process.env.Token_Secret);
 
       if (result) {
-        req.id = result.id // zwdna 7aga 3la result
-        req.type = result.type
-        next()
-      } else return res.status(404).send("error")
-    } else return res.status(403).send("u arent authorized")
-  } else return res.status(403).send("u arent authorized")
-})
+        req.id = result.id; // zwdna 7aga 3la result
+        req.type = result.type;
+        next();
+      } else return res.send("error");
+    } else return res.send("u arent authorized");
+  } else return res.send("u arent authorized");
+});
 
 router
   .route("/logout") // find btrg3 array list falw a7ed arraylist [0] find one btrg3 json
   .post(async (req, res) => {
     let x = new blacklist({
       token: req.headers.token,
-    })
-    await x.save()
+    });
+    await x.save();
     //  console.log(await blacklist.find({}))
-    if (x) return res.status(200).send("logout successfully")
-    else return res.status(404).send("something went wrong")
-  })
+    if (x) return res.status(200).send("logout successfully");
+    else return res.send("something went wrong");
+  });
 
 router.route("/signin").post(async (req, res) => {
-  const type = req.type
-  const ID = req.id
-  const result = await staff_model.findOne({ ID: ID })
-  let which
-  let whichmodel
+  const type = req.type;
+  const ID = req.id;
+  const result = await staff_model.findOne({ ID: ID });
+  let which;
+  let whichmodel;
   if (result) {
     switch (type) {
       case "HR":
-        which = await HR_model.findOne({ ID: ID })
-        whichmodel = HR_model
-        break
+        which = await HR_model.findOne({ ID: ID });
+        whichmodel = HR_model;
+        break;
       case "ta":
-        which = await Ta_model.findOne({ ID: ID })
-        whichmodel = Ta_model
-        break
+        which = await Ta_model.findOne({ ID: ID });
+        whichmodel = Ta_model;
+        break;
       case "courseCoordinator":
-        which = await courseCoordinator_model.findOne({ ID: ID })
-        whichmodel = courseCoordinator_model
-        break
+        which = await courseCoordinator_model.findOne({ ID: ID });
+        whichmodel = courseCoordinator_model;
+        break;
       case "instructor":
-        which = await instructor_model.findOne({ ID: ID })
-        whichmodel = instructor_model
-        break
-      case "HOD":
-        which = await HoD_model.findOne({ ID: ID })
-        whichmodel = HoD_model
-        break
+        which = await instructor_model.findOne({ ID: ID });
+        whichmodel = instructor_model;
+        break;
+      case "HoD":
+        which = await HoD_model.findOne({ ID: ID });
+        whichmodel = HoD_model;
+        break;
       default:
-        break
+        break;
     }
 
-    let today = new Date()
+    let today = new Date();
     let date =
-      today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate()
+      today.getFullYear() +
+      "-" +
+      (today.getMonth() + 1) +
+      "-" +
+      today.getDate();
     let time =
-      today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds()
-    let dateTime = date + " " + time //2018-8-3 11:12:40
+      today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    let dateTime = date + " " + time; //2018-8-3 11:12:40
     const days = [
       "Sunday",
       "Monday",
@@ -138,8 +142,8 @@ router.route("/signin").post(async (req, res) => {
       "Thursday",
       "Friday",
       "Saturday",
-    ]
-    let day = today.getDay()
+    ];
+    let day = today.getDay();
     // let daysigns = result.attendance.filter(function (elem) {
     //   return elem.date == date
     // })
@@ -153,7 +157,7 @@ router.route("/signin").post(async (req, res) => {
       await result.update({
         missinghours: 0,
         extrahours: 0,
-      })
+      });
     }
     if (day != which.dayOff && days[day] != "Friday") {
       //&&
@@ -170,19 +174,19 @@ router.route("/signin").post(async (req, res) => {
         year: today.getFullYear(),
         signout: null,
         realday: today.getDate(),
-      })
+      });
       // console.log(today)
-      result.months[today.getMonth() + 1].attendance.push(newAttendanceRecord)
+      result.months[today.getMonth() + 1].attendance.push(newAttendanceRecord);
 
-      result.missinghours = result.missinghours + (8 + 24 / 60)
+      result.missinghours = result.missinghours + (8 + 24 / 60);
       await staff_model.findOneAndUpdate(
         { ID: ID },
         {
           months: result.months,
           missinghours: result.missinghours,
         }
-      )
-      return res.status(200).send("sign in done")
+      );
+      return res.status(200).send("sign in done");
     } else {
       if (day == which.dayOff) {
         let newAttendanceRecord = new attendance_model({
@@ -198,51 +202,53 @@ router.route("/signin").post(async (req, res) => {
           year: today.getFullYear(),
           signout: null,
           realday: today.getDate(),
-        })
-        result.months[today.getMonth() + 1].attendance.push(newAttendanceRecord)
+        });
+        result.months[today.getMonth() + 1].attendance.push(
+          newAttendanceRecord
+        );
 
         await staff_model.findOneAndUpdate(
           { ID: ID },
           {
             months: result.months,
           }
-        )
-        return res.status(200).send("sign in successfully in dayoff")
+        );
+        return res.status(200).send("sign in successfully in dayoff");
       }
-      return res.status(403).send("you cant sign in friday")
+      return res.status(403).send("you cant sign in friday");
     }
-  } else return res.status(403).send("something went wrong")
-})
+  } else return res.status(403).send("something went wrong");
+});
 router.route("/signout").post(async (req, res) => {
-  const type = req.type
-  const ID = req.id
-  const result = await staff_model.findOne({ ID: ID })
-  let which
-  let whichmodel
+  const type = req.type;
+  const ID = req.id;
+  const result = await staff_model.findOne({ ID: ID });
+  let which;
+  let whichmodel;
   if (result) {
     switch (type) {
       case "HR":
-        which = await HR_model.findOne({ ID: ID })
-        whichmodel = HR_model
-        break
+        which = await HR_model.findOne({ ID: ID });
+        whichmodel = HR_model;
+        break;
       case "ta":
-        which = await Ta_model.findOne({ ID: ID })
-        whichmodel = Ta_model
-        break
+        which = await Ta_model.findOne({ ID: ID });
+        whichmodel = Ta_model;
+        break;
       case "courseCoordinator":
-        which = await courseCoordinator_model.findOne({ ID: ID })
-        whichmodel = courseCoordinator_model
-        break
+        which = await courseCoordinator_model.findOne({ ID: ID });
+        whichmodel = courseCoordinator_model;
+        break;
       case "instructor":
-        which = await instructor_model.findOne({ ID: ID })
-        whichmodel = instructor_model
-        break
-      case "HOD":
-        which = await HoD_model.findOne({ ID: ID })
-        whichmodel = HoD_model
-        break
+        which = await instructor_model.findOne({ ID: ID });
+        whichmodel = instructor_model;
+        break;
+      case "HoD":
+        which = await HoD_model.findOne({ ID: ID });
+        whichmodel = HoD_model;
+        break;
       default:
-        break
+        break;
     }
     const days = [
       "Sunday",
@@ -252,9 +258,9 @@ router.route("/signout").post(async (req, res) => {
       "Thursday",
       "Friday",
       "Saturday",
-    ]
-    let today = new Date()
-    const daynum = today.getDate()
+    ];
+    let today = new Date();
+    const daynum = today.getDate();
     if (daynum == 11) {
       await staff_model.findOneAndUpdate(
         { ID: ID },
@@ -262,61 +268,65 @@ router.route("/signout").post(async (req, res) => {
           missinghours: 0,
           extrahours: 0,
         }
-      )
+      );
     }
     let date =
-      today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate()
-    let hour = today.getHours()
-    let min = today.getMinutes()
-    let sec = today.getSeconds()
+      today.getFullYear() +
+      "-" +
+      (today.getMonth() + 1) +
+      "-" +
+      today.getDate();
+    let hour = today.getHours();
+    let min = today.getMinutes();
+    let sec = today.getSeconds();
     // let daysigns = result.months[today.getMonth() + 1].attendance.filter(
     //   function (elem) {
     //     return elem.date == date && elem.signout == null
     //   }
     // )
-    let daysigns = []
-    let indexinattendance = -1
-    let array = result.months[today.getMonth() + 1].attendance
+    let daysigns = [];
+    let indexinattendance = -1;
+    let array = result.months[today.getMonth() + 1].attendance;
     for (let i = 0; i < array.length; i++) {
-      let elem = array[i]
+      let elem = array[i];
       if (elem.date == date && elem.signout == null) {
-        daysigns.push(elem)
-        indexinattendance = i
-        break
+        daysigns.push(elem);
+        indexinattendance = i;
+        break;
       }
     }
     if (daysigns.length > 0 && days[today.getDay()] != "Friday") {
       //sign in withou sign out
-      let signinhour = daysigns[0].signin.hours
-      let signinmin = daysigns[0].signin.minutes
-      let signinsec = daysigns[0].signin.secounds
+      let signinhour = daysigns[0].signin.hours;
+      let signinmin = daysigns[0].signin.minutes;
+      let signinsec = daysigns[0].signin.secounds;
       days[0].signout = {
         hours: hour,
         minutes: min,
         secounds: sec,
-      }
+      };
       result.months[today.getMonth() + 1].attendance[
         indexinattendance
       ].signout = {
         hours: hour,
         minutes: min,
         secounds: sec,
-      }
+      };
       result.months[today.getMonth() + 1].attendance[
         indexinattendance
-      ].attnded = true
+      ].attnded = true;
 
       if (hour >= 19 && min > 0 && sec > 0) {
         //lw 3ada 7 pm
-        hour = hour - (hour - 19)
-        min = 0
-        sec = 0
+        hour = hour - (hour - 19);
+        min = 0;
+        sec = 0;
       }
-      let diffhuors = hour - signinhour
-      let diffmins = min - signinmin
-      let diffsec = sec - signinsec
-      let total = diffhuors * 60 * 60 + diffmins * 60 + diffsec // elly 3maltoh enharda in sec
-      let req = 8 * 60 * 60 + 24 * 60 // 8 24 min in seconds
+      let diffhuors = hour - signinhour;
+      let diffmins = min - signinmin;
+      let diffsec = sec - signinsec;
+      let total = diffhuors * 60 * 60 + diffmins * 60 + diffsec; // elly 3maltoh enharda in sec
+      let req = 8 * 60 * 60 + 24 * 60; // 8 24 min in seconds
       //  console.log("hnnaanana")
       if (today.getDay() == which.dayOff) {
         // lw enaharda dayoff hyb2a extraaaa
@@ -324,19 +334,19 @@ router.route("/signout").post(async (req, res) => {
           (daynum >= 11 && daysigns[0].month == today.getMonth() + 1) || // 11-12 strat of month
           (daynum <= 10 && daysigns[0].month + 1 == today.getMonth() + 1) // 10-1 last day in month
         )
-          result.extrahours = result.extrahours + total / (60 * 60) // in hours
+          result.extrahours = result.extrahours + total / (60 * 60); // in hours
       } else if (days[today.getDay()] != "Friday") {
         // ay yoom 8eir gom3aa
         if (total < req) {
           // let miss = req - total
-          result.missinghours = result.missinghours - total / (60 * 60) //in hours
+          result.missinghours = result.missinghours - total / (60 * 60); //in hours
         } else if (total > req) {
           if (
             (daynum >= 11 && daysigns[0].month == today.getMonth() + 1) ||
             (daynum <= 10 && daysigns[0].month + 1 == today.getMonth() + 1)
           ) {
-            result.extrahours = result.extrahours + (total - req)
-            result.missinghours = result.missinghours - (8 + 24 / 60)
+            result.extrahours = result.extrahours + (total - req);
+            result.missinghours = result.missinghours - (8 + 24 / 60);
           }
         }
       }
@@ -347,9 +357,9 @@ router.route("/signout").post(async (req, res) => {
           extrahours: result.extrahours,
           missinghours: result.missinghours,
         }
-      )
+      );
 
-      return res.status(200).send("sign out correctly including sign in")
+      return res.status(200).send("sign out correctly including sign in");
     } else if (days[today.getDay()] != "Friday") {
       const newAttendanceRecord = new attendance_model({
         signin: null,
@@ -364,22 +374,22 @@ router.route("/signout").post(async (req, res) => {
           minutes: today.getMinutes(),
           secounds: today.getSeconds(),
         },
-      })
-      result.months[today.getMonth() + 1].attendance.push(newAttendanceRecord)
+      });
+      result.months[today.getMonth() + 1].attendance.push(newAttendanceRecord);
       await staff_model.findOneAndUpdate(
         { ID: ID },
         {
           months: result.months,
         }
-      )
-      return res.status(200).send("sign out correctly without sign in")
-    } else return res.status(403).send("friday")
-  } else return res.status(403).send("something went wrong")
-})
+      );
+      return res.status(200).send("sign out correctly without sign in");
+    } else return res.status(403).send("friday");
+  } else return res.status(403).send("something went wrong");
+});
 router.route("/profile").get(async (req, res) => {
-  const type = req.type
-  const ID = req.id
-  const result = await staff_model.findOne({ ID: ID })
+  const type = req.type;
+  const ID = req.id;
+  const result = await staff_model.findOne({ ID: ID });
   const days = [
     "Sunday",
     "Monday",
@@ -388,64 +398,64 @@ router.route("/profile").get(async (req, res) => {
     "Thursday",
     "Friday",
     "Saturday",
-  ]
+  ];
   if (result) {
-    let which
-    let whichmodel
-    let faculty
-    let department
+    let which;
+    let whichmodel;
+    let faculty;
+    let department;
     switch (type) {
       case "HR":
-        which = await HR_model.findOne({ ID: ID })
-        whichmodel = HR_model
-        break
+        which = await HR_model.findOne({ ID: ID });
+        whichmodel = HR_model;
+        break;
       case "ta":
-        which = await Ta_model.findOne({ ID: ID })
-        whichmodel = Ta_model
+        which = await Ta_model.findOne({ ID: ID });
+        whichmodel = Ta_model;
         // facullty = await faculty_model.findOne({ _id: which.faculty })
         // department = await department_model.findOne({
         //   _id: which.department,
         // })
-        break
+        break;
       case "courseCoordinator":
-        which = await courseCoordinator_model.findOne({ ID: ID })
-        whichmodel = courseCoordinator_model
+        which = await courseCoordinator_model.findOne({ ID: ID });
+        whichmodel = courseCoordinator_model;
         // facullty = await faculty_model.findOne({ _id: which.faculty })
         // department = await department_model.findOne({
         //   _id: which.department,
         // })
-        break
+        break;
       case "instructor":
-        which = await instructor_model.findOne({ ID: ID })
-        whichmodel = instructor_model
+        which = await instructor_model.findOne({ ID: ID });
+        whichmodel = instructor_model;
         //console.log(which.faculty)
         // facullty = await FacultyModel.findOne({ _id: which.faculty })
         // department = await department_model.findOne({
         //   _id: which.department,
         // })
 
-        break
-      case "HOD":
-        which = await HoD_model.findOne({ ID: ID })
-        whichmodel = HoD_model
+        break;
+      case "HoD":
+        which = await HoD_model.findOne({ ID: ID });
+        whichmodel = HoD_model;
         // facullty = await faculty_model.findOne({ _id: which.faculty })
         // department = await department_model.findOne({
         //   _id: which.department,
         // })
-        break
+        break;
       default:
-        break
+        break;
     }
-    // console.log(faculty)
-    res.status(200)
+    console.log(which);
+    res.status(200);
     return res.json({
       staff: result,
       staffreally: which,
       Faculty: faculty,
       Department: department,
-    })
-  } else return res.status(403).send("something went wrong")
-})
+    });
+  } else return res.status(403).send("something went wrong");
+});
 // router.route("/editprofile").post(async (req, res) => {
 //   const type = req.type
 //   const ID = req.id
@@ -484,84 +494,96 @@ router.route("/profile").get(async (req, res) => {
 //   } else res.status(403).send("something went wrong")
 // })
 router.route("/resetPassword").post(async (req, res) => {
-  const type = req.type
-  const ID = req.id
-  const salt = await bcrypt.genSalt(10)
-  const newpass = await bcrypt.hash(req.body.password, salt)
+  const type = req.type;
+  const ID = req.id;
+  const salt = await bcrypt.genSalt(10);
+  const newpass = await bcrypt.hash(req.body.password, salt);
   const result = await staff_model.findOneAndUpdate(
     { ID: ID },
     {
       password: newpass,
       firstPassEntered: true,
     }
-  )
+  );
   if (result) {
-    res.status(200).send("reset successfully")
-  } else res.status(403).send("something went wrong")
-})
+    res.status(200).send("reset successfully");
+  } else res.status(403).send("something went wrong");
+});
 
 router.route("/attendance").post(async (req, res) => {
-  const type = req.type
-  const ID = req.id
-  const result = await staff_model.findOne({ ID: ID })
+  const type = req.type;
+  const ID = req.id;
+  const result = await staff_model.findOne({ ID: ID });
   if (result) {
-    res.status(200)
+    res.status(200);
     //console.log(result.months)
-    return res.send(result.months)
-  } else return res.status(403).send("something went wrong")
-})
+    return res.send(result.months);
+  } else return res.status(403).send("something went wrong");
+});
 router.route("/attendance/:month").post(async (req, res) => {
-  const type = req.type
-  const ID = req.id
+  const type = req.type;
+  const ID = req.id;
 
   // req.params.month=month
-  const result = await staff_model.findOne({ ID: ID })
+  const result = await staff_model.findOne({ ID: ID });
   if (result) {
-    let month = req.query.month
-
-    const monattend = result.months[month].attendance.filter((record) => {
-      if (
-        (record.month == req.query.month && record.realday >= 11) ||
-        (record.month == req.query.month + 1 && record.realday <= 10)
-      )
-        return record
-    })
-    res.status(200)
-    console.log(monattend)
-    return res.send(monattend)
-  } else return res.status(403).send("something went wrong")
-})
+    let month = req.query.month;
+    // console.log(result.months[1].attendance)
+    let monattend = [];
+    if (month == 12) {
+      monattend = result.months[month].attendance.filter((record) => {
+        if (
+          (record.month == req.query.month - 11 && record.realday <= 10) ||
+          (record.month == req.query.month && record.realday >= 11)
+        ) {
+          return record;
+        }
+      });
+    } else {
+      monattend = result.months[month].attendance.filter((record) => {
+        if (
+          (record.month == req.query.month && record.realday >= 11) ||
+          (record.month == req.query.month + 1 && record.realday <= 10)
+        )
+          return record;
+      });
+    }
+    // console.log(monattend)
+    res.status(200);
+    return res.send(monattend);
+  } else return res.status(403).send("something went wrong");
+});
 
 router.route("/missingdays").post(async (req, res) => {
-  const type = req.type
-  const ID = req.id
-  const result = await staff_model.findOne({ ID: ID })
-  let which
-  let whichmodel
+  const type = req.type;
+  const ID = req.id;
+  const result = await staff_model.findOne({ ID: ID });
+  let which;
+  let whichmodel;
   if (result) {
     switch (type) {
       case "HR":
-        which = await HR_model.findOne({ ID: ID })
-        whichmodel = HR_model
-        break
+        which = await HR_model.findOne({ ID: ID });
+        whichmodel = HR_model;
+        break;
       case "ta":
-        which = await Ta_model.findOne({ ID: ID })
-        whichmodel = Ta_model
-        break
+        which = await Ta_model.findOne({ ID: ID });
+        whichmodel = Ta_model;
+        break;
       case "courseCoordinator":
-        which = await courseCoordinator_model.findOne({ ID: ID })
-        whichmodel = courseCoordinator_model
-        break
+        which = await courseCoordinator_model.findOne({ ID: ID });
+        whichmodel = courseCoordinator_model;
+        break;
       case "instructor":
-        which = await instructor_model.findOne({ ID: ID })
-        whichmodel = instructor_model
-        break
-      case "HOD":
-        which = await HoD_model.findOne({ ID: ID })
-        whichmodel = HoD_model
-        break
+        which = await instructor_model.findOne({ ID: ID });
+        whichmodel = instructor_model;
+        break;
+      case "HoD":
+        which = await HoD_model.findOne({ ID: ID });
+        whichmodel = HoD_model;
+        break;
       default:
-        break
+        break;
     }
 
     const days = [
@@ -572,10 +594,10 @@ router.route("/missingdays").post(async (req, res) => {
       "Thursday",
       "Friday",
       "Saturday",
-    ]
-    const dayoff = which.dayOff
+    ];
+    const dayoff = which.dayOff;
     //console.log("dayoff" + dayoff)
-    let today = new Date()
+    let today = new Date();
     const pastdays = [
       11,
       12,
@@ -598,90 +620,90 @@ router.route("/missingdays").post(async (req, res) => {
       28,
       29,
       30,
-    ]
-    const currentdays = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-    let missed = []
-    let newleave = result.acceptedleaves
-    let numannual = result.acceptedannual
-    const month = today.getMonth() + 1
-    const year = today.getFullYear()
-    let dayy = 5
+    ];
+    const currentdays = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+    let missed = [];
+    let newleave = result.acceptedleaves;
+    let numannual = result.acceptedannual;
+    const month = today.getMonth() + 1;
+    const year = today.getFullYear();
+    let dayy = 5;
     if (today.getDate() <= 10) {
       // iam in new shahr
       // console.log("hnaa")
-      const currmonthleaves = which.leaves.map((eachleave) => {
+      const currmonthleaves = which.leaves.filter((eachleave) => {
         if (
           eachleave.month == month &&
           eachleave.year == year &&
           eachleave.realday <= 10
         )
-          return eachleave
-      })
-      const pastmonthleaves = which.leaves.map((eachleave) => {
+          return eachleave;
+      });
+      const pastmonthleaves = which.leaves.filter((eachleave) => {
         if (
           eachleave.month == month - 1 &&
           (eachleave.year == year - 1 || eachleave.year == year) &&
           eachleave.realday >= 11
         )
-          return eachleave
-      })
+          return eachleave;
+      });
 
       let currentMonthrecords = result.months[month].attendance.filter(
         function (elem) {
-          return elem.realday <= 10 && elem.year == year
+          return elem.realday <= 10 && elem.year == year;
         }
-      )
+      );
       let perviousMonthrecords = result.months[month - 1].attendance.filter(
         function (elem) {
-          return elem.realday >= 11
+          return elem.realday >= 11;
         }
-      )
+      );
       for (let i = 0; i < pastdays.length; i++) {
-        var pastday = pastdays[i]
-        var found = false
-        let absenceexcuse = false
+        var pastday = pastdays[i];
+        var found = false;
+        let absenceexcuse = false;
         //console.log("current" + pastday)
         for (let j = 0; j < perviousMonthrecords.length; j++) {
-          const element = perviousMonthrecords[j]
+          const element = perviousMonthrecords[j];
           if (element.realday == pastday) {
-            found = true
-            break
+            found = true;
+            break;
           }
         }
         if (!found) {
           if (month == 1) {
-            var ddate = today.getFullYear() - 1 + "-" + 12 + "-" + pastday
-            var d = new Date(Date.parse(ddate))
-            var daytype = days[d.getDay()]
+            var ddate = today.getFullYear() - 1 + "-" + 12 + "-" + pastday;
+            var d = new Date(Date.parse(ddate));
+            var daytype = days[d.getDay()];
 
             // var d = new Date(today.getFullYear() - 1, month, pastday)
             // var daytype = days[d.getDay]
           } else {
-            var ddate = today.getFullYear() + "-" + (month - 1) + "-" + pastday
-            var d = new Date(Date.parse(ddate))
-            var daytype = days[d.getDay()]
+            var ddate = today.getFullYear() + "-" + (month - 1) + "-" + pastday;
+            var d = new Date(Date.parse(ddate));
+            var daytype = days[d.getDay()];
             // var d = new Date(today.getFullYear(), month, pastday)
             // var daytype = days[d.getDay]
           }
           if (daytype != days[dayoff] && daytype != "Friday") {
             for (let k = 0; k < pastmonthleaves.length; k++) {
-              let leaveday = pastmonthleaves[k].realday
-              let state = pastmonthleaves[k].state
-              let type = pastmonthleaves[k].leaveType
+              let leaveday = pastmonthleaves[k].realday;
+              let state = pastmonthleaves[k].state;
+              let type = pastmonthleaves[k].leaveType;
               if (leaveday == pastday && state == "accepted") {
-                absenceexcuse = true
-                newleave = newleave.push(pastmonthleaves[k])
-                if (type == "accidental") numannual = numannual + 1
-                break
+                absenceexcuse = true;
+                newleave = newleave.push(pastmonthleaves[k]);
+                if (type == "accidental") numannual = numannual + 1;
+                break;
               }
             }
             if (!absenceexcuse) {
               if (month == 1)
-                var date = today.getFullYear() - 1 + "-" + 12 + "-" + pastday
+                var date = today.getFullYear() - 1 + "-" + 12 + "-" + pastday;
               else
                 var date =
-                  today.getFullYear() + "-" + (month - 1) + "-" + pastday
-              missed.push(date)
+                  today.getFullYear() + "-" + (month - 1) + "-" + pastday;
+              missed.push(date);
               //   console.log("missed")
               // console.log(missed)
             }
@@ -689,96 +711,97 @@ router.route("/missingdays").post(async (req, res) => {
         }
       }
       for (let i = 0; i < currentdays.length; i++) {
-        let currday = currentdays[i]
-        var found = false
-        let absenceexcuse = false
+        let currday = currentdays[i];
+        var found = false;
+        let absenceexcuse = false;
         if (currday > today.getDate()) {
-          break
+          break;
         }
 
         for (let j = 0; j < currentMonthrecords.length; j++) {
-          let element = currentMonthrecords[j]
+          let element = currentMonthrecords[j];
           if (element.realday == currday) {
-            found = true
-            break
+            found = true;
+            break;
           }
         }
         if (!found) {
           //missing
-          let ddate = today.getFullYear() + "-" + month + "-" + currday
-          let d = new Date(Date.parse(ddate))
-          let daytype = days[d.getDay()]
+          let ddate = today.getFullYear() + "-" + month + "-" + currday;
+          let d = new Date(Date.parse(ddate));
+          let daytype = days[d.getDay()];
           // let d = new Date(today.getFullYear(), month, currday)
           // let daytype = days[d.getDay]
           if (daytype != days[dayoff] && daytype != "Friday") {
             for (let k = 0; k < currmonthleaves.length; k++) {
-              let leaveday = currmonthleaves[k].realday
-              let state = currmonthleaves[k].state
-              let type = currmonthleaves[k].leaveType
+              let leaveday = currmonthleaves[k].realday;
+              let state = currmonthleaves[k].state;
+              let type = currmonthleaves[k].leaveType;
               if (leaveday == currday && state == "accepted") {
-                absenceexcuse = true
-                newleave = newleave.push(currmonthleaves[k])
-                if (type == "accidental") numannual = numannual + 1
-                break
+                absenceexcuse = true;
+                newleave = newleave.push(currmonthleaves[k]);
+                if (type == "accidental") numannual = numannual + 1;
+                break;
               }
             }
             if (!absenceexcuse) {
-              let date = today.getFullYear() + "-" + month + "-" + currday
-              missed.push(date)
+              let date = today.getFullYear() + "-" + month + "-" + currday;
+              missed.push(date);
             }
           } // else console.log("dayoff or friday")
         }
       }
     } else if (today.getDate() >= 11) {
-      const currmonthleaves = which.leaves.map((eachleave) => {
+      const currmonthleaves = which.leaves.filter((eachleave) => {
         if (
           eachleave.month == month &&
           eachleave.year == year &&
           eachleave.day >= 11 &&
           eachleave.day <= today.getDate()
         )
-          return eachleave
-      })
+          return eachleave;
+      });
       let currentMonthrecords = result.months[month].attendance.filter(
         function (elem) {
-          return elem.realday >= 11 && elem.realday <= today.getDate()
+          return elem.realday >= 11 && elem.realday <= today.getDate();
         }
-      )
+      );
       for (let i = 0; i < pastdays.length; i++) {
-        var currday = pastdays[i]
-        var found = false
-        let absenceexcuse = false
-        if (currday > today.getDate()) break
+        var currday = pastdays[i];
+        var found = false;
+        let absenceexcuse = false;
+        if (currday > today.getDate()) break;
         for (let j = 0; j < currentMonthrecords.length; j++) {
-          const element = currentMonthrecords[j]
+          const element = currentMonthrecords[j];
           if (element.realday == currday) {
-            found = true
-            break
+            found = true;
+            break;
           }
         }
 
         if (!found) {
-          today = new Date()
-          let ddate = today.getFullYear() + "-" + month + "-" + currday
-          let d = new Date(Date.parse(ddate))
-          let daytype = days[d.getDay()]
+          today = new Date();
+          let ddate = today.getFullYear() + "-" + month + "-" + currday;
+          let d = new Date(Date.parse(ddate));
+          let daytype = days[d.getDay()];
 
           if (daytype != days[dayoff] && daytype != "Friday") {
             for (let k = 0; k < currmonthleaves.length; k++) {
-              let leaveday = currmonthleaves[k].realday
-              let state = currmonthleaves[k].state
-              let type = currmonthleaves[k].leaveType
+              console.log(currmonthleaves);
+              let leaveday = currmonthleaves[k].realday;
+              let state = currmonthleaves[k].state;
+              let type = currmonthleaves[k].leaveType;
               if (leaveday == currday && state == "accepted") {
-                absenceexcuse = true
+                absenceexcuse = true;
 
-                newleave = newleave.push(pastmonthleaves[k])
-                if (type == "accidental") numannual = numannual + 1
-                break
+                newleave = newleave.push(pastmonthleaves[k]);
+                if (type == "accidental") numannual = numannual + 1;
+                break;
               }
             }
             if (!absenceexcuse) {
-              let date = today.getFullYear() + "-" + month + "-" + currday
-              missed.push(date)
+              let date = today.getFullYear() + "-" + month + "-" + currday;
+              missed.push(date);
             }
           }
         }
@@ -791,34 +814,34 @@ router.route("/missingdays").post(async (req, res) => {
         acceptedannual: numannual,
         acceptedleaves: newleave,
       }
-    )
-    res.status(200)
-    return res.send(missed)
-  } else return res.status(403).send("something went wrong")
-})
+    );
+    res.status(200);
+    return res.send(missed);
+  } else return res.send("something went wrong");
+});
 router.route("/missinghours").post(async (req, res) => {
-  const type = req.type
-  const ID = req.id
-  const result = await staff_model.findOne({ ID: ID })
+  const type = req.type;
+  const ID = req.id;
+  const result = await staff_model.findOne({ ID: ID });
   if (result) {
-    res.status(200)
-    return res.send(result.missinghours + "")
-  } else return res.status(403).send("something went wrong")
-})
+    res.status(200);
+    return res.send(result.missinghours);
+  } else return res.send("something went wrong");
+});
 router.route("/extrahours").post(async (req, res) => {
-  const type = req.type
-  const ID = req.id
-  const result = await staff_model.findOne({ ID: ID })
+  const type = req.type;
+  const ID = req.id;
+  const result = await staff_model.findOne({ ID: ID });
 
   if (result) {
-    res.status(200)
-    return res.send(result.extrahours + "")
-  } else return res.status(403).send("something went wrong")
-})
+    res.status(200);
+    return res.send(result.extrahours + "");
+  } else return res.status(403).send("something went wrong");
+});
 
 router.route("/editprofile").post(async (req, res) => {
-  const staffId = req.id
-  const staff = req.type
+  const staffId = req.id;
+  const staff = req.type;
 
   const staffSchema = Joi.object({
     email: Joi.string(),
@@ -857,161 +880,167 @@ router.route("/editprofile").post(async (req, res) => {
     replacerequests: Joi.array(),
     changereq: Joi.array(),
     linkslotreqs: Joi.array(),
-  })
+  });
 
   try {
-    const value = await staffSchema.validateAsync(staff)
+    const value = await staffSchema.validateAsync(staff);
     const value2 = await Joi.assert(
       staffId,
       Joi.string().required(),
       "staff id "
-    )
+    );
   } catch (err) {
-    return res.status(403).json(err.message)
+    return res.status(403).json(err.message);
   }
-  const result = await StaffModel.findOne({ ID: staffId }) ////////////////////////
+  const result = await StaffModel.findOne({ ID: staffId }); ////////////////////////
 
   if (!result) {
-    return res.status(404).json("Staff not Found")
+    return res.status(404).json("Staff not Found");
   }
-  let result2
-  let locationChanging = false
+  let result2;
+  let locationChanging = false;
   if (staff.locationID != null) {
     let newLocation = await LocationModel.findOne({
       locationId: staff.locationID,
-    })
+    });
     if (!newLocation) {
-      return res.status(404).json("Location Not Found")
+      return res.status(404).json("Location Not Found");
     }
     if (newLocation.NumberOfAvailablePeople == newLocation.NumberOfPersons) {
-      return res.status(400).json("location is full")
+      return res.status(400).json("location is full");
     }
-    locationChanging = true
+    locationChanging = true;
     newLocation.NumberOfAvailablePeople =
-      newLocation.NumberOfAvailablePeople + 1
+      newLocation.NumberOfAvailablePeople + 1;
     await LocationModel.findOneAndUpdate(
       { locationId: staff.locationID },
       newLocation
-    )
+    );
   }
   switch (result.type) {
     case "instructor":
       if (locationChanging) {
-        const person = await instructorModel.findOne({ ID: staffId })
+        const person = await instructorModel.findOne({ ID: staffId });
         let oldLocation = await LocationModel.findOne({
           locationId: person.locationID,
-        })
+        });
 
         oldLocation.NumberOfAvailablePeople =
-          oldLocation.NumberOfAvailablePeople - 1
-        delete oldLocation._id
-        console.log(oldLocation)
+          oldLocation.NumberOfAvailablePeople - 1;
+        delete oldLocation._id;
+        console.log(oldLocation);
         let oldLocationUpdated = await LocationModel.findOneAndUpdate(
           {
             locationId: staff.locationID,
           },
           oldLocation
-        )
+        );
       }
-      result2 = await instructorModel.findOneAndUpdate({ ID: staffId }, staff)
+      result2 = await instructorModel.findOneAndUpdate({ ID: staffId }, staff);
 
-      if (result2) return res.status(200).json("Updated Successfully")
-      else return res.status(404).json("instructor not Found")
+      if (result2) return res.status(200).json("Updated Successfully");
+      else return res.status(404).json("instructor not Found");
 
     case "courseCoordinator":
       if (locationChanging) {
-        const person = await courseCoordinatorModel.findOne({ ID: staffId })
+        const person = await courseCoordinatorModel.findOne({ ID: staffId });
         let oldLocation = await LocationModel.findOne({
           locationId: person.locationID,
-        })
+        });
 
         oldLocation.NumberOfAvailablePeople =
-          oldLocation.NumberOfAvailablePeople - 1
-        delete oldLocation._id
-        console.log(oldLocation)
+          oldLocation.NumberOfAvailablePeople - 1;
+        delete oldLocation._id;
+        console.log(oldLocation);
         let oldLocationUpdated = await LocationModel.findOneAndUpdate(
           {
             locationId: staff.locationID,
           },
           oldLocation
-        )
+        );
       }
       result2 = await courseCoordinatorModel.findOneAndUpdate(
         { ID: staffId },
         staff
-      )
-      if (result2) return res.status(200).json("Updated Successfully")
-      else return res.status(404).json("Course Coordinator not Found")
+      );
+      if (result2) return res.status(200).json("Updated Successfully");
+      else return res.status(404).json("Course Coordinator not Found");
 
     case "HoD":
       if (locationChanging) {
-        const person = await HoDModel.findOne({ ID: staffId })
+        const person = await HoDModel.findOne({ ID: staffId });
         let oldLocation = await LocationModel.findOne({
           locationId: person.locationID,
-        })
+        });
 
         oldLocation.NumberOfAvailablePeople =
-          oldLocation.NumberOfAvailablePeople - 1
-        delete oldLocation._id
-        console.log(oldLocation)
+          oldLocation.NumberOfAvailablePeople - 1;
+        delete oldLocation._id;
+        console.log(oldLocation);
         let oldLocationUpdated = await LocationModel.findOneAndUpdate(
           {
             locationId: staff.locationID,
           },
           oldLocation
-        )
+        );
       }
-      result2 = await HoDModel.findOneAndUpdate({ ID: staffId }, staff)
-      if (result2) return res.status(200).json("Updated Successfully")
-      else return res.status(404).json("Head of Department not Found")
+      result2 = await HoDModel.findOneAndUpdate({ ID: staffId }, staff);
+      if (result2) return res.status(200).json("Updated Successfully");
+      else return res.status(404).json("Head of Department not Found");
     case "ta":
       if (locationChanging) {
-        const person = await taModel.findOne({ ID: staffId })
+        const person = await taModel.findOne({ ID: staffId });
         let oldLocation = await LocationModel.findOne({
           locationId: person.locationID,
-        })
+        });
 
         oldLocation.NumberOfAvailablePeople =
-          oldLocation.NumberOfAvailablePeople - 1
-        delete oldLocation._id
-        console.log(oldLocation)
+          oldLocation.NumberOfAvailablePeople - 1;
+        delete oldLocation._id;
+        console.log(oldLocation);
         let oldLocationUpdated = await LocationModel.findOneAndUpdate(
           {
             locationId: staff.locationID,
           },
           oldLocation
-        )
+        );
       }
-      result2 = await taModel.findOneAndUpdate({ ID: staffId }, staff)
-      if (result2) return res.status(200).json("Updated Successfully")
-      else return res.status(404).json("Teaching Assistant not Found")
+      result2 = await taModel.findOneAndUpdate({ ID: staffId }, staff);
+      if (result2) return res.status(200).json("Updated Successfully");
+      else return res.status(404).json("Teaching Assistant not Found");
 
     case "HR":
       if (locationChanging) {
-        const person = await HRModel.findOne({ ID: staffId })
+        const person = await HRModel.findOne({ ID: staffId });
         let oldLocation = await LocationModel.findOne({
           locationId: person.locationID,
-        })
+        });
 
         oldLocation.NumberOfAvailablePeople =
-          oldLocation.NumberOfAvailablePeople - 1
-        delete oldLocation._id
-        console.log(oldLocation)
+          oldLocation.NumberOfAvailablePeople - 1;
+        delete oldLocation._id;
+        console.log(oldLocation);
         let oldLocationUpdated = await LocationModel.findOneAndUpdate(
           {
             locationId: staff.locationID,
           },
           oldLocation
-        )
+        );
       }
       if (staff.dayOff != null)
-        return res.status(404).json("cannot change dayoff for HR")
-      result2 = await HRModel.findOneAndUpdate({ ID: staffId }, staff)
-      if (result2) return res.status(200).json("Updated Successfully")
-      else return res.status(404).json("HR not Found")
+        return res.status(404).json("cannot change dayoff for HR");
+      result2 = await HRModel.findOneAndUpdate({ ID: staffId }, staff);
+      if (result2) return res.status(200).json("Updated Successfully");
+      else return res.status(404).json("HR not Found");
 
     default:
-      return res.send("User not Elligible")
+      return res.send("User not Elligible");
   }
-})
-module.exports = router
+});
+router.route("/ViewFaculties").get(async (req, res) => {
+  let faculties = await FacultyModel.find();
+  if (faculties) {
+    return res.status(200).json(faculties);
+  } else return res.send("staff not found");
+});
+module.exports = router;

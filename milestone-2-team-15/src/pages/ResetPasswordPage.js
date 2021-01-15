@@ -6,9 +6,7 @@ import Sidebarhodhome from "../components/sidebarhodhome"
 export default function ResetPasswordPage(props) {
   return (
     <div>
-      <Header />
       <ResetPassword />
-      <Sidebarhodhome />
     </div>
   )
 }
