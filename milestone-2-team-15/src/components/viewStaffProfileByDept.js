@@ -132,8 +132,8 @@ function ViewStaffProfileByDept(props) {
   };
 
   return (
-    <div>
-      <Form class="Hr-Buttons">
+    <div class="Hr-Buttons">
+      <Form >
         <label for="facName">Faculty Name</label> <br />
         <input
           type="text"
