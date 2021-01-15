@@ -31,24 +31,23 @@ function UpdateAssignment(props) {
 
   const history = useHistory();
 
-  const sendReq = async (event) => {
-    const response = axios.post(
-      `${process.env.REACT_APP_URL}/instructor_routes/updateAssignment`,
-      {
-        isOldTA: isOldTAbool,
-        isTA: isTAbool,
-
-        delID: oldAcadID,
-        newACid: acadID,
-
-        courseCode: cc,
-        facName: faculty,
-
-        id: "16",
-      }
-    );
+  const token =localStorage.getItem("token");
+    const sendReq = async (event) => {
+           const response = await axios( {method:'post',url:`${process.env.REACT_APP_URL}/instructor_routes/updateAssignment`,
+           data:{
+                isOldTA: isOldTAbool,
+                isTA: isTAbool,
+        
+                delID: oldAcadID,
+                newACid: acadID,
+        
+                courseCode: cc,
+                facName: faculty,
+           },  headers:{token:token}
+         });
     console.log("yadi el nila " + JSON.stringify(response));
-    setmsg(response);
+    let x = response.data ? response.data.$numberDecimal : null
+    setmsg(x);
   };
   return (
     <div class="Hr-Buttons">

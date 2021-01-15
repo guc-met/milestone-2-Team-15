@@ -25,14 +25,14 @@ function ViewAssignedSlots(props) {
   const [msg, setmsg] = useState([]);
   let response = [];
 
-  const view = async (event) => {
-    response = await axios.post(
-      `${process.env.REACT_APP_URL}/instructor_routes/viewAssignedSlotOfCourse`,
-      {
-        id: "16",
-        facName: facname,
-      }
-    );
+  const token =localStorage.getItem("token");
+    const view = async (event) => {
+           response = await axios( {method:'post',url:`${process.env.REACT_APP_URL}/instructor_routes/viewAssignedSlotOfCourse`,
+           data:{
+             
+            facName: facname,
+           },  headers:{token:token}
+         });
 
     if (response.length == 0) {
       return;

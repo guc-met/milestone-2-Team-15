@@ -26,21 +26,17 @@ function AssignAcademicMember(props) {
   const [faculty, setFaculty] = useState();
   const [msg, setmsg] = useState("");
 
-  const history = useHistory();
-
-  const sendReq = async (event) => {
-    setInstid("12");
-
-    const response = axios.post(
-      `${process.env.REACT_APP_URL}instructor_routes/assignAcademicMember`,
-      {
-        newACid: acadID,
-        isTA: isTAbool,
-        instID: instid,
-        courseCode: cc,
-        facName: faculty,
-      }
-    );
+  const token =localStorage.getItem("token");
+    const sendReq = async (event) => {
+           const response = await axios( {method:'post',url:`${process.env.REACT_APP_URL}/instructor_routes/assignAcademicMember`,
+           data:{
+                  
+              newACid: acadID,
+              isTA: isTAbool,
+              courseCode: cc,
+              facName: faculty,
+           },  headers:{token:token}
+         });
     setmsg((await response).data);
     console.log("suppppppp" + (await response).data + "\n");
   };

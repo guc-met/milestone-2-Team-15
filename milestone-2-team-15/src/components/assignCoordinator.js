@@ -25,16 +25,15 @@ function AssignCoordinator(props) {
   const [fac, setFac] = useState();
   const [msg, setmsg] = useState("");
 
-  const sendReq = async (event) => {
-    const response = axios.post(
-      `${process.env.REACT_APP_URL}/instructor_routes/assignCoordinator`,
-      {
-        id: newID,
-        courseID: courseid,
-        InstructorID: "16",
-        facName: fac,
-      }
-    );
+  const token =localStorage.getItem("token");
+    const sendReq = async (event) => {
+           const response = await axios( {method:'post',url:`${process.env.REACT_APP_URL}/instructor_routes/assignCoordinator`,
+           data:{
+            id: newID,
+            courseID: courseid,
+            facName: fac,
+           },  headers:{token:token}
+         });
     setmsg((await response).data);
   };
 

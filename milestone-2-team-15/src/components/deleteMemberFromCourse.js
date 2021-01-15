@@ -26,16 +26,15 @@ function DeleteMemberFromCourse(props) {
   const [cc, setCc] = useState();
   const [msg, setmsg] = useState("");
 
-  const sendReq = async (event) => {
-    const response = axios.post(
-      `${process.env.REACT_APP_URL}/instructor_routes/deleteMemberFromCourse`,
-      {
-        id: deleteID,
-        isTA: isTAbool,
-        id: "16",
-        courseCode: cc,
-      }
-    );
+  const token =localStorage.getItem("token");
+    const sendReq = async (event) => {
+           const response = await axios( {method:'post',url:`${process.env.REACT_APP_URL}/instructor_routes/deleteMemberFromCourse`,
+           data:{
+                id: deleteID,
+                isTA: isTAbool,
+                courseCode: cc,
+           },  headers:{token:token}
+         });
     setmsg((await response).data);
   };
 
