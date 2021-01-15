@@ -76,7 +76,7 @@ function ViewSchedule(props) {
 
   return (
     
-    <div style={{padding:"60px 0px 0px 250px"}}>
+    <div style={{padding:"3.9vw 0px 0px 25vw"}}>
 
         
         <Button align="center" 
@@ -194,7 +194,7 @@ function ViewSchedule(props) {
     else{
         return(
             
-            <div style={{padding:"60px 0px 0px 250px"}}>
+            <div style={{padding:"3.9vw 0px 0px 25vw"}}>
                 <Button align="center" 
                     onClick={view}
                     >Show Schedule </Button>

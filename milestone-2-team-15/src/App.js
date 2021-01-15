@@ -71,7 +71,9 @@ import UpdateSalary from "./components/UpdateSalary";
 import Faculties from "./components/Faculties";
 import AddSignin from "./components/AddSigninSignOut";
 import Updateslot from "./components/coorupdateslot";
-import StaffEditP from "./components/StaffEditP"
+import StaffEditP from "./components/StaffEditP";
+import ViewSchedule from "./components/viewSchedule";
+
 function App() {
   return (
     <div>
@@ -119,6 +121,11 @@ function App() {
         />
         <Route path="/Instructor/leaverequest" component={SendLeaveReq} />
         <Route path="/Instructor/viewrequest" component={Viewreq} />
+
+        
+        <Route path="/Instructor/viewSchedule" component={ViewSchedule} />
+
+
         <Route path="/coordinator" component={Sidebardcoor} />
         <Route path="/coordinator/updateslot" component={Updateslot} />
 
