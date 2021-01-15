@@ -21,18 +21,15 @@ require("dotenv").config();
 function ViewSchedule(props) {
 
     const history = useHistory();
-   
-    const [facname, setFacname] = useState();
-    const [msg, setmsg]= useState([]);
-
-
+    
+    const [arr, setArr] = useState([]);
+    // const [msg, setmsg]= useState([]);
+    
     let response="";
-
    const token =localStorage.getItem("token");
    const view = async (event) => {
           response = await axios( {method:'post',url:"http://localhost:3000/ac_routes/viewschedule",
           data:{
-            
           },  headers:{token:token}
         });
 
@@ -40,18 +37,55 @@ function ViewSchedule(props) {
       return;
     }
 
-      const arr=[];
-     for(let i=0;i<response.data.length;i++){
-        arr.push(response.data[i]);
-     }
-    setmsg(arr);
-  }
-      
-  return (
+    const lol=new Array();
 
-    <div style={{padding:"60px 0px 0px 250px"}}>
+     for(let i=0;i<response.data.length-1;i++){
+       let day = response.data[i];
         
-    <div>
+
+        lol[i]=new Array();
+      for(let j=0; j<day.length; j++){
+        let slot = day[j];
+        let text = "";
+
+
+        if(slot!=0){
+          if(slot.kind ){
+              
+            text+="Kind: "+slot.kind+"\n";
+          }
+          if(slot.corseCode){
+              
+            text+="Course Code: "+slot.courseCode+"\n";
+          }
+          if(slot.location){
+            text+="Location: "+slot.location+"\n";
+          }
+          lol[i][j]=text;
+        }else{
+          lol[i][j]="";
+        }
+    }
+     }
+    
+     setArr(lol);
+  }
+
+
+  if(arr.length!=0){
+
+  return (
+    
+    <div style={{padding:"60px 0px 0px 250px"}}>
+
+        
+        <Button align="center" 
+            onClick={view}
+            >Show Schedule </Button>
+            <br/><br/>
+
+        {
+            <div>
       <table border="5" cellspacing="0" align="center"> 
         <caption>Timetable</caption>
         <tr> 
@@ -61,122 +95,218 @@ function ViewSchedule(props) {
             </td> 
             <td align="center" height="50" 
                 width="100"> 
-                <b>I<br/>9:30-10:20</b> 
+                <b>1st<br/>8:15-9:45</b> 
             </td> 
             <td align="center" height="50" 
                 width="100"> 
-                <b>II<br/>10:20-11:10</b> 
+                <b>2nd<br/>10:00-11:30</b> 
             </td> 
             <td align="center" height="50" 
                 width="100"> 
-                <b>III<br/>11:10-12:00</b> 
+                <b>3rd<br/>11:45-1:15</b> 
             </td> 
             <td align="center" height="50" 
                 width="100"> 
-                <b>12:00-12:40</b> 
+                <b>4th<br/>1:45-3:15</b> 
             </td> 
             <td align="center" height="50" 
                 width="100"> 
-                <b>IV<br/>12:40-1:30</b> 
-            </td> 
-            <td align="center" height="50" 
-                width="100"> 
-                <b>V<br/>1:30-2:20</b> 
-            </td> 
-            <td align="center" height="50" 
-                width="100"> 
-                <b>VI<br/>2:20-3:10</b> 
-            </td> 
-            <td align="center" height="50" 
-                width="100"> 
-                <b>VII<br/>3:10-4:00</b> 
+                <b>5th<br/>3:45-5:15</b> 
             </td> 
         </tr> 
         <tr> 
             <td align="center" height="50"> 
-                <b>Monday</b></td> 
-            <td align="center" height="50">Eng</td> 
-            <td align="center" height="50">Mat</td> 
-            <td align="center" height="50">Che</td> 
-            <td rowSpan="6" align="center" height="50"> 
-                <h2>L<br/>U<br/>N<br/>C<br/>H</h2> 
+                <b>Saturday</b></td> 
+            <td align="center" height="50"> {arr[0][0]}</td> 
+            <td align="center" height="50"> {arr[0][1]}</td> 
+            <td align="center" height="50"> {arr[0][2]}</td> 
+            <td align="center" height="50"> {arr[0][3]}</td> 
+            
+            <td colspan="1" align="center" 
+                height="50"> {arr[0][4]}</td> 
+        </tr> 
+        <tr> 
+            <td align="center" height="50"> 
+                <b>Sunday</b> 
             </td> 
-            <td colspan="3" align="center" 
-                height="50">LAB</td> 
-            <td align="center" height="50">Phy</td> 
+            <td colspan="1" align="center" 
+                height="50">    {arr[1][0]} 
+            </td> 
+            <td align="center" height="50"> {arr[1][1]}</td> 
+            <td align="center" height="50"> {arr[1][2]}</td>
+            <td align="center" height="50"> {arr[1][3]}</td>
+            <td align="center" height="50"> {arr[1][4]}</td>
+        </tr> 
+        <tr> 
+            <td align="center" height="50"> 
+                <b>Monday</b> 
+            </td> 
+            <td align="center" height="50"> {arr[2][0]}</td> 
+            <td align="center" height="50"> {arr[2][1]}</td> 
+            <td align="center" height="50"> {arr[2][2]}</td> 
+            <td align="center" height="50">{arr[2][3]}</td> 
+            <td colspan="2" align="center" 
+                height="50"> {arr[2][4]} 
+            </td> 
         </tr> 
         <tr> 
             <td align="center" height="50"> 
                 <b>Tuesday</b> 
             </td> 
-            <td colspan="3" align="center" 
-                height="50">LAB 
+            <td align="center" height="50"> {arr[3][0]}</td> 
+            <td align="center" height="50"> {arr[3][1]}</td> 
+            <td align="center" height="50"> {arr[3][2]}</td> 
+            <td align="center" height="50"> {arr[3][3]}</td> 
+            <td colspan="1" align="center" 
+                height="50"> {arr[3][4]}
             </td> 
-            <td align="center" height="50">Eng</td> 
-            <td align="center" height="50">Che</td> 
-            <td align="center" height="50">Mat</td> 
-            <td align="center" height="50">SPORTS</td> 
         </tr> 
         <tr> 
             <td align="center" height="50"> 
                 <b>Wednesday</b> 
             </td> 
-            <td align="center" height="50">Mat</td> 
-            <td align="center" height="50">phy</td> 
-            <td align="center" height="50">Eng</td> 
-            <td align="center" height="50">Che</td> 
-            <td colspan="3" align="center" 
-                height="50">LIBRARY 
+
+            <td colspan="1" align="center" 
+                height="50"> {arr[4][0]} 
             </td> 
-        </tr> 
-        <tr> 
-            <td align="center" height="50"> 
-                <b>Thursday</b> 
-            </td> 
-            <td align="center" height="50">Phy</td> 
-            <td align="center" height="50">Eng</td> 
-            <td align="center" height="50">Che</td> 
-            <td colspan="3" align="center" 
-                height="50">LAB 
-            </td> 
-            <td align="center" height="50">Mat</td> 
-        </tr> 
-        <tr> 
-            <td align="center" height="50"> 
-                <b>Friday</b> 
-            </td> 
-            <td colspan="3" align="center" 
-                height="50">LAB 
-            </td> 
-            <td align="center" height="50">Mat</td> 
-            <td align="center" height="50">Che</td> 
-            <td align="center" height="50">Eng</td> 
-            <td align="center" height="50">Phy</td> 
+            <td align="center" height="50"> {arr[4][1]}</td> 
+            <td align="center" height="50"> {arr[4][2]}</td> 
+            <td align="center" height="50"> {arr[4][3]}</td> 
+            <td align="center" height="50"> {arr[4][4]}</td> 
         </tr> 
         <tr> 
             <td align="center" height="50"> 
                 <b>Saturday</b> 
             </td> 
-            <td align="center" height="50">Eng</td> 
-            <td align="center" height="50">Che</td> 
-            <td align="center" height="50">Mat</td> 
-            <td colspan="3" align="center" 
-                height="50">SEMINAR 
+            <td align="center" height="50"> {arr[5][0]}</td> 
+            <td align="center" height="50"> {arr[5][1]}</td> 
+            <td align="center" height="50"> {arr[5][2]}</td>
+            <td align="center" height="50"> {arr[5][3]}</td> 
+            <td colspan="1" align="center" 
+                height="50"> {arr[5][4]} 
             </td> 
-            <td align="center" height="50">SPORTS</td> 
         </tr> 
     </table> 
-      </div>
-
-
-        <Button
-            onClick={view}
-            >Show Schedule </Button>
-            <br/>
-            <p >{msg}</p>
-        
+        </div>}
     </div>
   );
+}
+    else{
+        return(
+            
+            <div style={{padding:"60px 0px 0px 250px"}}>
+                <Button align="center" 
+                    onClick={view}
+                    >Show Schedule </Button>
+                    <br/><br/>
+
+                {
+                    <div>
+            <table border="5" cellspacing="0" align="center"> 
+                <caption>Timetable</caption>
+                <tr> 
+                    <td align="center" height="50" 
+                        width="100"><br/> 
+                        <b>Day/Period</b><br/> 
+                    </td> 
+                    <td align="center" height="50" 
+                        width="100"> 
+                        <b>1st<br/>8:15-9:45</b> 
+                    </td> 
+                    <td align="center" height="50" 
+                        width="100"> 
+                        <b>2nd<br/>10:00-11:30</b> 
+                    </td> 
+                    <td align="center" height="50" 
+                        width="100"> 
+                        <b>3rd<br/>11:45-1:15</b> 
+                    </td> 
+                    <td align="center" height="50" 
+                        width="100"> 
+                        <b>4th<br/>1:45-3:15</b> 
+                    </td> 
+                    <td align="center" height="50" 
+                        width="100"> 
+                        <b>5th<br/>3:45-5:15</b> 
+                    </td> 
+                </tr> 
+                <tr> 
+                    <td align="center" height="50"> 
+                        <b>Saturday</b></td> 
+                    <td align="center" height="50"> </td> 
+                    <td align="center" height="50"> </td> 
+                    <td align="center" height="50"> </td> 
+                    <td align="center" height="50"> </td> 
+                    
+                    <td colspan="1" align="center" 
+                        height="50"> </td> 
+                </tr> 
+                <tr> 
+                    <td align="center" height="50"> 
+                        <b>Sunday</b> 
+                    </td> 
+                    <td colspan="1" align="center" 
+                        height="50">     
+                    </td> 
+                    <td align="center" height="50"> </td> 
+                    <td align="center" height="50"> </td>
+                    <td align="center" height="50"> </td>
+                    <td align="center" height="50"> </td>
+                </tr> 
+                <tr> 
+                    <td align="center" height="50"> 
+                        <b>Monday</b> 
+                    </td> 
+                    <td align="center" height="50"> </td> 
+                    <td align="center" height="50"> </td> 
+                    <td align="center" height="50"> </td> 
+                    <td align="center" height="50"></td> 
+                    <td colspan="2" align="center" 
+                        height="50">
+                    </td> 
+                </tr> 
+                <tr> 
+                    <td align="center" height="50"> 
+                        <b>Tuesday</b> 
+                    </td> 
+                    <td align="center" height="50"> </td> 
+                    <td align="center" height="50"> </td> 
+                    <td align="center" height="50"> </td> 
+                    <td align="center" height="50"> </td> 
+                    <td colspan="1" align="center" 
+                        height="50"> 
+                    </td> 
+                </tr> 
+                <tr> 
+                    <td align="center" height="50"> 
+                        <b>Wednesday</b> 
+                    </td> 
+
+                    <td colspan="1" align="center" 
+                        height="50">
+                    </td> 
+                    <td align="center" height="50"> </td> 
+                    <td align="center" height="50"> </td> 
+                    <td align="center" height="50"> </td> 
+                    <td align="center" height="50"> </td> 
+                </tr> 
+                <tr> 
+                    <td align="center" height="50"> 
+                        <b>Saturday</b> 
+                    </td> 
+                    <td align="center" height="50"> </td> 
+                    <td align="center" height="50"> </td> 
+                    <td align="center" height="50"> </td>
+                    <td align="center" height="50"> </td> 
+                    <td colspan="1" align="center" 
+                        height="50">
+                    </td> 
+                </tr> 
+            </table> 
+                </div>}
+            </div>
+        )
+    }
 }
 
 export default ViewSchedule;

@@ -46,9 +46,6 @@ let response=[];
      
      
 
-
-
-
 if(response.length==0){
   return;
 }
@@ -70,11 +67,8 @@ if(response.length==0){
                 <h4>Course Code: </h4>{request.courseCode} <br/><br/>
                 <h4>Location: </h4>{request.location} <br/><br/>
                 <br/><br/><br/>
-                <style >
-                  </style>
 
-                  <div class="vl"></div>
-                </p>
+              </p>
               </div>
             )
           }
