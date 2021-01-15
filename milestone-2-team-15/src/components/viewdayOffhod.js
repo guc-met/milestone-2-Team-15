@@ -99,7 +99,8 @@ function Viewdayoff(props) {
     });
     //setstaff(responsestaff.data);
     const responsestafftype = await axios({method:'post', url:`http://localhost:3000/HoD/ViewStaffType`,
-    data:{sid:staffid}
+    data:{sid:staffid},
+    headers:{token:token}
     });
     // let dayoff = responsestaff.dayOff;
     let view = 

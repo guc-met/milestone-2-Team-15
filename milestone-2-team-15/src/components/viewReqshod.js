@@ -14,6 +14,7 @@ import {
   Dropdown,
 } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css"
+const token =localStorage.getItem("token");
 export default function InstructorProfile(props) {
     const [facID, setFacID] = useState("");
     const [show, setShow] = useState(false);
@@ -21,9 +22,11 @@ export default function InstructorProfile(props) {
     const [changereqs, setChangereqs]= useState("");
     const [leavereqs, setLeavereqs]= useState("");
     const [allreqs, setAllreqs] = useState("");
-    const [comment, setComment]= useState("");
+    //const [comment, setComment]= useState("");
     const [response, setResponse] = useState();
-    const token =localStorage.getItem("token");
+    const change="";
+    const leave="";
+    let comment="";
   useEffect(() => {
     async function fetchData() {
 
@@ -42,8 +45,9 @@ export default function InstructorProfile(props) {
         headers:{token:token}
         });
 
-        const teachassigns = response.data.map((req) => {
-          if(req.type =="change dayOff"){
+        const requests = response.data.map((req) => {
+          let x ="";
+          if(req.type =="Change Dayoff"){
             // "type":"change dayOff",
       //       "smail": changereqs[i].smail,
       //       "name": changereqs[i].name,
@@ -51,7 +55,7 @@ export default function InstructorProfile(props) {
       //       "state": changereqs[i].state,
       //       "HoDname": changereqs[i].HoDname,
       //       "comment": changereqs[i].comment 
-            const x = 
+            x = 
             <Card body className="rowleqaa">
             <Row class="rowleqaa">
                   <Col>
@@ -81,11 +85,12 @@ export default function InstructorProfile(props) {
             </Row> 
             <Row class="rowleqaa">
               <Form.Group class="hod_input" controlId="formGridroomKind">
-              <Form.Label> Enter a comment (optoinal):</Form.Label>
+              <Form.Label class="tagreeb"> Enter a comment (optoinal):</Form.Label>
               <Form.Control
                   type="text"
                   onChange={(event) => {
-                    setComment(event.target.value);
+                    //setComment(event.target.value);
+                    comment = event.target.value;
                   }}
                   placeholder="comment"
               />
@@ -101,8 +106,7 @@ export default function InstructorProfile(props) {
             </Row> 
             </Card>
 
-            setChangereqs(x);
-
+            // setChangereqs(x);
 
           }
           else{
@@ -123,7 +127,7 @@ export default function InstructorProfile(props) {
       //       "state": leavereqs[i].state,
       //       "HoDname": leavereqs[i].HoDname,
       //       "comment": leavereqs[i].comment 
-                const x = 
+                x = 
                 <Card body className="rowleqaa">
                 <Row class="rowleqaa">
                       <Col>
@@ -157,7 +161,10 @@ export default function InstructorProfile(props) {
                           <Form.Label className="InstructorProfileLabel">replacement acceptance id if available: {req.replacmentAcceptance}</Form.Label>
                       </Col>
                       <Col>
-                          <Form.Label className="InstructorProfileLabel">day of leave: {req.day}</Form.Label>
+                          <Form.Label className="InstructorProfileLabel">day in the week of leave: {req.day}</Form.Label>
+                      </Col>
+                      <Col>
+                          <Form.Label className="InstructorProfileLabel">day in month of leave: {req.realday}</Form.Label>
                       </Col>
                       <Col>
                           <Form.Label className="InstructorProfileLabel">month of leave: {req.month}</Form.Label>
@@ -180,11 +187,13 @@ export default function InstructorProfile(props) {
                 </Row> 
                 <Row class="rowleqaa">
                       <Form.Group class="hod_input" controlId="formGridroomKind">
-                      <Form.Label> Enter a comment (optoinal):</Form.Label>
+                      <Form.Label class="tagreeb"> Enter a comment (optoinal):</Form.Label>
                       <Form.Control
                           type="text"
                           onChange={(event) => {
-                            setComment(event.target.value);
+                            // console.log("bla:"+event.target.value)
+                            // setComment(event.target.value);
+                            comment = event.target.value;
                           }}
                           placeholder="comment"
                       />
@@ -200,11 +209,12 @@ export default function InstructorProfile(props) {
                 </Row> 
                 </Card>
 
-                setChangereqs(setLeavereqs);
+                //setChangereqs(setLeavereqs);
 
           }
-          return (0);
+          return (x);
         });
+        setAllreqs(requests);
         
     }
     fetchData();
@@ -219,7 +229,9 @@ export default function InstructorProfile(props) {
     //     const reqid = req.body.rid;// "5fe2ab1d8fa26d38e8bc8ff7"
     //     const reqtype = req.body.rtype; //leave
   const handleaccept = async(headid , reqid, reqtype) => {
-    const response = await axios({method:'post', url:`http://localhost:3000/HoD/assignCourseInst`,
+    console.log("type:"+reqtype);
+    console.log(comment);
+    const response = await axios({method:'post', url:`http://localhost:3000/HoD/acceptreq`,
     data:{rid: reqid,
       rtype: reqtype,
       rcomment: comment},
@@ -230,7 +242,8 @@ export default function InstructorProfile(props) {
   }
 
   const handlereject = async(headid , reqid, reqtype) => {
-    const response = await axios({method:'post', url:`http://localhost:3000/HoD/assignCourseInst`,
+    console.log("blaaaa:"+comment)
+    const response = await axios({method:'post', url:`http://localhost:3000/HoD/rejectreq`,
     data:{rid: reqid,
       rtype: reqtype,
       rcomment: comment},
@@ -240,17 +253,16 @@ export default function InstructorProfile(props) {
     setResponse(<Alert variant="success">{response.data} </Alert>);
   }
 
-
+  console.log("change:"+changereqs);
+  console.log("leave:"+leavereqs)
   return (
     // <Card body className="InstructorProfileCardd">
     <div>
-      {response}
-      <div>
-        {changereqs}
-      </div>
-      <div>
-        {leavereqs}
-      </div>
+      <div class ="Location_plus_card">
+      {response}      
+    </div>
+      {allreqs}
+
     </div>
     
       
