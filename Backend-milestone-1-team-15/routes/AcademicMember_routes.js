@@ -34,7 +34,7 @@ router.use(async (req, res, next) => {
         req.type = result.type
         next()
       } else return res.send("error")
-    } else return res.status(403).send("u arent authorized")
+    } else return res.send("u arent authorized")
   })
  
 
