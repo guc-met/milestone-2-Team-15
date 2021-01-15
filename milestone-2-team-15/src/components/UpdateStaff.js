@@ -47,8 +47,13 @@ function RegisterStaff(props) {
       setGender("");
       setFaculty("");
       setDepartment("");
-      const response3 = await axios.get(`http://localhost:3000/HR/ViewStaffs`);
-      console.log(response3.data);
+      const token = localStorage.getItem("token");
+      const response3 = await axios({
+        method: "get",
+        url: `${process.env.REACT_APP_URL}/HR/ViewStaffs`,
+        data: {},
+        headers: { token: token },
+      });
 
       const staff = response3.data.map((staff) => {
         return (
@@ -58,9 +63,13 @@ function RegisterStaff(props) {
         );
       });
 
-      const response = await axios.get(
-        `http://localhost:3000/HR/ViewFaculties`
-      );
+      const response = await axios({
+        method: "get",
+        url: `${process.env.REACT_APP_URL}/HR/ViewFaculties`,
+        data: {},
+        headers: { token: token },
+      });
+
       console.log(response.data);
       setStaffs(staff);
       const faculties = response.data.map((faculty) => {
@@ -85,9 +94,14 @@ function RegisterStaff(props) {
       });
       console.log(faculties);
       setFaculties(faculties);
-      const response2 = await axios.get(
-        `http://localhost:3000/HR/ViewLocations`
-      );
+
+      const response2 = await axios({
+        method: "get",
+        url: `${process.env.REACT_APP_URL}/HR/ViewLocations`,
+        data: {},
+        headers: { token: token },
+      });
+
       console.log(response2.data);
 
       const locations = response2.data
@@ -141,10 +155,16 @@ function RegisterStaff(props) {
     console.log(gender);
     console.log(department);
     console.log(faculty);
+    const token = localStorage.getItem("token");
 
-    const response = await axios.post(`http://localhost:3000/HR/UpdateStaff`, {
-      staffId: staffChosen.ID,
-      staff: staff,
+    const response = await axios({
+      method: "post",
+      url: `${process.env.REACT_APP_URL}/HR/UpdateStaff`,
+      data: {
+        staffId: staffChosen.ID,
+        staff: staff,
+      },
+      headers: { token: token },
     });
 
     if (response.status == 200)

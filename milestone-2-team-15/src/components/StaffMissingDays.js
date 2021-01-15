@@ -14,9 +14,14 @@ function StaffMissingDays() {
   const [staffs, setStaffs] = useState();
   useEffect(() => {
     async function fetchData() {
-      const response = await axios.get(
-        `http://localhost:3000/HR/ViewStaffWithMissingDays`
-      );
+      const token = localStorage.getItem("token");
+      const response = await axios({
+        method: "get",
+        url: `${process.env.REACT_APP_URL}/HR/ViewStaffWithMissingDays`,
+        data: {},
+        headers: { token: token },
+      });
+
       console.log(response.data);
 
       const hi = response.data.map((staff) => {

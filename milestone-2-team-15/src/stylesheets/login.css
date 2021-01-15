@@ -1,5 +1,6 @@
 .login{
     min-width: fit-content;
+    overflow: hidden;
 }
 .LoginImage{
     /* width: 100%;

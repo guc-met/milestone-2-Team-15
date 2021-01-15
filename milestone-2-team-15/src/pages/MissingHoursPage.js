@@ -6,8 +6,7 @@ export default function ExtraHoursPage(props) {
  
   return (
     <div>
-      <Header />
-      <Sidebarhodhome />
+  
       <MissingHours/>
     </div>
   )

@@ -18,117 +18,155 @@ import * as Icon from "react-bootstrap-icons";
 import { Plus } from "react-bootstrap-icons";
 require("dotenv").config();
 function UpdateAssignment(props) {
+  const [acadID, setAcadID] = useState();
+  const [oldAcadID, setOldAcadID] = useState();
 
-  const [acadID,setAcadID] = useState();
-  const [oldAcadID,setOldAcadID] = useState();
-  
-  const [isOldTAbool,setIsOldTAbool] = useState(false);
-  const [isTAbool,setIsTAbool] = useState(false);
+  const [isOldTAbool, setIsOldTAbool] = useState(false);
+  const [isTAbool, setIsTAbool] = useState(false);
 
-  const [instid,setInstid] = useState();
-  const [cc,setCc] = useState();
-  const [faculty,setFaculty] = useState();
-  const [msg,setmsg]=useState("");
+  const [instid, setInstid] = useState();
+  const [cc, setCc] = useState();
+  const [faculty, setFaculty] = useState();
+  const [msg, setmsg] = useState("");
 
-    const history = useHistory();
-   
-   let response="";
-    
-    const token =localStorage.getItem("token");
-   const sendReq = async (event) => {
-          response = await axios( {method:'post',url:"http://localhost:3000/instructor_routes/updateAssignment",
-          data:{
-                        
-          isOldTA:isOldTAbool,
-          isTA:isTAbool,
+  const history = useHistory();
 
-          delID:oldAcadID,
-          newACid:acadID,
+  const sendReq = async (event) => {
+    const response = axios.post(
+      `${process.env.REACT_APP_URL}/instructor_routes/updateAssignment`,
+      {
+        isOldTA: isOldTAbool,
+        isTA: isTAbool,
 
-          courseCode:cc,
-          facName: faculty,
+        delID: oldAcadID,
+        newACid: acadID,
 
-          },  headers:{token:token}
-        });
+        courseCode: cc,
+        facName: faculty,
 
-   
-
-
-
-   setmsg((await response).data);
-   console.log("suppppppp"+(await response).data+"\n");
-}
+        id: "16",
+      }
+    );
+    console.log("yadi el nila " + JSON.stringify(response));
+    setmsg(response);
+  };
   return (
-
-        <div >
-        <Form style={{padding:"60px 0px 0px 250px"}}>
-            <label for="delID">Enter Old Academic Member ID</label> <br/>
-            <input type="text" class="delIDInput" id="delID" aria-describedby="delIDHelp" placeholder="Enter ID"
-            onChange={(event) => {setOldAcadID(event.target.value);}}
+    <div class="Hr-Buttons">
+      <Form>
+        <label for="delID">Enter Old Academic Member ID</label> <br />
+        <input
+          type="text"
+          class="delIDInput"
+          id="delID"
+          aria-describedby="delIDHelp"
+          placeholder="Enter ID"
+          onChange={(event) => {
+            setOldAcadID(event.target.value);
+          }}
+        />
+        <br />
+        <br />
+        <div>
+          <input
+            type="radio"
+            id="delTA"
+            name="type"
+            value="true"
+            onChange={(event) => {
+              setIsOldTAbool(event.target.value);
+            }}
+          />
+          <label for="TA">This academic member is a TA</label>
+          <br />
+          <input
+            type="radio"
+            id="isOldTA"
+            name="type"
+            value="false"
+            onChange={(event) => {
+              setIsOldTAbool(event.target.value);
+            }}
+          />
+          <label for="notDelTA">This academic member is NOT a TA</label>
+        </div>
+        <br />
+        <Form>
+          <label for="newID">Enter New Academic Member ID</label> <br />
+          <input
+            type="text"
+            class="newIDInput"
+            id="newID"
+            aria-describedby="newIDHelp"
+            placeholder="Enter ID"
+            onChange={(event) => {
+              setAcadID(event.target.value);
+            }}
+          />
+          <br />
+          <br />
+          <div>
+            <input
+              type="radio"
+              id="newTA"
+              name="type"
+              value="true"
+              onChange={(event) => {
+                setIsTAbool(event.target.value);
+              }}
             />
-
-            <br/>
-            <br/>
-
-            <div>
-                <input type="radio" id="delTA" name="type" value="true"
-                onChange={(event) => {setIsOldTAbool(event.target.value);}}
-                />
-                <label for="TA">This academic member is a TA</label><br/>
-                <input type="radio" id="isOldTA" name="type" value="false"
-                onChange={(event) => {setIsOldTAbool(event.target.value);}}
-                />
-                <label for="notDelTA">This academic member is NOT a TA</label>
-            </div>
-
-            <br/>
-
-            <Form>
-            <label for="newID">Enter New Academic Member ID</label> <br/>
-            <input type="text" class="newIDInput" id="newID" aria-describedby="newIDHelp" placeholder="Enter ID"
-            onChange={(event) => {setAcadID(event.target.value);}}
+            <label for="TA">This academic member is a TA</label>
+            <br />
+            <input
+              type="radio"
+              id="isNewTA"
+              name="type"
+              value="false"
+              onChange={(event) => {
+                setIsTAbool(event.target.value);
+              }}
             />
-
-            <br/>
-            <br/>
-
-            <div>
-                <input type="radio" id="newTA" name="type" value="true"
-                onChange={(event) => {setIsTAbool(event.target.value);}}/>
-                <label for="TA">This academic member is a TA</label><br/>
-                <input type="radio" id="isNewTA" name="type" value="false"
-                onChange={(event) => {setIsTAbool(event.target.value);}}/>
-                <label for="notNewTA">This academic member is NOT a TA</label>
-            </div>
-
-            <br/>
-            </Form>
-
-            <Form>
-                <label for="facID">Faculty Name of That Course</label> <br/>
-                <input type="text" class="facID" id="facIDInputID" aria-describedby="facIDHelp" placeholder="Enter your faculty name"
-                onChange={(event) => {setFaculty(event.target.value);}}
-                />
-                
-            </Form>
-            <br/>
-            <Form>
-                <label for="courseCode">Enter the Code of The Course of The Slot</label> <br/>
-                <input type="text" class="courseCode" id="courseCode" aria-describedby="courseCodeHelp" placeholder="Enter Course Code"
-                 onChange={(event) => {setCc(event.target.value);}}
-                />
-
-            </Form>
-            <br/>
-            <br/>
-            <Button onClick={sendReq}>Update Academic Member Assignment</Button>
-            <br/><br/>
-            <p>{msg}</p>
+            <label for="notNewTA">This academic member is NOT a TA</label>
+          </div>
+          <br />
         </Form>
+        <Form>
+          <label for="facID">Faculty Name of That Course</label> <br />
+          <input
+            type="text"
+            class="facID"
+            id="facIDInputID"
+            aria-describedby="facIDHelp"
+            placeholder="Enter your faculty name"
+            onChange={(event) => {
+              setFaculty(event.target.value);
+            }}
+          />
+        </Form>
+        <br />
+        <Form>
+          <label for="courseCode">
+            Enter the Code of The Course of The Slot
+          </label>{" "}
+          <br />
+          <input
+            type="text"
+            class="courseCode"
+            id="courseCode"
+            aria-describedby="courseCodeHelp"
+            placeholder="Enter Course Code"
+            onChange={(event) => {
+              setCc(event.target.value);
+            }}
+          />
+        </Form>
+        <br />
+        <br />
+        <Button onClick={sendReq}>Update Academic Member Assignment</Button>
+      </Form>
 
-
+      <p>{msg}</p>
     </div>
   );
 }
 
-export default UpdateAssignment ;
+export default UpdateAssignment;

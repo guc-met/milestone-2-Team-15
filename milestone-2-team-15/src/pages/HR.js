@@ -1,6 +1,8 @@
 import React from "react";
 
 import { useHistory } from "react-router-dom";
+import DropDown from "../components/dropDown";
+
 function HR() {
   const history = useHistory();
   function onclick() {
@@ -10,8 +12,10 @@ function HR() {
 
   return (
     <div>
-      <div class="red"></div>
-      <div class="yellow"></div>
+      <DropDown type="HR" />
+
+      {/* <div class="red"></div>
+      <div class="yellow"></div> */}
       <div class="sidenav">
         <a href="/HR/Locations">View All Locations</a>
 
@@ -29,6 +33,8 @@ function HR() {
         <a href="/HR/staffMissingHours">view staff with missing hours </a>
         <a href="/HR/staffMissingDays">view staff with missing days</a>
         <a href="/HR/UpdateSalary">Update the salary of a staff member</a>
+        {/* </div>
+    </div> */}
       </div>
     </div>
   );

@@ -1,23 +1,22 @@
-import React, { useState, useEffect } from "react"
-import axios from "axios"
-import {  Table } from "react-bootstrap"
-import "../stylesheets/staffViewAttendance.css"
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { Table } from "react-bootstrap";
+import "../stylesheets/staffViewAttendance.css";
 export default function StaffViewAttendance(props) {
-  const token =localStorage.getItem("token")
-  const [Data, setData] = useState([])
+  const token = localStorage.getItem("token");
+  const [Data, setData] = useState([]);
   useEffect(async () => {
     await axios({
       method: "post",
-      url: "http://localhost:3000/missingdays",
-      headers:{
-        token :token
-      }
+      url: `${process.env.REACT_APP_URL}/missingdays`,
+      headers: {
+        token: token,
+      },
     }).then((res) => {
-      console.log(res)
-      setData(res.data)
-    })
-   
-  })
+      console.log(res);
+      setData(res.data);
+    });
+  });
   const days = [
     "Sunday",
     "Monday",
@@ -26,7 +25,7 @@ export default function StaffViewAttendance(props) {
     "Thursday",
     "Friday",
     "Saturday",
-  ]
+  ];
   return (
     <div className="ViewStaffAttendanceCard">
       <Table
@@ -44,18 +43,18 @@ export default function StaffViewAttendance(props) {
           </tr>
         </thead>
         <>
-          { Data.map((eachrecord) => {
+          {Data.map((eachrecord) => {
             return (
               <tbody>
                 <tr>
-                  <td>{days[(new Date(eachrecord)).getDay()]} </td>
+                  <td>{days[new Date(eachrecord).getDay()]} </td>
                   <td>{eachrecord} </td>
                 </tr>
               </tbody>
-            )
+            );
           })}
         </>
       </Table>
     </div>
-  )
+  );
 }

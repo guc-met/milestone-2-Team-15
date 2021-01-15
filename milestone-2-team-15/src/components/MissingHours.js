@@ -1,22 +1,22 @@
-import React, { useEffect, useState } from "react"
-import { Table } from "react-bootstrap"
-import "../stylesheets/extrahours.css"
-import axios from "axios"
+import React, { useEffect, useState } from "react";
+import { Table } from "react-bootstrap";
+import "../stylesheets/extrahours.css";
+import axios from "axios";
 export default function ExtraHours(props) {
-  const token = localStorage.getItem("token")
-  const [missing,setMissing]=useState()
+  const token = localStorage.getItem("token");
+  const [missing, setMissing] = useState();
   useEffect(async () => {
     await axios({
       method: "post",
-      url: "http://localhost:3000/missinghours",
-      headers:{
-        token :token
-      }
+      url: `${process.env.REACT_APP_URL}/missinghours`,
+      headers: {
+        token: token,
+      },
     }).then((res) => {
-      console.log(res)
-      setMissing(res.data)
-    })
-  })
+      console.log(res);
+      setMissing(res.data);
+    });
+  });
   return (
     <div className="ExtraHoursCard">
       <Table
@@ -35,10 +35,10 @@ export default function ExtraHours(props) {
 
         <tbody>
           <tr>
-            <td style={{ fontSize:"1.3888888888888888vw"}}>{missing} </td>
+            <td style={{ fontSize: "1.3888888888888888vw" }}>{missing} </td>
           </tr>
         </tbody>
       </Table>
     </div>
-  )
+  );
 }

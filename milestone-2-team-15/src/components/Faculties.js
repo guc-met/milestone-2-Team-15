@@ -61,10 +61,15 @@ function Faculties(props) {
       setAssignedSlots(-1);
       setCourseID("");
       setWhich(-1);
+      const token = localStorage.getItem("token");
 
-      const response = await axios.get(
-        `http://localhost:3000/HR/ViewFaculties`
-      );
+      const response = await axios({
+        method: "get",
+        url: `${process.env.REACT_APP_URL}/HR/ViewFaculties`,
+        data: {},
+        headers: { token: token },
+      });
+
       console.log(response.data);
 
       const hi = response.data.map((faculty) => {
@@ -276,9 +281,17 @@ function Faculties(props) {
 
   const addFaculty = async (event) => {
     if (facultyName != "") {
-      const response = await axios.post(`http://localhost:3000/HR/addFaculty`, {
-        name: facultyName,
+      const token = localStorage.getItem("token");
+
+      const response = await axios({
+        method: "post",
+        url: `${process.env.REACT_APP_URL}/HR/addFaculty`,
+        data: {
+          name: facultyName,
+        },
+        headers: { token: token },
       });
+
       if (response.status == 200)
         setResponse(<Alert variant="success">{response.data} </Alert>);
       else setResponse(<Alert variant="danger">{response.data} </Alert>);
@@ -289,15 +302,20 @@ function Faculties(props) {
   };
   const UpdateFaculty = async (event) => {
     if (facultyName != "" && facultyID != "") {
-      const response = await axios.post(
-        `http://localhost:3000/HR/UpdateFaculty`,
-        {
+      const token = localStorage.getItem("token");
+
+      const response = await axios({
+        method: "post",
+        url: `${process.env.REACT_APP_URL}/HR/UpdateFaculty`,
+        data: {
           id: facultyID,
           faculty: {
             name: facultyName,
           },
-        }
-      );
+        },
+        headers: { token: token },
+      });
+
       if (response.status == 200)
         setResponse(<Alert variant="success">{response.data} </Alert>);
       else setResponse(<Alert variant="danger">{response.data} </Alert>);
@@ -310,12 +328,16 @@ function Faculties(props) {
   };
   const DeleteFaculty = async (facultyid) => {
     if (facultyid != "") {
-      const response = await axios.post(
-        `http://localhost:3000/HR/DeleteFaculty`,
-        {
+      const token = localStorage.getItem("token");
+      const response = await axios({
+        method: "post",
+        url: `${process.env.REACT_APP_URL}/HR/DeleteFaculty`,
+        data: {
           id: facultyid,
-        }
-      );
+        },
+        headers: { token: token },
+      });
+
       if (response.status == 200)
         setResponse(<Alert variant="success">{response.data} </Alert>);
       else setResponse(<Alert variant="danger">{response.data} </Alert>);
@@ -326,15 +348,20 @@ function Faculties(props) {
   };
   const addDepartment = async (event) => {
     if (departmentName != "" && facultyID != "") {
-      const response = await axios.post(
-        `http://localhost:3000/HR/addDepartment`,
-        {
+      const token = localStorage.getItem("token");
+
+      const response = await axios({
+        method: "post",
+        url: `${process.env.REACT_APP_URL}/HR/addDepartment`,
+        data: {
           id: facultyID,
           department: {
             name: departmentName,
           },
-        }
-      );
+        },
+        headers: { token: token },
+      });
+
       if (response.status == 200)
         setResponse(<Alert variant="success">{response.data} </Alert>);
       else setResponse(<Alert variant="danger">{response.data} </Alert>);
@@ -357,16 +384,21 @@ function Faculties(props) {
       },
     });
     if (departmentName != "" && facultyID != "" && departmentID != "") {
-      const response = await axios.post(
-        `http://localhost:3000/HR/UpdateDepartment`,
-        {
+      const token = localStorage.getItem("token");
+
+      const response = await axios({
+        method: "post",
+        url: `${process.env.REACT_APP_URL}/HR/UpdateDepartment`,
+        data: {
           id: facultyID,
           department: {
             id: departmentID,
             name: departmentName,
           },
-        }
-      );
+        },
+        headers: { token: token },
+      });
+
       console.log(response);
       if (response.status == 200)
         setResponse(<Alert variant="success">{response.data} </Alert>);
@@ -382,15 +414,20 @@ function Faculties(props) {
   };
   const DeleteDepartment = async (department_ID, faculty_ID) => {
     if (faculty_ID != "" && department_ID != "") {
-      const response = await axios.post(
-        `http://localhost:3000/HR/DeleteDepartment`,
-        {
+      const token = localStorage.getItem("token");
+
+      const response = await axios({
+        method: "post",
+        url: `${process.env.REACT_APP_URL}/HR/DeleteDepartment`,
+        data: {
           id: faculty_ID,
           department: {
             id: department_ID,
           },
-        }
-      );
+        },
+        headers: { token: token },
+      });
+
       if (response.status == 200)
         setResponse(<Alert variant="success">{response.data} </Alert>);
       else setResponse(<Alert variant="danger">{response.data} </Alert>);
@@ -415,12 +452,19 @@ function Faculties(props) {
       if (courseTeachingSlots != -1) course.teachingSlots = courseTeachingSlots;
       if (courseCover != -1) course.cover = courseCover;
       if (courseCoverage != -1) course.coverage = courseCoverage;
+      const token = localStorage.getItem("token");
 
-      const response = await axios.post(`http://localhost:3000/HR/addCourse`, {
-        facultyid: facultyID,
-        departmentid: departmentID,
-        course: course,
+      const response = await axios({
+        method: "post",
+        url: `${process.env.REACT_APP_URL}/HR/addCourse`,
+        data: {
+          facultyid: facultyID,
+          departmentid: departmentID,
+          course: course,
+        },
+        headers: { token: token },
       });
+
       if (response.status == 200)
         setResponse(<Alert variant="success">{response.data} </Alert>);
       else setResponse(<Alert variant="danger">{response.data} </Alert>);
@@ -454,15 +498,20 @@ function Faculties(props) {
         course.code = courseCode;
       }
       console.log(course);
-      const response = await axios.post(
-        `http://localhost:3000/HR/updateCourse`,
-        {
+      const token = localStorage.getItem("token");
+
+      const response = await axios({
+        method: "post",
+        url: `${process.env.REACT_APP_URL}/HR/updateCourse`,
+        data: {
           facultyid: facultyID,
           departmentid: departmentID,
           courseid: courseID,
           course: course,
-        }
-      );
+        },
+        headers: { token: token },
+      });
+
       if (response.status == 200)
         setResponse(<Alert variant="success">{response.data} </Alert>);
       else setResponse(<Alert variant="danger">{response.data} </Alert>);
@@ -477,14 +526,19 @@ function Faculties(props) {
   };
   const DeleteCourse = async (courseid, departmentid, facultyid) => {
     if (facultyid != "" && departmentid != "" && courseid != "") {
-      const response = await axios.post(
-        `http://localhost:3000/HR/DeleteCourse`,
-        {
+      const token = localStorage.getItem("token");
+
+      const response = await axios({
+        method: "post",
+        url: `${process.env.REACT_APP_URL}/HR/DeleteCourse`,
+        data: {
           facultyid: facultyid,
           departmentid: departmentid,
           courseid: courseid,
-        }
-      );
+        },
+        headers: { token: token },
+      });
+
       if (response.status == 200)
         setResponse(<Alert variant="success">{response.data} </Alert>);
       else setResponse(<Alert variant="danger">{response.data} </Alert>);

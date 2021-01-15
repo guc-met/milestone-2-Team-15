@@ -28,8 +28,7 @@ export default function StaffViewAttendancePage(props) {
   }
   useEffect(() => {})
   return (<div>
-     <Header/>
-    <Sidebarhodhome/>
+    
  
     <div className="ViewStaffAttendanceDiv">
       <Dropdown>

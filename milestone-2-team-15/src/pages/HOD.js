@@ -1,24 +1,22 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
+import DropDown from "../components/dropDown";
+
 function HOD() {
   const history = useHistory();
 
-
   return (
-    <div>
-      <div class="red">
-      <a href="#">Manage Courses</a>
-        <a href="#">View Staff</a>
-        <a href="#">View DayOff </a>
-        <a href="/HOD/sendReq">Send Requests </a>
-        <a href="/HOD/viewrequest">View Requests</a> <br/>
-        <a href="#">View Schedule</a> <br/>
-      </div>
-      <div class="yellow">
-      
-      </div>
+    <>
+      <DropDown type="hod" />
       <div class="sidenav">
-        
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <a href="/HOD/sendReq">Send Requests </a>
+        <a href="/HOD/viewrequest">View Requests</a>
+        <a href="#">View Schedule</a>
         <a href="/hod/deletetest">delete Instructor</a>
         <a href="/hod/AssignInst">Assign Instructor</a>
         <a href="/hod/UpdateInst">Update Instructor</a>
@@ -27,10 +25,8 @@ function HOD() {
         <a href="/hod/viewAllreqs">View and manage requests</a>
         <a href="/hod/viewCoverage">View Coverage of each course</a>
         <a href="/hod/viewTeachAssigns">View Teaching Assignments</a>
-
-        
       </div>
-    </div>
+    </>
   );
 }
 

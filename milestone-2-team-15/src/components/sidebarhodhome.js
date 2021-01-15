@@ -2,9 +2,12 @@
 // import { Form, Row, Col, Card, Button } from "react-bootstrap"
 // import "bootstrap/dist/css/bootstrap.min.css"
 // import "../stylesheets/sideBar.css"
+import DropDown from "./dropDown"
 
 export default function sideBar(props) {
     return(
+        <div>
+        <DropDown type="hod"/>
     <div>
         <div className="red">
         <a href="#">View Requests</a> <br/>
@@ -26,6 +29,7 @@ export default function sideBar(props) {
         
 
  
+     </div>
      </div>
      </div>
  )

@@ -1,14 +1,16 @@
-.logout{
-    min-width: fit-content;
+.logout {
+  min-width: fit-content;
 }
-.logoutButtonCol{
-    text-align: center;
-    padding: 0vw 0vw 0vw 0vw;
+.logoutButtonCol {
+  text-align: center;
+  padding: 0vw 0vw 0vw 0vw !important;
 }
-.btn-logoutButton,.btn-logoutButton:hover{
-   width:6.944444444444445vw !important;
-   font-size:1.3888888888888888vw !important;
-   line-height: 1.0416666666666665vw !important;
-   font-family: Arial, Helvetica, sans-serif  , Georgia, serif !important;
-
+.btn-logoutButton,
+.btn-logoutButton:hover {
+  /* // width:6.944444444444445vw !important; */
+  box-shadow: 0 0.2777777777777778vw 0.5555555555555556vw 0 rgba(0, 0, 0, 0.3);
+  border-radius: 1.7361111111111112vw !important;
+  font-size: 1.3888888888888888vw !important;
+  line-height: 1.0416666666666665vw !important;
+  font-family: Arial, Helvetica, sans-serif, Georgia, serif !important;
 }

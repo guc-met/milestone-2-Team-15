@@ -1,17 +1,17 @@
-import React, { useState, useEffect } from "react"
-import axios from "axios"
-import { Table } from "react-bootstrap"
-import Listvieww from "./Listvieww"
-import "../stylesheets/staffViewAttendance.css"
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { Table } from "react-bootstrap";
+import Listvieww from "./Listvieww";
+import "../stylesheets/staffViewAttendance.css";
 export default function StaffViewAttendance(props) {
-  const [Data, setData] = useState([])
-  const [month, setMonth] = useState()
-  const token = localStorage.getItem("token")
+  const [Data, setData] = useState([]);
+  const [month, setMonth] = useState();
+  const token = localStorage.getItem("token");
   useEffect(async () => {
-    setMonth(props.month)
+    setMonth(props.month);
     await axios({
       method: "post",
-      url: "http://localhost:3000/attendance/:month",
+      url: `${process.env.REACT_APP_URL}/attendance/:month`,
       params: {
         month: props.month,
       },
@@ -19,10 +19,10 @@ export default function StaffViewAttendance(props) {
         token: token,
       },
     }).then((res) => {
-      console.log(res.data)
-      setData(res.data)
-    })
-  })
+      console.log(res.data);
+      setData(res.data);
+    });
+  });
 
   return (
     <div className="ViewStaffAttendanceCard">
@@ -60,9 +60,9 @@ export default function StaffViewAttendance(props) {
                 signoutsecounds={ea.signout ? ea.signout.secounds : null}
               />
             </tbody>
-          )
+          );
         })}
       </Table>
     </div>
-  )
+  );
 }

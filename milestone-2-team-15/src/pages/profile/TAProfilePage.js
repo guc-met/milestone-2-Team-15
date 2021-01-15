@@ -7,13 +7,15 @@ import axios from "axios"
 export default function TAProfilePage(props) {
   const [data, setData] = useState()
   const limittime = 2 + 59 / 60
-  const [ID, setID] = useState()
-  const [Name, setName] = useState()
-  const [Salary, setSalary] = useState()
-  const [DayOff, setDayOff] = useState()
-  const [Email, setEmail] = useState()
-  const [Faculty, setFaculty] = useState()
-  const [Department, setDepartment] = useState()
+  const [ID, setID] = useState("")
+  const [Name, setName] = useState("")
+  const [Salary, setSalary] = useState("")
+  const [DayOff, setDayOff] = useState("")
+  const [Email, setEmail] = useState("")
+  const [Faculty, setFaculty] = useState("")
+  const [Department, setDepartment] = useState("")
+  const [Gender,setGender]=useState("")
+  const [Location ,setLocation]=useState("")
   const token = localStorage.getItem("token")
   const days = [
     "Sunday",
@@ -27,7 +29,7 @@ export default function TAProfilePage(props) {
   useEffect(async () => {
     await axios({
       method: "get",
-      url: "http://localhost:3000/profile",
+      url: `${process.env.REACT_APP_URL}/profile`,
       headers: {
         token: token,
       },
@@ -38,14 +40,47 @@ export default function TAProfilePage(props) {
       setEmail(res.data.staff.email)
       setName(res.data.staffreally.name)
       setDayOff(res.data.staffreally.dayOff)
-      setFaculty(res.data.staffreally.faculty)
-      setDepartment(res.data.staffreally.department)
+     // setFaculty(res.data.staffreally.faculty)
+     // setDepartment(res.data.staffreally.department)
+      setGender(res.data.staffreally.gender)
+    //  setLocation(res.data.staffreally.locationID)
+
       //  setSalary(res.data.staffreally.salary.$numberDecimal)
       let ss = res.data.staffreally.salary.$numberDecimal
       let nn = ss
+      const response2 = await axios({
+        method: "get",
+        url: `${process.env.REACT_APP_URL}/ViewLocations`,
+        data: {},
+        headers: { token: token },
+      });
+     
+     response2.data.map((location)=>{
+       if(location.locationId==res.data.staffreally.locationID)
+       setLocation(location.BuildingCharachter+location.FloorNumber+"." + location.roomNumber)
+     })
+      await axios({
+        method:"get",
+        url: `${process.env.REACT_APP_URL}/ViewFaculties`,
+        headers: {
+          token: token,
+        },
+      })
+      .then((ress)=>{
+        ress.data.map((faculty) => {
+          if (faculty._id == res.data.staffreally.faculty) {
+            setFaculty(faculty.name);
+            faculty.departments.map((department) => {
+              if (department._id == res.data.staffreally.department) {
+                setDepartment(department.name);
+              }
+            });
+          }
+        });
+      })
       await axios({
         method: "post",
-        url: "http://localhost:3000/missinghours",
+        url: `${process.env.REACT_APP_URL}/missinghours`,
         headers: {
           token: token,
         },
@@ -72,7 +107,7 @@ export default function TAProfilePage(props) {
       })
       await axios({
         method: "post",
-        url: "http://localhost:3000/missingdays",
+        url: `${process.env.REACT_APP_URL}/missingdays`,
         headers: {
           token: token,
         },
@@ -91,7 +126,7 @@ export default function TAProfilePage(props) {
   })
   return (
     <div>
-      <Header />
+      
       <TAProfile
         ID={ID}
         Name={Name}
@@ -100,8 +135,10 @@ export default function TAProfilePage(props) {
         DayOff={days[DayOff]}
         Faculty={Faculty}
         Department={Department}
+        Gender= {Gender}
+        Location={Location}
       />
-      <Sidebar />
+      
     </div>
   )
 }

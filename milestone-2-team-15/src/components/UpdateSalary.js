@@ -27,7 +27,13 @@ function UpdateSalary(props) {
 
   useEffect(() => {
     async function fetchData() {
-      const response = await axios.get(`http://localhost:3000/HR/ViewStaffs`);
+      const token = localStorage.getItem("token");
+      const response = await axios({
+        method: "get",
+        url: `${process.env.REACT_APP_URL}/HR/ViewStaffs`,
+        data: {},
+        headers: { token: token },
+      });
       console.log(response.data);
 
       const staff = response.data.map((staff) => {
@@ -60,11 +66,18 @@ function UpdateSalary(props) {
       return;
     }
     setValidated(false);
-    const response = await axios.post(`http://localhost:3000/HR/UpdateSalary`, {
-      staffID: staff.ID,
+    const token = localStorage.getItem("token");
+    const response = await axios({
+      method: "post",
+      url: `${process.env.REACT_APP_URL}/HR/UpdateSalary`,
+      data: {
+        staffID: staff.ID,
 
-      salary: salary,
+        salary: salary,
+      },
+      headers: { token: token },
     });
+
     if (response.status == 200)
       setResponse(<Alert variant="success">{response.data} </Alert>);
     else setResponse(<Alert variant="danger">{response.data} </Alert>);

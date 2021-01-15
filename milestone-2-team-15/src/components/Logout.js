@@ -13,7 +13,7 @@ export default function Logout(props) {
   const handlelogout = async () => {
     await axios({
       method: "post",
-      url: "http://localhost:3000/logout",
+      url: `${process.env.REACT_APP_URL}/logout`,
       headers: {
         token: token,
       },
@@ -22,20 +22,21 @@ export default function Logout(props) {
         setLogouterrnmessage("something went wrong")
         setLogoutmessage("")
       } else {
-        setLogouterrnmessage("")
-        setLogoutmessage(res.data)
+        // setLogouterrnmessage("")
+        // setLogoutmessage(res.data)
+        localStorage.removeItem("token")
         history.push("/login")
       }
     })
   }
-  useEffect(() => {
-    if (logoutmessage == "logout successfully") localStorage.removeItem("token")
-  })
+  // useEffect(() => {
+  //   if (logoutmessage == "logout successfully") 
+  // })
   return (
     <div className="logout">
       <Col className="logoutButtonCol ">
         <Button
-          variant="dark "
+          variant="dark"
           size="logoutButton"
           type="submit"
           onClick={handlelogout}
