@@ -27,15 +27,17 @@ router.use(async (req, res, next) => {
   const token = req.headers.token;
   // console.log(token)
   const found = await blacklist.findOne({ token: token });
-  console.log(found);
-  if (!found) {
-    const result = jwt.verify(token, process.env.Token_Secret);
-    if (result) {
-      // console.log(result)
-      req.id = result.id; // zwdna 7aga 3la result
-      req.type = result.type;
-      next();
-    } else return res.send("error");
+  if (token) {
+    if (!found) {
+      //   console.log(token)
+      const result = jwt.verify(token, process.env.Token_Secret);
+
+      if (result) {
+        req.id = result.id; // zwdna 7aga 3la result
+        req.type = result.type;
+        next();
+      } else return res.send("error");
+    } else return res.send("u arent authorized");
   } else return res.send("u arent authorized");
 });
 
