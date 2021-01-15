@@ -64,7 +64,7 @@ function Faculties(props) {
 
       const response = await axios({
         method: "get",
-        url: `http://localhost:3000/HR/ViewFaculties`,
+        url: `${process.env.REACT_APP_URL}/HR/ViewFaculties`,
         data: {},
         headers: { token: token },
       });
@@ -284,7 +284,7 @@ function Faculties(props) {
 
       const response = await axios({
         method: "post",
-        url: `http://localhost:3000/HR/addFaculty`,
+        url: `${process.env.REACT_APP_URL}/HR/addFaculty`,
         data: {
           name: facultyName,
         },
@@ -305,7 +305,7 @@ function Faculties(props) {
 
       const response = await axios({
         method: "post",
-        url: `http://localhost:3000/HR/UpdateFaculty`,
+        url: `${process.env.REACT_APP_URL}/HR/UpdateFaculty`,
         data: {
           id: facultyID,
           faculty: {
@@ -330,7 +330,7 @@ function Faculties(props) {
       const token = localStorage.getItem("token");
       const response = await axios({
         method: "post",
-        url: `http://localhost:3000/HR/DeleteFaculty`,
+        url: `${process.env.REACT_APP_URL}/HR/DeleteFaculty`,
         data: {
           id: facultyid,
         },
@@ -351,7 +351,7 @@ function Faculties(props) {
 
       const response = await axios({
         method: "post",
-        url: `http://localhost:3000/HR/addDepartment`,
+        url: `${process.env.REACT_APP_URL}/HR/addDepartment`,
         data: {
           id: facultyID,
           department: {
@@ -387,7 +387,7 @@ function Faculties(props) {
 
       const response = await axios({
         method: "post",
-        url: `http://localhost:3000/HR/UpdateDepartment`,
+        url: `${process.env.REACT_APP_URL}/HR/UpdateDepartment`,
         data: {
           id: facultyID,
           department: {
@@ -417,7 +417,7 @@ function Faculties(props) {
 
       const response = await axios({
         method: "post",
-        url: `http://localhost:3000/HR/DeleteDepartment`,
+        url: `${process.env.REACT_APP_URL}/HR/DeleteDepartment`,
         data: {
           id: faculty_ID,
           department: {
@@ -455,7 +455,7 @@ function Faculties(props) {
 
       const response = await axios({
         method: "post",
-        url: `http://localhost:3000/HR/addCourse`,
+        url: `${process.env.REACT_APP_URL}/HR/addCourse`,
         data: {
           facultyid: facultyID,
           departmentid: departmentID,
@@ -501,7 +501,7 @@ function Faculties(props) {
 
       const response = await axios({
         method: "post",
-        url: `http://localhost:3000/HR/updateCourse`,
+        url: `${process.env.REACT_APP_URL}/HR/updateCourse`,
         data: {
           facultyid: facultyID,
           departmentid: departmentID,
@@ -529,7 +529,7 @@ function Faculties(props) {
 
       const response = await axios({
         method: "post",
-        url: `http://localhost:3000/HR/DeleteCourse`,
+        url: `${process.env.REACT_APP_URL}/HR/DeleteCourse`,
         data: {
           facultyid: facultyid,
           departmentid: departmentid,

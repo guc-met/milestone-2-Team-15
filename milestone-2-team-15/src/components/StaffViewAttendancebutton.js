@@ -7,7 +7,9 @@ import backendlink from "../backendlink"
 import { useHistory } from "react-router-dom"
 export default function StaffViewAttendacebutton(props) {
   const history = useHistory()
-  const link="/"+props.type+"/attendance"
+  const link= `/${props.type}/attendance`
+
+  const link1="/"+props.type+"/attendance"
   
 
   return (

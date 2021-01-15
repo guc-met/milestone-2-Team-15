@@ -19,7 +19,7 @@ import * as Icon from "react-bootstrap-icons";
 import { Plus } from "react-bootstrap-icons";
 require("dotenv").config();
 function Deletetest(props) {
-  const token =localStorage.getItem("token");
+  const token = localStorage.getItem("token");
   const [courses, setcourses] = useState([]);
   const [courseID, setCourseID] = useState("");
   const [coursename, setCoursename] = useState("");
@@ -30,17 +30,21 @@ function Deletetest(props) {
   const [show, setShow] = useState(false);
   useEffect(() => {
     async function fetchData() {
-        const facdep = await axios({method:'post', url:`http://localhost:3000/HoD/ViewDepIDandFacID`,
-        headers:{token:token}
-        });
-         console.log(facdep.data);
+      const facdep = await axios({
+        method: "post",
+        url: `${process.env.REACT_APP_URL}/HoD/ViewDepIDandFacID`,
+        headers: { token: token },
+      });
+      console.log(facdep.data);
       const depid = facdep.data[1];
       setFacID(facdep.data[0]);
-      console.log("dep = "+depid)
-      console.log("fac ="+facID)
-      const response = await axios({method:'post', url:`http://localhost:3000/HoD/ViewCourses`,
-      data:{did:depid},
-      headers:{token:token}
+      console.log("dep = " + depid);
+      console.log("fac =" + facID);
+      const response = await axios({
+        method: "post",
+        url: `${process.env.REACT_APP_URL}/HoD/ViewCourses`,
+        data: { did: depid },
+        headers: { token: token },
       });
 
       console.log(response.data);
@@ -48,7 +52,9 @@ function Deletetest(props) {
       const courses = response.data.map((course, index) => {
         return (
           <Dropdown.Item>
-            <Button onClick={() => handleClick(course._id, course.courseName)}>{course.courseName}</Button>
+            <Button onClick={() => handleClick(course._id, course.courseName)}>
+              {course.courseName}
+            </Button>
           </Dropdown.Item>
         );
       });
@@ -57,9 +63,9 @@ function Deletetest(props) {
     }
     fetchData();
   }, [show]);
-  console.log("fac ="+facID)
+  console.log("fac =" + facID);
 
-  const handleClick = (courseID , coursename) => {
+  const handleClick = (courseID, coursename) => {
     console.log(courseID);
     setCourseID(courseID);
     setCoursename(coursename);
@@ -70,17 +76,20 @@ function Deletetest(props) {
     // const facultyid = req.body.facid;
     // const courseid = req.body.cid;
     // const Instructorid = req.body.id;
-    const response = await axios({method:'delete', url:`http://localhost:3000/HoD/deleteCourseInst`,
-        data:{
+    const response = await axios({
+      method: "delete",
+      url: `${process.env.REACT_APP_URL}/HoD/deleteCourseInst`,
+      data: {
         facid: facID,
         cid: courseID,
-        id: instID
-    },headers:{token:token}}
-    );
-    console.log(response)
+        id: instID,
+      },
+      headers: { token: token },
+    });
+    console.log(response);
     setShow(false);
     // if (response.status == 200)
-      setResponse(<Alert variant="success">{response.data} </Alert>);
+    setResponse(<Alert variant="success">{response.data} </Alert>);
     // else setResponse(<Alert variant="danger">{response.data} </Alert>);
   };
 
@@ -92,27 +101,30 @@ function Deletetest(props) {
           id="dropdown-basic"
           class="hod-Button"
         >
-          All Courses to be viewd 
+          All Courses to be viewd
         </Dropdown.Toggle>
 
         <Dropdown.Menu>{courses}</Dropdown.Menu>
       </Dropdown>
       <Modal show={show} onHide={() => setShow(false)}>
         <Modal.Header>
-          <Modal.Title> Deleting Instructor from {coursename} course </Modal.Title>
+          <Modal.Title>
+            {" "}
+            Deleting Instructor from {coursename} course{" "}
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-            <Form.Group class="hod_input" controlId="formGridroomKind">
+          <Form.Group class="hod_input" controlId="formGridroomKind">
             <Form.Label> Please enter the instructor ID: </Form.Label>
             <Form.Control
-                required
-                type="text"
-                onChange={(event) => {
+              required
+              type="text"
+              onChange={(event) => {
                 setInstID(event.target.value);
-                }}
-                placeholder="ac-10"
+              }}
+              placeholder="ac-10"
             />
-            </Form.Group>
+          </Form.Group>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={() => setShow(false)}>

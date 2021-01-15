@@ -30,7 +30,7 @@ function UpdateSalary(props) {
       const token = localStorage.getItem("token");
       const response = await axios({
         method: "get",
-        url: `http://localhost:3000/HR/ViewStaffs`,
+        url: `${process.env.REACT_APP_URL}/HR/ViewStaffs`,
         data: {},
         headers: { token: token },
       });
@@ -69,7 +69,7 @@ function UpdateSalary(props) {
     const token = localStorage.getItem("token");
     const response = await axios({
       method: "post",
-      url: `http://localhost:3000/HR/UpdateSalary`,
+      url: `${process.env.REACT_APP_URL}/HR/UpdateSalary`,
       data: {
         staffID: staff.ID,
 

@@ -7,7 +7,9 @@ import backendlink from "../backendlink"
 import { useHistory } from "react-router-dom"
 export default function StaffResetPassbutton(props) {
   const history = useHistory()
-  const link="/"+props.type+"/resetpassword"
+  const link= `/${props.type}/resetpassword`
+
+  const link1="/"+props.type+"/resetpassword"
   
 
   return (

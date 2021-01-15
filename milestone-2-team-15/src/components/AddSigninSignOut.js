@@ -16,7 +16,7 @@ import moment from "moment";
 import * as Icon from "react-bootstrap-icons";
 
 import { Plus } from "react-bootstrap-icons";
-require("dotenv").config();
+
 function AddSign(props) {
   const [salary, setSalary] = useState();
   const [staff, setStaff] = useState();
@@ -24,12 +24,15 @@ function AddSign(props) {
   const [response, setResponse] = useState();
   const [validated, setValidated] = useState(true);
   const [form] = Form.useForm();
+  const URL = process.env.REACT_APP_URL;
+
   useEffect(() => {
     async function fetchData() {
+      console.log("hiiii");
       const token = localStorage.getItem("token");
       const response = await axios({
         method: "get",
-        url: `http://localhost:3000/HR/ViewStaffs`,
+        url: `${process.env.REACT_APP_URL}/HR/ViewStaffs`,
         data: {},
         headers: { token: token },
       });
@@ -65,7 +68,7 @@ function AddSign(props) {
       try {
         const response = await axios({
           method: "post",
-          url: `http://localhost:3000/HR/AddSignin`,
+          url: `${process.env.REACT_APP_URL}/HR/AddSignin`,
           data: {
             id: values.Staff,
 
@@ -89,7 +92,7 @@ function AddSign(props) {
       try {
         const response = await axios({
           method: "post",
-          url: `http://localhost:3000/HR/AddSignOut`,
+          url: `${process.env.REACT_APP_URL}/HR/AddSignOut`,
           data: {
             id: values.Staff,
 

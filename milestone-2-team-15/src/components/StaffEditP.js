@@ -52,7 +52,7 @@ export default function StaffEdit(props) {
       const token = localStorage.getItem("token");
       const response2 = await axios({
         method: "get",
-        url: `http://localhost:3000/ViewLocations`,
+        url: `${process.env.REACT_APP_URL}/ViewLocations`,
         data: {},
         headers: { token: token },
       });
@@ -108,7 +108,7 @@ export default function StaffEdit(props) {
 
     const response = await axios({
       method: "post",
-      url: `http://localhost:3000/editstaff`,
+      url: `${process.env.REACT_APP_URL}/editstaff`,
       data: {
         staffId: staffChosen.ID,
         staff: staff,

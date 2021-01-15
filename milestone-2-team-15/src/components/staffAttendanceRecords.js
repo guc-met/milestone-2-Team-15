@@ -46,7 +46,7 @@ export default function StaffViewAttendancePage(props) {
         if (month != 0) {
           await axios({
             method: "post",
-            url: "http://localhost:3000/HR/ViewStaffAttendance/:month",
+            url: `${process.env.REACT_APP_URL}/HR/ViewStaffAttendance/:month`,
             params: {
               month: month,
             },
@@ -105,7 +105,7 @@ export default function StaffViewAttendancePage(props) {
           console.log(staff.ID);
           await axios({
             method: "post",
-            url: "http://localhost:3000/HR/ViewStaffAttendance",
+            url: `${process.env.REACT_APP_URL}/HR/ViewStaffAttendance`,
             data: { staffID: staff.ID },
             headers: {
               token: token,

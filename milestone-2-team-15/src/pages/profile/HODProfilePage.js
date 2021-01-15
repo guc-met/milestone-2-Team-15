@@ -29,7 +29,7 @@ export default function HODProfilePage(props) {
   useEffect(async () => {
     await axios({
       method: "get",
-      url: "http://localhost:3000/profile",
+      url: `${process.env.REACT_APP_URL}/profile`,
       headers: {
         token: token,
       },
@@ -60,7 +60,7 @@ export default function HODProfilePage(props) {
 
       await axios({
         method:"get",
-        url: "http://localhost:3000/ViewFaculties",
+        url: `${process.env.REACT_APP_URL}/ViewFaculties`,
         headers: {
           token: token,
         },
@@ -80,7 +80,7 @@ export default function HODProfilePage(props) {
      
       await axios({
         method: "post",
-        url: "http://localhost:3000/missinghours",
+        url: `${process.env.REACT_APP_URL}/missinghours`,
         headers: {
           token: token,
         },
@@ -108,7 +108,7 @@ export default function HODProfilePage(props) {
       })
       await axios({
         method: "post",
-        url: "http://localhost:3000/missingdays",
+        url: `${process.env.REACT_APP_URL}/missingdays`,
         headers: {
           token: token,
         },

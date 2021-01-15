@@ -13,7 +13,7 @@ export default function Logout(props) {
   const handlelogout = async () => {
     await axios({
       method: "post",
-      url: "http://localhost:3000/logout",
+      url: `${process.env.REACT_APP_URL}/logout`,
       headers: {
         token: token,
       },

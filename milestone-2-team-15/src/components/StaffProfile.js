@@ -7,7 +7,9 @@ import backendlink from "../backendlink"
 import { useHistory } from "react-router-dom"
 export default function StaffProfile(props) {
   const history = useHistory()
-  const link="/"+props.type+"/profile"
+  const link= `/${props.type}/profile`
+
+  const link1="/"+props.type+"/profile"
   
 
   return (

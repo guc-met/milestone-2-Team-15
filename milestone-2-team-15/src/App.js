@@ -31,12 +31,12 @@ import Logout from "./components/Logout";
 import DropDown from "./components/dropDown";
 import Header from "./components/header";
 
-import HRProfilePage from "./pages/profile/HRProfilePage"
-import InstructorProfilePage from "./pages/profile/InstructorProfilePage"
-import CoordinatorProfilePage from "./pages/profile/CoordinatorProfilePage"
+import HRProfilePage from "./pages/profile/HRProfilePage";
+import InstructorProfilePage from "./pages/profile/InstructorProfilePage";
+import CoordinatorProfilePage from "./pages/profile/CoordinatorProfilePage";
 
-import HODProfilePage from "./pages/profile/HODProfilePage"
-import TAProfilePage from "./pages/profile/TAProfilePage"
+import HODProfilePage from "./pages/profile/HODProfilePage";
+import TAProfilePage from "./pages/profile/TAProfilePage";
 import Sidebarhodhome from "./components/sidebarhodhome";
 import SendRequestHOD from "./components/sendRequestHOD";
 import SendLinkRequest from "./components/sendlinkreq";
@@ -75,9 +75,7 @@ import StaffEditP from "./components/StaffEditP"
 function App() {
   return (
     <div>
-      
       <BrowserRouter>
-
         {/* <Redirect from="/" to="/login" /> */}
         <Route exact path="/" component={LoginPage} />
         <Route exact path="/login" component={LoginPage} />
@@ -91,8 +89,8 @@ function App() {
         <Route exact path="/resetpasswordlogin" component={ResetPassword} />
        
 
-
         <Route path="/ta" component={Sidebartta} />
+        <Route path="/hod" component={HOD} />
         <Route path="/ta/sendReq" component={SendRequestInstructor} />
         <Route path="/ta/sendlinkReq" component={SendLinkRequest} />
         <Route path="/ta/changedayoff" component={SendChangeDayOffRequest} />
@@ -100,10 +98,7 @@ function App() {
         <Route path="/ta/replacementrequestHOD" component={SendrepreqtoHOD} />
         <Route path="/ta/leaverequest" component={SendLeaveReq} />
         <Route path="/ta/viewrequest" component={Viewreq} />
-       
-        
 
-        <Route path="/hod" component={HOD} />
         <Route path="/hod/sendReq" component={SendRequestHOD} />
         <Route path="/hod/sendlinkReq" component={SendLinkRequest} />
         <Route path="/hod/viewrequest" component={Viewreq} />
@@ -212,7 +207,9 @@ function App() {
           component={AssignCoordinator}
         />
 
+       
 
+       
 
 
 <Route exact path="/ta/signin" component={Signin} />
@@ -293,10 +290,7 @@ function App() {
 
       </BrowserRouter>
     </div>
- 
-
-);
-
+  );
 }
 
 export default App;

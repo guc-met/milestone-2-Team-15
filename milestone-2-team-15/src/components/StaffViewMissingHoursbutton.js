@@ -7,7 +7,9 @@ import backendlink from "../backendlink"
 import { useHistory } from "react-router-dom"
 export default function StaffViewMissingHoursbutton(props) {
   const history = useHistory()
-  const link="/"+props.type+"/missinghours"
+  const link= `/${props.type}/missinghours`
+
+  const link1="/"+props.type+"/missinghours"
   const [logoutmessage, setLogoutmessage] = useState("")
   const [MissingDaysErr, setMissingDaysErr] = useState("")
   const token = localStorage.getItem("token")
