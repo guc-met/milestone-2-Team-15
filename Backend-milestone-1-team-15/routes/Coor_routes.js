@@ -29,9 +29,9 @@ router.use(async (req, res, next) => {
         req.id = result.id // zwdna 7aga 3la result
         req.type = result.type
         next()
-      }else return res.status(404).send("error")
+      }else return res.send("error")
        
-    } else return res.status(403).send("u arent authorized")
+    } else return res.send("u arent authorized")
   })
 
 //viewSlotLinkingReq is working 
