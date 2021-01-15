@@ -21,24 +21,23 @@ const { profile, Console } = require("console");
 //const { findOne, findOneAndUpdate } = require("../models/course");
 
 router.use(async (req, res, next) => {
-    console.log("hiiiiiiiiiiii");
-    //middlewares wihtout next itwont terminate if not res.send
-    console.log(req.headers.token);
-    const token = req.headers.token;
-     console.log(token)
-    const found = await blacklist.findOne({ token: token })
-    console.log("found:"+found)
+  //middlewares wihtout next itwont terminate if not res.send
+  const token = req.headers.token;
+  // console.log(token)
+  const found = await blacklist.findOne({ token: token });
+  if (token) {
     if (!found) {
-      const result = jwt.verify(token, process.env.Token_Secret)
+      //   console.log(token)
+      const result = jwt.verify(token, process.env.Token_Secret);
+
       if (result) {
-        // console.log(result)
-        req.id = result.id // zwdna 7aga 3la result
-        req.type = result.type
-        next()
-      }else return res.send("error")
-       
-    } else return res.send("u arent authorized")
-  })
+        req.id = result.id; // zwdna 7aga 3la result
+        req.type = result.type;
+        next();
+      } else return res.send("error");
+    } else return res.send("u arent authorized");
+  } else return res.send("u arent authorized");
+});
 
 /*router.route("/findFacID").get(async (req,res) => {
     const inst = await InstructorModel.findOne({ID:req.body.id});
