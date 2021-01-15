@@ -45,7 +45,7 @@ function DeleteAssignment(props) {
   };
 
   return (
-    <div>
+    <div class="Hr-Buttons">
       <Form style={{ padding: "60px 0px 0px 260px" }}>
         <label for="delid">Enter Academic Member ID</label> <br />
         <input

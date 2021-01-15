@@ -26,6 +26,7 @@ export default function sideBar(props) {
           <br />
           <br />
           <br />
+          <a href="/ta/viewSchedule">View Schedule</a> <br />
           <a href="/ta/sendReq">Send Requests</a> <br />
           <a href="/ta/viewrequest">View Requests</a> <br />
           <a href="#">View Schedule</a> <br />

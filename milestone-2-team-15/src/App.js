@@ -100,6 +100,7 @@ function App() {
         <Route path="/ta/replacementrequestHOD" component={SendrepreqtoHOD} />
         <Route path="/ta/leaverequest" component={SendLeaveReq} />
         <Route path="/ta/viewrequest" component={Viewreq} />
+        <Route path="/ta/viewSchedule" component={ViewSchedule} />
 
         <Route path="/hod/sendReq" component={SendRequestHOD} />
         <Route path="/hod/sendlinkReq" component={SendLinkRequest} />
@@ -127,6 +128,7 @@ function App() {
 
 
         <Route path="/coordinator" component={Sidebardcoor} />
+        <Route path="/coordinator/viewSchedule" component={ViewSchedule} />
         <Route path="/coordinator/updateslot" component={Updateslot} />
 
         <Route path="/coordinator/sendReq" component={SendRequestCoor} />
@@ -150,6 +152,7 @@ function App() {
         />
         <Route path="/coordinator/addslot" component={Addslot} />
         <Route path="/coordinator/deleteslot" component={DeleteSlot} />
+        <Route path="/hod/viewSchedule" component={ViewSchedule} />
         {/* delete instructor */}
         <Route path="/hod/deletetest" component={Deletetest} />
         {/* assign Instructor */}

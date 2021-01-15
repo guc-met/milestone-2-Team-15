@@ -16,6 +16,7 @@ export default function sideBar(props) {
             View Recieved Linking Slot Requests
           </a>{" "}
           <br />
+          <a href="/coordinator/viewSchedule">View Schedule</a> <br />
           <a href="/coordinator/deleteslot">Delete slot</a> <br />
           <a href="/coordinator/sendReq">Send Requests</a> <br />
           <a href="/coordinator/viewrequest">View Requests</a> <br />

@@ -14,9 +14,9 @@ function HOD() {
         <br />
         <br />
         <br />
+        <a href="/HOD/viewSchedule">View Schedule</a>
         <a href="/HOD/sendReq">Send Requests </a>
         <a href="/HOD/viewrequest">View Requests</a>
-        <a href="#">View Schedule</a>
         <a href="/hod/deletetest">delete Instructor</a>
         <a href="/hod/AssignInst">Assign Instructor</a>
         <a href="/hod/UpdateInst">Update Instructor</a>
