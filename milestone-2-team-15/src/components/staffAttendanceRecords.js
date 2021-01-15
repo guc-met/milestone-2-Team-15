@@ -20,7 +20,7 @@ export default function StaffViewAttendancePage(props) {
       const token = localStorage.getItem("token");
       const response = await axios({
         method: "get",
-        url: `http://localhost:3000/HR/ViewStaffs`,
+        url: `${process.env.REACT_APP_URL}/HR/ViewStaffs`,
         data: {},
         headers: { token: token },
       });

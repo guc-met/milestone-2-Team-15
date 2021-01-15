@@ -28,7 +28,7 @@ function ViewSchedule(props) {
     let response="";
    const token =localStorage.getItem("token");
    const view = async (event) => {
-          response = await axios( {method:'post',url:"http://localhost:3000/ac_routes/viewschedule",
+          response = await axios( {method:'post',url:`${process.env.REACT_APP_URL}/ac_routes/viewschedule`,
           data:{
           },  headers:{token:token}
         });
