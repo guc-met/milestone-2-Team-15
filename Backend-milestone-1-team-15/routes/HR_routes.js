@@ -53,6 +53,7 @@ router.route("/ViewStaffs").get(async (req, res) => {
   } else return res.status(404).send("staff not found");
 });
 router.route("/ViewFaculties").get(async (req, res) => {
+  console.log("menna")
   let faculties = await FacultyModel.find();
   if (faculties) {
     return res.status(200).json(faculties);
