@@ -25,16 +25,14 @@ function ViewCoverageInstructor(props) {
     const [facname, setFacname] = useState();
     const [msg, setmsg]= useState([]);
     let response=[];
-    const token =localStorage.getItem("token ");
 
+    const token =localStorage.getItem("token");
    const view = async (event) => {
           response = await axios( {method:'post',url:"http://localhost:3000/instructor_routes/viewCourseCoverage",
           data:{
-            id:"12",
             facName:facname
           },  headers:{token:token}
-        }
-          );
+        });
 
     if(response.length==0){
       return;
@@ -44,37 +42,13 @@ function ViewCoverageInstructor(props) {
      for(let i=0;i<response.data.length;i++){
          
             const request=response.data[i];
-
-            //console.log(request);
-           /* 
-            let kind= "";
-
-            let academicMember = "";
-            let timing = "";
-            let courseCode = "";
-            let location = "";
-            
-            
-            if(!request.kind==null){
-              kind = request.kind;
-            }
-            if(request.academicMember){
-              academicMember = request.academicMember;
-            }
-            if(request.timing){
-              timing = request.timing;
-            }
-            if(request.courseCode){
-              courseCode = request.courseCode;
-            }
-            if(request.location){
-              location = request.location;
-            }*/
-
             let lol ="";
             if (typeof(request)==='string'){
               lol=request;
-            }else{
+            }else if(request == "faculty not found"){
+              lol="Faculty not found";
+            }
+            else{
               lol=request ? request.$numberDecimal: null
             }
             

@@ -27,16 +27,19 @@ function DeleteMemberFromCourse(props) {
     const [cc,setCc] = useState();
     const [msg,setmsg]=useState("");
     
-    
-    const sendReq = async (event) => {
-    
-      
-      const response = axios.post("http://localhost:3000/instructor_routes/deleteMemberFromCourse", {
-        id:deleteID,
-        isTA:isTAbool,
-        id:"16",
-        courseCode:cc   
-   });
+    let response="";
+
+    const token =localStorage.getItem("token");
+   const sendReq = async (event) => {
+          response = await axios( {method:'post',url:"http://localhost:3000/instructor_routes/deleteMemberFromCourse",
+          data:{
+            id:deleteID,
+            isTA:isTAbool,
+            courseCode:cc   
+          },  headers:{token:token}
+        });
+
+
    setmsg((await response).data);
     }
    
@@ -76,7 +79,7 @@ function DeleteMemberFromCourse(props) {
             <br/>
             <br/>
             <Button onClick={sendReq}>Remove Academic Member from Course</Button>
-
+    <br/><br/>{msg}
         </Form>
 
 

@@ -16,6 +16,7 @@ import CoverageOfCourses from "./components/viewCovhod.js"
 import ViewTeachAssigns from "./components/viewTeachAssignhod.js"
 import React, { useState, useEffect } from "react";
 import ResetPasswordPage from "./pages/ResetPasswordPage"
+import ResetPassword from "./components/ResetPassword"
 import StaffViewAttendancePage from "./pages/StaffViewAttendancePage"
 import StaffViewmissingDaysPage from "./pages/StaffViewmissingDaysPage"
 import ExtraHoursPage from "./pages/ExtraHoursPage"
@@ -66,6 +67,7 @@ import staffMissingHours from "./components/StaffMissingHours";
 import UpdateSalary from "./components/UpdateSalary";
 import Faculties from "./components/Faculties";
 import AddSignin from "./components/AddSigninSignOut";
+import ViewScedule from "./components/viewSchedule";
 function App() {
 
   
@@ -81,6 +83,8 @@ function App() {
         <Route exact path="/extrahours" component={ExtraHoursPage} />
         <Route exact path="/missinghours" component={MissingHoursPage} />
         <Route exact path="/resetpassword" component={ResetPasswordPage} />
+        <Route exact path="/resetpasswordlogin" component={ResetPassword} />
+
         <Route exact path="/HRprofile" component={HRProfilePage} />
         <Route
           exact
@@ -104,6 +108,7 @@ function App() {
       <Route path="/Instructor/replacementrequestHOD" component={SendrepreqtoHOD} />
       <Route path="/Instructor/leaverequest" component={SendLeaveReq} />
       <Route path="/Instructor/viewrequest" component={Viewreq} />
+      <Route path="/Instructor/viewSchedule" component={ViewScedule} />
       <Route path="/coordinator" component={Sidebardcoor} />
       <Route path="/coordinator/sendReq" component={SendRequestCoor}/>
       <Route path="/coordinator/changedayoff" component={SendChangeDayOffRequest}/>

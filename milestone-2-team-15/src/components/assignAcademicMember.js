@@ -30,19 +30,24 @@ function AssignAcademicMember(props) {
   
 
   const history = useHistory();
+
+  let response="";
    
-  
-      const sendReq = async (event) => {
-    
-      setInstid("12");
-      
-      const response = axios.post("http://localhost:3000/instructor_routes/assignAcademicMember", {
-        newACid:acadID,
-        isTA:isTAbool,
-        instID:instid,
-        courseCode:cc,
-        facName: faculty    
-   });
+    const token =localStorage.getItem("token");
+   const sendReq = async (event) => {
+          response = await axios( {method:'post',url:"http://localhost:3000/instructor_routes/assignAcademicMember",
+          data:{
+            newACid:acadID,
+            isTA:isTAbool,
+            courseCode:cc,
+            facName: faculty  
+          },  headers:{token:token}
+        });
+
+
+
+
+
    setmsg((await response).data);
     }
 

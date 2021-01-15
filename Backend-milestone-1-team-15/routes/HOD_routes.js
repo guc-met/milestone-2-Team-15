@@ -19,7 +19,7 @@ router.use(async (req, res, next) => {
     const token = req.headers.token
     // console.log(token)
     const found = await blacklist.findOne({ token: token })
-    console.log(found)
+    console.log("found:"+found)
     if (!found) {
       const result = jwt.verify(token, process.env.Token_Secret)
       if (result) {
@@ -837,11 +837,12 @@ router.route("/viewCoursesCover").post(async (req, res) => {//number 7 in 4.1
 //viewTeachAssign working with no errors bs l list fadya so far 
 router.route("/viewTeachAssign").post(async (req, res) => {//number 8 in 4.1 
     const headID = req.id;
+    console.log("headid:"+headID)
     const facultyid = req.body.facid;
     const faculty = await FacultyModel.findOne({ _id: facultyid });
     const head = await HeadOfDepartmentModel.findOne({ID: headID});
     const departmentname = head.department;
-   
+   console.log("depid:"+departmentname);
     const departments = faculty.departments;
     let result =[];
     for(let i=0; i< departments.length ;i++){

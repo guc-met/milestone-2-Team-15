@@ -13,35 +13,52 @@ const StaffModel = require("../models/Staff");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
+const blacklist = require("../models/blacklist")
 const CoordinatorModel = require("../models/courseCoordinator");
 
 const { deprecate } = require("util");
 const { profile, Console } = require("console");
 //const { findOne, findOneAndUpdate } = require("../models/course");
 
+router.use(async (req, res, next) => {
+    console.log("hiiiiiiiiiiii");
+    //middlewares wihtout next itwont terminate if not res.send
+    console.log(req.headers.token);
+    const token = req.headers.token;
+     console.log(token)
+    const found = await blacklist.findOne({ token: token })
+    console.log("found:"+found)
+    if (!found) {
+      const result = jwt.verify(token, process.env.Token_Secret)
+      if (result) {
+        // console.log(result)
+        req.id = result.id // zwdna 7aga 3la result
+        req.type = result.type
+        next()
+      }else return res.status(404).send("error")
+       
+    } else return res.status(403).send("u arent authorized")
+  })
 
-
-router.route("/findFacID").get(async (req,res) => {
+/*router.route("/findFacID").get(async (req,res) => {
     const inst = await InstructorModel.findOne({ID:req.body.id});
    // console.log("instttttt"+inst);
     const fac = await FacultyModel.findOne({name:inst.faculty})
     res.send(fac.name);
-})
+})*/
 
 router.route("/viewCourseCoverage").post(async (req, res) => {//4.2 number 1
    
-    //const instID1 = req.id;
-    //const instID2 = await InstructorModel.findOne({ID:instID1});
-    const instID2 = await InstructorModel.findOne({ID:req.body.id});
+    const instID2 = await InstructorModel.findOne({ID:req.id});
 
     const fac = await FacultyModel.findOne({name:req.body.facName});
 
     let coverage=[];
     
     if(!instID2){
-        res.status(404).send("Instructor not found");
+        res.send("Instructor not found");
     }else if(!fac){   
-        res.status(404).send("faculty not found");   
+        res.send("faculty not found");   
     }else{
         
         for(let i=0; i<fac.departments.length; i++){
@@ -66,7 +83,7 @@ router.route("/viewAssignedSlotOfCourse").post(async (req, res) => {//4.2 number
     /*const instID2 = req.body.id;
     const instID1 = await InstructorModel.findOne({ID:instID2});*/
     
-    const instID1 = await InstructorModel.findOne({ID:req.body.id});
+    const instID1 = await InstructorModel.findOne({ID:req.id});
     
     const facultyName = req.body.facName;
     const fac =await FacultyModel.findOne({name:facultyName});
@@ -74,9 +91,9 @@ router.route("/viewAssignedSlotOfCourse").post(async (req, res) => {//4.2 number
     let assignments=[];
     
     if(!instID1){
-        res.status(404).send("Instructor not found");
+        res.send("Instructor not found");
     }else if(!fac){
-        res.status(404).send("faculty not found");   
+        res.send("faculty not found");   
     }
     else{
         for(let i=0; i<fac.departments.length; i++){
@@ -110,11 +127,11 @@ router.route("/viewAssignedSlotOfCourse").post(async (req, res) => {//4.2 number
 });
 
 router.route("/viewStaffProfileByDept").post(async (req, res) => {//4.2 number 1
+    console.log(req.id+" "+ req.body.facName+"\n");
     /*const instID2 = req.body.id;
     const instID1 = await InstructorModel.findOne({ID:instID2});*/
     
-    
-    const instID1 = await InstructorModel.findOne({ID:req.body.id});
+    const instID1 = await InstructorModel.findOne({ID:req.id});
 
     const facultyName = req.body.facName;
     const fac =await FacultyModel.findOne({name:facultyName});
@@ -122,9 +139,9 @@ router.route("/viewStaffProfileByDept").post(async (req, res) => {//4.2 number 1
     let assignments=[];
     
     if(!instID1){
-        res.status(404).send("Instructor not found");
+        res.send("Instructor not found");
     }else if(!fac){
-        res.status(404).send("faculty not found");   
+        res.send("faculty not found");   
     }
     else{
         for(let i=0; i<fac.departments.length; i++){
@@ -250,7 +267,7 @@ router.route("/assignAcademicMember").post(async (req, res)=> {
     const newTA = await TaModel.findOne({ID:newAM});
     const newProf = await InstructorModel.findOne({ID:newAM});
 
-    const instID2 = req.body.instID;
+    const instID2 = req.instID;
     const instID1 = await InstructorModel.findOne({ID:instID2});
     
     //const facultyName = req.body.facName;
@@ -261,9 +278,9 @@ router.route("/assignAcademicMember").post(async (req, res)=> {
     let done = false;
     
     if(!instID1){
-        res.status(404).send("Instructor not found");
+        res.send("Instructor Not Found");
     }else if(!fac){
-        res.status(404).send("Faculty not found");   
+        res.send("Faculty Not Found");   
     }
     else{
         for(let i=0; i<fac.departments.length; i++){
@@ -363,7 +380,7 @@ router.route("/deleteAssignment").post(async (req, res)=> {
     /*const instID2 = req.body.instID;
     const instID1 = await InstructorModel.findOne({ID:instID2});*/
     
-    const instID1 = await InstructorModel.findOne({ID:req.body.id});
+    const instID1 = await InstructorModel.findOne({ID:req.id});
     
     //const facultyName = req.body.facName;
     const fac =await FacultyModel.findOne({name:req.body.facName});
@@ -371,9 +388,10 @@ router.route("/deleteAssignment").post(async (req, res)=> {
     const courseCode= req.body.courseCode;
     
     if(!instID1){
-        res.status(404).send("Instructor not found");
+
+        res.send("Instructor Not Found");
     }else if(!fac){
-        res.status(404).send("Faculty not found");   
+        res.send("Faculty Not Found");   
     }
     else{
         for(let i=0; i<fac.departments.length; i++){
@@ -510,19 +528,18 @@ router.route("/updateAssignment").post(async (req, res)=> {
     //const instID2 = req.body.instID;
     //const instID1 = await InstructorModel.findOne({ID:instID2});
     
-    const instID1 = await InstructorModel.findOne({ID:req.body.id});
+    const instID1 = await InstructorModel.findOne({ID:req.id});
     
     //const facultyName = req.body.facName;
     const fac =await FacultyModel.findOne({name:req.body.facName});
-    console.log("\n"+fac.name+"\n");
     
     const courseCode= req.body.courseCode;
 
     
     if(!instID1){
-        res.status(404).send("Instructor not found");
+        res.send("Instructor Not Found");
     }else if(!fac){
-        res.status(404).send("faculty not found");   
+        res.send("Faculty Not Found");   
     }
     else{
         for(let i=0; i<fac.departments.length; i++){
@@ -708,7 +725,7 @@ router.route("/deleteMemberFromCourse").post(async (req, res)=> {
         res.send("Instructor removed from course");
     }else{
         
-        res.send("Acadmeic member was not able to be removed from course");
+        res.send("Academic member was not able to be removed from course");
     }
 })
 
@@ -717,7 +734,7 @@ router.route("/deleteMemberFromCourse").post(async (req, res)=> {
 //go to staff, search by email and name, and change type to coordinator
 router.route("/assignCoordinator").post(async (req, res)=> {
 
-    const instID3 = await InstructorModel.findOne({ID:req.body.InstructorID});
+    const instID3 = await InstructorModel.findOne({ID:req.InstructorID});
     
     //const instID3 = await InstructorModel.findOne({ID:req.id});
 
@@ -727,14 +744,14 @@ router.route("/assignCoordinator").post(async (req, res)=> {
     const fac = await FacultyModel.findOne({name:req.body.facName});
    
     if(!fac){
-        res.status(404).send("Faculty not found");
+        res.send("Faculty Not Found");
     }
     else{
         if(!instID3){
-            res.status(404).send("Instructor not found");
+            res.send("Instructor Not Found");
         }else{
             if(!newCoordinator){
-                res.status(404).send("Academic member not found");
+                res.send("Academic Member Not Found");
             }else{
                 //console.log(newCoordinator.name);
                 let empty="";

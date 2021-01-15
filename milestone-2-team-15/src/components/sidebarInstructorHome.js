@@ -20,11 +20,11 @@ export default function sideBar(props) {
     return( 
     <div>
     {/*<div class="sidenav" style={{width:"200px",top:"70px", height:"100%",background:"url('https://upload.wikimedia.org/wikipedia/en/b/ba/Flag_of_Germany.svg')", backgroundSize:"cover"}}>*/}
-    <div class="sidenav" style={{width:"200px",top:"70px", height:"95%"}}>
+    <div class="sidenav" style={{width:"200px",top:"50px", height:"95%"}}>
         
         <a href="/Instructor/sendReq">Send Requests</a> <br/>
         <a href="/Instructor/viewrequest">View Requests</a> <br/>
-    <a href="#">View Schedule</a> <br/>
+        <a href="/Instructor/viewschedule">View Schedule</a> <br/>
         <a href="/Instructor/viewCoverage">View My Courses Coverage</a> <br/>
         <a href="/Instructor/viewAssignedSlotsOfCourse">View Asigned Slots of my Courses</a> <br/>
         <a href="/Instructor/viewStaffProfileByDept">View Staff Profiles</a> <br/>  

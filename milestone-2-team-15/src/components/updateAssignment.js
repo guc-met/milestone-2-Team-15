@@ -32,21 +32,29 @@ function UpdateAssignment(props) {
 
     const history = useHistory();
    
-    const sendReq = async (event) => {
+   let response="";
+    
+    const token =localStorage.getItem("token");
+   const sendReq = async (event) => {
+          response = await axios( {method:'post',url:"http://localhost:3000/instructor_routes/updateAssignment",
+          data:{
+                        
+          isOldTA:isOldTAbool,
+          isTA:isTAbool,
 
-    const response = axios.post("http://localhost:3000/instructor_routes/updateAssignment", {
+          delID:oldAcadID,
+          newACid:acadID,
 
-        isOldTA:isOldTAbool,
-        isTA:isTAbool,
+          courseCode:cc,
+          facName: faculty,
 
-        delID:oldAcadID,
-        newACid:acadID,
+          },  headers:{token:token}
+        });
 
-        courseCode:cc,
-        facName: faculty,
+   
 
-        id:"16"
-   });
+
+
    setmsg((await response).data);
    console.log("suppppppp"+(await response).data+"\n");
 }

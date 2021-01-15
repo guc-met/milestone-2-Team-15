@@ -28,18 +28,21 @@ function Updateinst(props) {
   const [response, setResponse] = useState();
 
   const [show, setShow] = useState(false);
+
+  const token =localStorage.getItem("token");
   useEffect(() => {
     async function fetchData() {
-        const facdep = await axios.post(`http://localhost:3000/HoD/ViewDepIDandFacID`,{
-            hid:"ac-100"
-         });
+        const facdep = await axios({method:'post', url:`http://localhost:3000/HoD/ViewDepIDandFacID`,
+        headers:{token:token}
+        });
          console.log(facdep.data);
       const depid = facdep.data[1];
       setFacID(facdep.data[0]);
       console.log("dep = "+depid)
       console.log("fac ="+facID)
-      const response = await axios.post(`http://localhost:3000/HoD/ViewCourses`,{
-        did:depid
+      const response = await axios({method:'post', url:`http://localhost:3000/HoD/ViewCourses`,
+      data:{did:depid},
+      headers:{token:token}
       });
 
       console.log(response.data);
@@ -70,12 +73,12 @@ function Updateinst(props) {
     // const courseid = req.body.cid;
     // const Instructorid = req.body.id;
     // const newInstructorid = req.body.nid;
-    const response = await axios.put(`http://localhost:3000/HoD/updateCourseInst`, {
-        hid: "ac-100",
-        facid: facID,
-        cid: courseID,
-        id: instID,
-        nid: ninstID
+    const response = await axios({method:'put', url:`http://localhost:3000/HoD/updateCourseInst`,
+    data:{facid: facID,
+      cid: courseID,
+      id: instID,
+      nid: ninstID},
+    headers:{token:token}
     });
     setShow(false);
     // if (response.status == 200)

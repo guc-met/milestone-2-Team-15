@@ -27,16 +27,20 @@ function AssignCoordinator(props) {
   const [fac, setFac] = useState();
   const [msg,setmsg]=useState("");
   
-  
+
+   let response="";
+
+   const token =localStorage.getItem("token");
   const sendReq = async (event) => {
-  
-    
-    const response = axios.post("http://localhost:3000/instructor_routes/assignCoordinator", {
-      id:newID,
-      courseID:courseid,
-      InstructorID:"16",
-      facName:fac   
- });
+         response = await axios( {method:'post',url:"http://localhost:3000/instructor_routes/assignCoordinator",
+         data:{
+          id:newID,
+          courseID:courseid,
+          facName:fac   
+         },  headers:{token:token}
+       });
+
+
  setmsg((await response).data);
  console.log("suppppppp"+(await response).data+"\n");
   }

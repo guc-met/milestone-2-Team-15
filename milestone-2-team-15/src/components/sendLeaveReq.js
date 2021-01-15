@@ -46,7 +46,7 @@ function SendLeaveReq(props) {
     console.log(msg);
   };
     return(
-        <div class="HOD-sendreq">
+        <div class="HOD-sendreq" style={{padding:"60px 0px 0px 140px"}}>
     <Form.Group class="HOD_input" controlId="formGridroomKind">
     <Form.Label> ID: </Form.Label>
     <Form.Control

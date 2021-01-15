@@ -24,14 +24,30 @@ const history = useHistory();
    
 const [facname, setFacname] = useState();
 const [msg, setmsg]= useState([]);
-let response=[]
+let response=[];
 
-const view = async (event) => {
+/*const view = async (event) => {
       response = await axios.post( "http://localhost:3000/instructor_routes/viewAssignedSlotOfCourse",
       {
         id:"16",
         facName:facname
       });
+*/
+      
+
+    
+        const token =localStorage.getItem("token");
+        const view = async (event) => {
+               response = await axios( {method:'post',url:"http://localhost:3000/instructor_routes/viewAssignedSlotOfCourse",
+               data:{
+                 facName:facname
+               },  headers:{token:token}
+             });
+     
+     
+
+
+
 
 if(response.length==0){
   return;
@@ -43,31 +59,7 @@ if(response.length==0){
         const request=response.data[i];
 
         console.log(request);
-       /* 
-        let kind= "";
-
-        let academicMember = "";
-        let timing = "";
-        let courseCode = "";
-        let location = "";
         
-        
-        if(!request.kind==null){
-          kind = request.kind;
-        }
-        if(request.academicMember){
-          academicMember = request.academicMember;
-        }
-        if(request.timing){
-          timing = request.timing;
-        }
-        if(request.courseCode){
-          courseCode = request.courseCode;
-        }
-        if(request.location){
-          location = request.location;
-        }*/
-
         if(request){
           arr.push(
             <div>

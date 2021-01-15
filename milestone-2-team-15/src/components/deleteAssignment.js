@@ -28,17 +28,22 @@ function DeleteAssignment(props) {
   const [faculty,setFaculty] = useState();
   const [msg,setmsg]=useState("");
   
-    const sendReq = async (event) => {
+   
+
+let response = "";
     
-      setInstid("12");
-      
-      const response = axios.post("http://localhost:3000/instructor_routes/deleteAssignment", {
-        delID:deleteID,
-        isTA:isTAbool,
-        id:instid,
-        courseCode:cc,
-        facName: faculty    
-   });
+    const token =localStorage.getItem("token");
+   const sendReq = async (event) => {
+          response = await axios( {method:'post',url:"http://localhost:3000/instructor_routes/deleteAssignment",
+          data:{
+            delID:deleteID,
+            isTA:isTAbool,
+            courseCode:cc,
+            facName: faculty
+          },  headers:{token:token}
+        });
+
+
    setmsg((await response).data);
 console.log("suppppppp"+(await response).data+"\n");
     }

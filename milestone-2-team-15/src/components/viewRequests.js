@@ -400,7 +400,7 @@ require("dotenv").config();
    
     
     return (
-        <div class="viewreq " style={{padding:"60px 0px 0px 110px"}}>
+        <div class="viewreq " style={{padding:"60px 0px 0px 130px"}}>
    
    <>
       

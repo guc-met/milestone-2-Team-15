@@ -579,14 +579,7 @@ Request body: {"isTA":true, "delid":"2", "facID":\_id of faculty taken from the 
 Functionality: Removes an assigned academic member in course(s) an instructor is assigned to
 Route: /instructor_routes/deleteMemberFromCourse
 Request type: DELETE
-Request body: {"isTA":true, "delid":"ac-123", "courseCode":\_id of course taken fr  om the database}
-
-
-
-
-
-
-
+Request body: {"isTA":true, "delid":"ac-123", "courseCode":\_id of course taken from the database}
 
 Functionality: Assigns a TA to be a coordinator in an instructor's course(s)
 Route: /instructor_routes/assignCoordinator
