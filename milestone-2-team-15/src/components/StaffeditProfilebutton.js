@@ -7,12 +7,12 @@ import backendlink from "../backendlink"
 import { useHistory } from "react-router-dom"
 export default function StaffeditProfile(props) {
   const history = useHistory()
-  const link="/"+props.type+"/"+props.type+"profile"
+  const link="/"+props.type+"/editprofile"
   
 
   return (
-    <div className="logout">
-      <Col className="logoutButtonCol ">
+    <div className="logout" style={{ marginLeft: "90%" }}>
+      <Col style={{textAlign:"right"}}>
         <Button
           variant="dark"
           size="logoutButton"

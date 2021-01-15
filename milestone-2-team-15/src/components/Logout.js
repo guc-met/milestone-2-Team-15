@@ -22,15 +22,16 @@ export default function Logout(props) {
         setLogouterrnmessage("something went wrong")
         setLogoutmessage("")
       } else {
-        setLogouterrnmessage("")
-        setLogoutmessage(res.data)
-        history.push("/")
+        // setLogouterrnmessage("")
+        // setLogoutmessage(res.data)
+        localStorage.removeItem("token")
+        history.push("/login")
       }
     })
   }
-  useEffect(() => {
-    if (logoutmessage == "logout successfully") localStorage.removeItem("token")
-  })
+  // useEffect(() => {
+  //   if (logoutmessage == "logout successfully") 
+  // })
   return (
     <div className="logout">
       <Col className="logoutButtonCol ">

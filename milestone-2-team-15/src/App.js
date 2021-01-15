@@ -71,6 +71,7 @@ import UpdateSalary from "./components/UpdateSalary";
 import Faculties from "./components/Faculties";
 import AddSignin from "./components/AddSigninSignOut";
 import Updateslot from "./components/coorupdateslot";
+import StaffEditP from "./components/StaffEditP"
 function App() {
   return (
     <div>
@@ -79,13 +80,16 @@ function App() {
 
         {/* <Redirect from="/" to="/login" /> */}
         <Route exact path="/" component={LoginPage} />
+        <Route exact path="/login" component={LoginPage} />
+
+        <Route exact path="/logout" component={Logout} />
         {/* <Route exact path="/attendance" component={StaffViewAttendancePage} />
         <Route exact path="/missingdays" component={StaffViewmissingDaysPage} />
         <Route exact path="/extrahours" component={ExtraHoursPage} />
         <Route exact path="/missinghours" component={MissingHoursPage} />
         <Route exact path="/resetpassword" component={ResetPasswordPage} /> */}
         <Route exact path="/resetpasswordlogin" component={ResetPassword} />
-        <Route exact path="/logout" component={Logout} />
+       
 
 
         <Route path="/ta" component={Sidebartta} />
@@ -219,9 +223,11 @@ function App() {
 <Route exact path="/ta/extrahours" component={ExtraHoursPage} />
 <Route exact path="/ta/missinghours" component={MissingHoursPage} />
 <Route exact path="/ta/taprofile" component={TAProfilePage} />
-
-
-
+<Route
+    exact
+    path="/ta/editprofile"
+    component={StaffEditP}
+  />
 <Route exact path="/hod/signin" component={Signin} />
 <Route exact path="/hod/signout" component={Signout} />
 <Route exact path="/hod/resetpassword" component={ResetPasswordPage} />
@@ -229,7 +235,12 @@ function App() {
 <Route exact path="/hod/extrahours" component={ExtraHoursPage} />
 <Route exact path="/hod/missinghours" component={MissingHoursPage} />
 <Route exact path="/hod/missingdays" component={StaffViewmissingDaysPage} />
-<Route exact path="/hod/hodprofile" component={HODProfilePage} />
+<Route exact path="/hod/profile" component={HODProfilePage} />
+<Route
+    exact
+    path="/hod/editprofile"
+    component={StaffEditP}
+  />
 
  <Route exact path="/Instructor/signout" component={Signout} />
       <Route exact path="/Instructor/signin" component={Signin} />
@@ -240,10 +251,15 @@ function App() {
       <Route exact path="/Instructor/missingdays" component={StaffViewmissingDaysPage} />
       <Route
           exact
-          path="/Instructor/Instructorprofile"
+          path="/Instructor/profile"
           component={InstructorProfilePage}
         />
         
+        <Route
+    exact
+    path="/Instructor/editprofile"
+    component={StaffEditP}
+  />
 
 <Route exact path="/coordinator/signout" component={Signout} />
 <Route exact path="/coordinator/signin" component={Signin} />
@@ -254,10 +270,15 @@ function App() {
 <Route exact path="/coordinator/missingdays" component={StaffViewmissingDaysPage} />
 <Route
     exact
-    path="/Instructor/coordinatorprofile"
+    path="/coordinator/profile"
     component={CoordinatorProfilePage}
   />
   
+  <Route
+    exact
+    path="/coordinator/editprofile"
+    component={StaffEditP}
+  />
 
 <Route exact path="/HR/signout" component={Signout} />
 <Route exact path="/HR/signin" component={Signin} />
@@ -266,7 +287,10 @@ function App() {
 <Route exact path="/HR/extrahours" component={ExtraHoursPage} />
 <Route exact path="/HR/missinghours" component={MissingHoursPage} />
 <Route exact path="/HR/missingdays" component={StaffViewmissingDaysPage} />
-<Route exact path="/HR/HRprofile" component={HRProfilePage} />
+<Route exact path="/HR/profile" component={HRProfilePage} />
+<Route exact path="/HR/editprofile" component={StaffEditP} />
+
+
       </BrowserRouter>
     </div>
  

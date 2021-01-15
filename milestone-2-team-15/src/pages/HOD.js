@@ -34,7 +34,7 @@ function HOD() {
         
       </div>
     </div>
-    <DropDown/>
+    <DropDown type="hod"/>
     </div>
   );
 }

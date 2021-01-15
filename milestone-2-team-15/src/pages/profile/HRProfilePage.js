@@ -9,12 +9,15 @@ export default function HRProfilePage(props) {
   const [ID, setID] = useState()
 
   const limittime = 2 + 59 / 60
-  const [Name, setName] = useState()
-  const [Salary, setSalary] = useState()
-  const [DayOff, setDayOff] = useState()
-  const [Email, setEmail] = useState()
-  const [Faculty,setFaculty]=useState()
-  const [Department,setDepartment]=useState()
+  const [Name, setName] = useState("")
+  const [Salary, setSalary] = useState("")
+  const [DayOff, setDayOff] = useState("")
+  const [Email, setEmail] = useState("")
+  const[Gender,setGender]=useState("")
+  const [Faculty,setFaculty]=useState("")
+  const [Department,setDepartment]=useState("")
+  const[Location,setLocation]=useState("")
+
   const token = localStorage.getItem("token")
   const days = [
     "Sunday",
@@ -39,9 +42,23 @@ export default function HRProfilePage(props) {
       setEmail(res.data.staff.email)
       setName(res.data.staffreally.name)
       setDayOff(res.data.staffreally.dayOff)
+      setGender(res.data.staffreally.gender)
+     // setLocation(res.data.staffreally.locationID)
+
       // setSalary(res.data.staffreally.salary.$numberDecimal)
       let ss = res.data.staffreally.salary.$numberDecimal
       let nn = ss
+      const response2 = await axios({
+        method: "get",
+        url: `http://localhost:3000/ViewLocations`,
+        data: {},
+        headers: { token: token },
+      });
+     
+     response2.data.map((location)=>{
+       if(location.locationId==res.data.staffreally.locationID)
+       setLocation(location.BuildingCharachter+location.FloorNumber+"." + location.roomNumber)
+     })
       await axios({
         method: "post",
         url: "http://localhost:3000/missinghours",
@@ -92,16 +109,18 @@ export default function HRProfilePage(props) {
   })
   return (
     <div>
-      <Header />
+     
       <HRProfile
         ID={ID}
         Name={Name}
         Email={Email}
         Salary={Salary}
         DayOff={days[DayOff]}
+        Gender={Gender}
+        Location={Location}
        
       />
-      <Sidebar />
+     
     </div>
   )
 }
