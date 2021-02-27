@@ -62,7 +62,19 @@ router.route("/viewCourseCoverage").post(async (req, res) => {//4.2 number 1
         
         for(let i=0; i<fac.departments.length; i++){
             //console.log("\n here look: "+fac.departments[i].name+" "+instID2.department+"\n");
-            if(instID2.department == fac.departments[i].name){
+
+            
+            const textFac = await FacultyModel.findOne({_id:instID2.faculty});
+            
+            
+            let textDep ="";
+            for(let i=0; i<textFac.departments.length; i++){
+                if(textFac.departments[i]._id==instID2.department){
+                    textDep=textFac.departments[i].name;
+                }
+            }
+            
+            if(textDep == fac.departments[i].name){
                 let tempDept = fac.departments[i];
                 for(let j=0; j<tempDept.courses.length;j++){
                     //let tempCourse= await CourseModel.findOne({_id:tempDept.courses[j]._id})
@@ -98,7 +110,18 @@ router.route("/viewAssignedSlotOfCourse").post(async (req, res) => {//4.2 number
         for(let i=0; i<fac.departments.length; i++){
             //console.log("OVER HEREEE: "+ instID1.department+ "  "+fac.departments[i].name+"\n");
 
-            if(instID1.department == fac.departments[i].name){
+            
+            const textFac = await FacultyModel.findOne({_id:instID1.faculty});
+            
+            
+            let textDep ="";
+            for(let i=0; i<textFac.departments.length; i++){
+                if(textFac.departments[i]._id==instID1.department){
+                    textDep=textFac.departments[i].name;
+                }
+            }
+            
+            if(textDep == fac.departments[i].name){
                 let tempDept = fac.departments[i];
                // console.log(tempDept);
                 for(let j=0; j<tempDept.courses.length;j++){
@@ -146,7 +169,18 @@ router.route("/viewStaffProfileByDept").post(async (req, res) => {//4.2 number 1
         for(let i=0; i<fac.departments.length; i++){
             //console.log("OVER HEREEE: "+ instID1.department+ "  "+fac.departments[i].name+"\n");
 
-            if(instID1.department == fac.departments[i].name){
+
+            const textFac = await FacultyModel.findOne({_id:instID1.faculty});
+            
+            
+            let textDep ="";
+            for(let i=0; i<textFac.departments.length; i++){
+                if(textFac.departments[i]._id==instID1.department){
+                    textDep=textFac.departments[i].name;
+                }
+            }
+            
+            if(textDep == fac.departments[i].name){
                let tempDept = fac.departments[i];
                // console.log(tempDept);
                let hod = await HeadOfDepartmentModel.findOne({ID:tempDept.HeadOfDepartmentID});
@@ -266,7 +300,7 @@ router.route("/assignAcademicMember").post(async (req, res)=> {
     const newTA = await TaModel.findOne({ID:newAM});
     const newProf = await InstructorModel.findOne({ID:newAM});
 
-    const instID2 = req.instID;
+    const instID2 = req.id;
     const instID1 = await InstructorModel.findOne({ID:instID2});
     
     //const facultyName = req.body.facName;
@@ -285,9 +319,21 @@ router.route("/assignAcademicMember").post(async (req, res)=> {
         for(let i=0; i<fac.departments.length; i++){
             //console.log("OVER HEREEE: "+ instID1.department+ "  "+fac.departments[i].name+"\n");
             
-            if(instID1.department == fac.departments[i].name){
+         
+            const textFac = await FacultyModel.findOne({_id:instID1.faculty});
+
+
+            let textDep ="";
+            for(let i=0; i<textFac.departments.length; i++){
+                if(textFac.departments[i]._id==instID1.department){
+                    textDep=textFac.departments[i].name;
+                }
+            }
+
+            
+            if(textDep == fac.departments[i].name){
                 let tempDept = fac.departments[i];
-                
+
                 // console.log(tempDept);
                 for(let j=0; j<tempDept.courses.length; j++){
                     
@@ -395,7 +441,19 @@ router.route("/deleteAssignment").post(async (req, res)=> {
     else{
         for(let i=0; i<fac.departments.length; i++){
             
-            if(instID1.department == fac.departments[i].name){
+            
+            const textFac = await FacultyModel.findOne({_id:instID1.faculty});
+            
+            
+            let textDep ="";
+            for(let i=0; i<textFac.departments.length; i++){
+                if(textFac.departments[i]._id==instID1.department){
+                    textDep=textFac.departments[i].name;
+                }
+            }
+            
+
+            if(textDep == fac.departments[i].name){
                 console.log("1 \n");
                 let tempDept = fac.departments[i];
             
@@ -542,63 +600,73 @@ router.route("/updateAssignment").post(async (req, res)=> {
     }
     else{
         for(let i=0; i<fac.departments.length; i++){
+
+            const textFac = await FacultyModel.findOne({_id:instID1.faculty});            
             
-            if(instID1.department == fac.departments[i].name){
+            let textDep ="";
+            for(let i=0; i<textFac.departments.length; i++){
+                if(textFac.departments[i]._id==instID1.department){
+                    textDep=textFac.departments[i].name;
+                }
+            }
+            
+            if(textDep == fac.departments[i].name){
                 
                 let tempDept = fac.departments[i];
-            
-               for(let j=0; j<tempDept.courses.length; j++){
-
-                if(tempDept.courses[j].code == courseCode){
-
-                    for(let k=0; k<tempDept.courses[j].Instructors.length; k++){
-                        if(instID1.ID == tempDept.courses[j].Instructors[k].ID){
-                            
-                            if(delTA && isOldTA==true){
-                               
-                                let alreadyThere = false;
-                                let save=0;
-                                for(let l=0; l<tempDept.courses[j].TAs.length; l++){
-                                    if(delTA.ID == tempDept.courses[j].TAs[l].ID){
-                                        save=l;
-                                        alreadyThere = true;
-                                    }
-                                }
-                                if(alreadyThere){
-
-                                    let temp = []
-                                    for(let m=0; m<tempDept.courses[j].TAs.length; m++){
-                                        if(tempDept.courses[j].TAs[m].ID != delTA.ID){
-                                            temp.push(tempDept.courses[j].TAs[m]);
+                
+                for(let j=0; j<tempDept.courses.length; j++){
+                    
+                    if(tempDept.courses[j].code == courseCode){
+                        
+                        for(let k=0; k<tempDept.courses[j].Instructors.length; k++){
+                            if(instID1.ID == tempDept.courses[j].Instructors[k].ID){
+                                
+                                
+                                if(delTA && isOldTA=="true"){
+                                    
+                                    let alreadyThere = false;
+                                    let save=0;
+                                    for(let l=0; l<tempDept.courses[j].TAs.length; l++){
+                                        if(delTA.ID == tempDept.courses[j].TAs[l].ID){
+                                            save=l;
+                                            alreadyThere = true;
                                         }
                                     }
-                                    tempDept.courses[j].TAs=temp;
-                                    //arrayRemove(tempDept.courses[j].TAs,tempDept.courses[j].TAs[save]);
-                                    //arrayRemove(tempDept.courses[j].TAs,save);
-
-                                    if(newTA && isNewTA==true){
-                                        tempDept.courses[j].TAs.push(newTA);
-                                    }else if(newProf && isNewTA==false){
-                                        tempDept.courses[j].Instructors.push(newProf);    
+                                    if(alreadyThere){
+                                        
+                                        let temp = []
+                                        for(let m=0; m<tempDept.courses[j].TAs.length; m++){
+                                            if(tempDept.courses[j].TAs[m].ID != delTA.ID){
+                                                temp.push(tempDept.courses[j].TAs[m]);
+                                            }
+                                        }
+                                        tempDept.courses[j].TAs=temp;
+                                        //arrayRemove(tempDept.courses[j].TAs,tempDept.courses[j].TAs[save]);
+                                        //arrayRemove(tempDept.courses[j].TAs,save);
+                                        
+                                        if(newTA && isNewTA==true){
+                                            tempDept.courses[j].TAs.push(newTA);
+                                        }else if(newProf && isNewTA==false){
+                                            tempDept.courses[j].Instructors.push(newProf);    
+                                        }
+                                        
+                                        fac.departments = tempDept;
+                                        
+                                        await FacultyModel.findOneAndUpdate({name: fac.name},fac);
+                                        
+                                        done = true;
+                                        res.send("Academic member updated");
+                                    }else{
+                                        done = true;
+                                        res.send("Academic member already not assigned");
                                     }
-
-                                    fac.departments = tempDept;
                                     
-                                    await FacultyModel.findOneAndUpdate({name: fac.name},fac);
-
-                                    done = true;
-                                    res.send("Academic member updated");
-                                }else{
-                                    done = true;
-                                    res.send("Academic member already not assigned");
-                                }
-
-                            }else if(delProf && isOldTA==false){
-                                
-                                let alreadyThere = false;
-                                let save=0;
-                                for(let l=0; l<tempDept.courses[j].Instructors.length; l++){
-                                    if(delProf.ID == tempDept.courses[j].Instructors[l].ID){
+                                }else if(delProf && isOldTA==false){
+                                    
+                                    let alreadyThere = false;
+                                    let save=0;
+                                    for(let l=0; l<tempDept.courses[j].Instructors.length; l++){
+                                        if(delProf.ID == tempDept.courses[j].Instructors[l].ID){
                                         save=l;
                                         alreadyThere = true;
                                     }
@@ -606,8 +674,8 @@ router.route("/updateAssignment").post(async (req, res)=> {
                                 if(alreadyThere){
 
                                     //arrayRemove(tempDept.courses[j].Instructors,tempDept.courses[j].Instructors[save]);
-
-
+                                    
+                                    
                                     
                                     let temp = []
                                     for(let m=0; m<tempDept.courses[j].Instructors.length; m++){
@@ -616,19 +684,19 @@ router.route("/updateAssignment").post(async (req, res)=> {
                                         }
                                     }
                                     tempDept.courses[j].Instructors=temp;
-
-
+                                    
+                                    
                                     if(newTA &&isNewTA==true){
                                         tempDept.courses[j].TAs.push(newTA);
                                     }else if(newProf && isNewTA==false){
                                         tempDept.courses[j].Instructors.push(newProf);    
                                     }
                                     
-                                
+                                    
                                     fac.departments = tempDept;
-                                   // console.log(fac.departments.courses);
+                                    // console.log(fac.departments.courses);
                                     await FacultyModel.findOneAndUpdate({Name: fac.name},fac);
-
+                                    
                                     done = true;
                                     res.send("Academic member updated");
                                 }else{
@@ -637,18 +705,18 @@ router.route("/updateAssignment").post(async (req, res)=> {
                                 }
                             }   
                         }
-        
+                        
                         
                     }
                 }
-                }
             }
         }
-        if(!done){
-            res.send("Academic member could not be deleted");
-        }
     }
-    
+    if(!done){
+        res.send("Academic member could not be deleted");
+    }
+}
+
 });
 
 
@@ -733,7 +801,7 @@ router.route("/deleteMemberFromCourse").post(async (req, res)=> {
 //go to staff, search by email and name, and change type to coordinator
 router.route("/assignCoordinator").post(async (req, res)=> {
 
-    const instID3 = await InstructorModel.findOne({ID:req.InstructorID});
+    const instID3 = await InstructorModel.findOne({ID:req.id});
     
     //const instID3 = await InstructorModel.findOne({ID:req.id});
 
@@ -741,6 +809,9 @@ router.route("/assignCoordinator").post(async (req, res)=> {
     const courseID= req.body.courseID;
     const newCoordinator = await TaModel.findOne({ID:req.body.id})
     const fac = await FacultyModel.findOne({name:req.body.facName});
+
+    const coords = await CoordinatorModel.findOne({ID:req.body.id})
+   
    
     if(!fac){
         res.send("Faculty Not Found");
@@ -763,7 +834,8 @@ router.route("/assignCoordinator").post(async (req, res)=> {
 
                 console.log("\n"+newCoordinator.ID+"\n");
                 let coursesArr = []
-                if(newCoordinator.coordinator == false){
+               // if(newCoordinator.coordinator == false){
+                  if(!coords){
                     const createCoordinator = await new CoordinatorModel({
                         name:( newCoordinator).name,
                         ID: newCoordinator.ID,
