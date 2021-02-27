@@ -161,9 +161,9 @@ function UpdateAssignment(props) {
         <br />
         <br />
         <Button onClick={sendReq}>Update Academic Member Assignment</Button>
+      <p>{msg}</p>
       </Form>
 
-      <p>{msg}</p>
     </div>
   );
 }

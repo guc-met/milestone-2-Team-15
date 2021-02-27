@@ -31,7 +31,7 @@ function AssignAcademicMember(props) {
            const response = await axios( {method:'post',url:`${process.env.REACT_APP_URL}/instructor_routes/assignAcademicMember`,
            data:{
                   
-              newACid: acadID,
+              id: acadID,
               isTA: isTAbool,
               courseCode: cc,
               facName: faculty,
